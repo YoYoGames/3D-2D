@@ -1,0 +1,4 @@
+if (Asset)
+{
+	Asset.Destroy();
+}
