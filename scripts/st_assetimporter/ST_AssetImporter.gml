@@ -107,6 +107,7 @@ function ST_AssetImporter(_tempDir=temp_directory + @"\SpriteTool") constructor
 
 		// Convert and load model - throws a BBMOD_Exception if fails!
 		var _pathModel = TempDir + @"\temp.bbmod";
+		Dll.set_disable_bone(!_asset.IsAnimated);
 		Dll.set_sampling_rate(_asset.SamplingRate);
 		Dll.set_flip_uv_horizontally(_asset.FlipUVHorizontally);
 		Dll.set_flip_uv_vertically(_asset.FlipUVVertically);
