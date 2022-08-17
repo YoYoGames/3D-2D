@@ -25,7 +25,7 @@ function ST_RenderPreviewWidget(_store, _props={})
 		X: 280,
 	}, [
 		new GUI_GlyphButton(ST_EIcon.ArrowLeft, {
-			Font: ST_FntIcons,
+			Font: ST_FntIcons11,
 			BackgroundSprite: undefined,
 			OnClick: method(self, function () {
 				Root.ExportOptionsPane.ExportOptions.DropdownCamera.SelectPrev();
@@ -37,14 +37,15 @@ function ST_RenderPreviewWidget(_store, _props={})
 				_text.Text = Root.ExportOptionsPane.ExportOptions.DropdownCamera.Selected.Text;
 			}),
 		}),
-		new GUI_IconButton(GUI_SprArrowRightIcon, 0, { // TODO: Add ArrowRight glyph
+		new GUI_GlyphButton(ST_EIcon.ExpandClosed, {
+			Font: ST_FntIcons11,
 			BackgroundSprite: undefined,
 			OnClick: method(self, function () {
 				Root.ExportOptionsPane.ExportOptions.DropdownCamera.SelectNext();
 			}),
 		}),
-		new GUI_IconButton(GUI_SprCogIcon, 0, { // TODO: Add Cog glyph
-			Font: ST_FntIcons,
+		new GUI_IconButton(ST_SprCogIcon, 0, { // TODO: Add Cog glyph
+			Font: ST_FntIcons11,
 			BackgroundSprite: undefined,
 			OnClick: method(self, function () {
 				var _expandExportOptionsButton = Root.Viewport.ExpandExportOptionsButton;

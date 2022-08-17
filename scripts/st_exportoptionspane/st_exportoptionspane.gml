@@ -30,7 +30,7 @@ function ST_ExportOptionsPane(_store, _props={})
 			IsSelected: true,
 		}, [
 			new GUI_GlyphButton(ST_EIcon.CloseSemibold, {
-				Font: ST_FntIcons,
+				Font: ST_FntIcons11,
 				BackgroundSprite: undefined,
 				AnchorLeft: 1.0,
 				AnchorTop: 0.5,

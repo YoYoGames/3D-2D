@@ -1,4 +1,4 @@
-/// @enum Enumeration of icons within the ST_FntIcons font.
+/// @enum Enumeration of icons within the ST_FntIcons11 font.
 enum ST_EIcon
 {
 	ArrowUp = 59648,

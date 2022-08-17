@@ -84,30 +84,33 @@ function ST_ViewportWidget(_store, _props={})
 		Y: 4,
 	}, [
 		new GUI_HBox({}, [
-			new GUI_IconButton(GUI_SprGridIcon), // TODO: Grid glyph
-			new GUI_IconButton(GUI_SprCaretDownIcon, 0, { Width: 11 }),
+			new GUI_IconButton(ST_SprGridIcon), // TODO: Grid glyph
+			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Font: ST_FntIcons5,
+				Width: 11,
+			}),
 		]),
 		new GUI_Separator({ Width: 2, Height: 24, BackgroundColor: #444444 }),
 		new GUI_GlyphButton(ST_EIcon.ZoomOut, {
-			Font: ST_FntIcons,
+			Font: ST_FntIcons11,
 			OnClick: method(Store.Camera, function () {
 				Zoom += 1;
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ZoomReset, {
-			Font: ST_FntIcons,
+			Font: ST_FntIcons11,
 			OnClick: method(Store, function () {
 				Camera.Zoom = 10;
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ZoomIn, {
-			Font: ST_FntIcons,
+			Font: ST_FntIcons11,
 			OnClick: method(Store.Camera, function () {
 				Zoom = max(Zoom - 1, 1);
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ZoomCentreFit, {
-			Font: ST_FntIcons,
+			Font: ST_FntIcons11,
 			OnClick: method(self, function () {
 				var _cameraType = CameraDropdown.Selected.Value;
 				with (Store)
@@ -124,18 +127,31 @@ function ST_ViewportWidget(_store, _props={})
 			}),
 		}),
 		//new GUI_HBox({}, [
-		//	new GUI_IconButton(GUI_SprWrenchIcon),
-		//	new GUI_IconButton(GUI_SprCaretDownIcon, 0, { Width: 11 }),
+		//	new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
+		//		Font: ST_FntIcons11,
+		//	}),
+		//	new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+		//		Font: ST_FntIcons5,
+		//		Width: 11,
+		//	}),
 		//]),
 		new GUI_HBox({}, [
 			new GUI_GlyphButton(ST_EIcon.Move, {
-				Font: ST_FntIcons,
+				Font: ST_FntIcons11,
 			}),
-			new GUI_IconButton(GUI_SprCaretDownIcon, 0, { Width: 11 }),
+			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Font: ST_FntIcons5,
+				Width: 11,
+			}),
 		]),
 		//new GUI_HBox({}, [
-		//	new GUI_IconButton(GUI_SprSquareOutlineIcon),
-		//	new GUI_IconButton(GUI_SprCaretDownIcon, 0, { Width: 11 }),
+		//	new GUI_GlyphButton(ST_EIcon.NoSplit, {
+		//		Font: ST_FntIcons11,
+		//	}),
+		//	new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+		//		Font: ST_FntIcons5,
+		//		Width: 11,
+		//	}),
 		//]),
 	]);
 	Add(FloatingToolbar);

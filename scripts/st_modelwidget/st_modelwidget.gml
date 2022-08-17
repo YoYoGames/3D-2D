@@ -198,7 +198,7 @@ function ST_ModelWidget(_store, _props={})
 			X: -48,
 		}, [
 			new GUI_GlyphButton(ST_EIcon.Visible, {
-				Font: ST_FntIcons,
+				Font: ST_FntIcons11,
 				BackgroundSprite: undefined,
 				OnClick: method(_directionalLight, function (_iconButton) {
 					Enabled = !Enabled;
@@ -206,7 +206,7 @@ function ST_ModelWidget(_store, _props={})
 				}),
 			}),
 			new GUI_GlyphButton(ST_EIcon.Delete, {
-				Font: ST_FntIcons,
+				Font: ST_FntIcons11,
 				BackgroundSprite: undefined,
 				OnClick: method({ Item: _item, Light: _directionalLight }, function () {
 					Item.Destroy();

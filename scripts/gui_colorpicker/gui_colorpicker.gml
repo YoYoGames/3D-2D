@@ -212,7 +212,7 @@ function GUI_ColorPicker(_color, _props={})
 	ContainerInputsRGB.Add(InputBlue);
 
 	ButtonEyeDropper = new GUI_GlyphButton(ST_EIcon.ColorPicker, {
-		Font: ST_FntIcons,
+		Font: ST_FntIcons11,
 		X: 294,
 		Y: 382,
 		// TODO: Implement eye dropper
@@ -229,7 +229,7 @@ function GUI_ColorPicker(_color, _props={})
 	}));
 
 	ButtonPlus = new GUI_GlyphButton(ST_EIcon.TrackpanelAddTrack, {
-		Font: ST_FntIcons,
+		Font: ST_FntIcons11,
 		X: 15,
 		Y: 438,
 		OnClick: method(self, function () {
