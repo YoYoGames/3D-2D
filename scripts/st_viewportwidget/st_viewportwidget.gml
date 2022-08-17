@@ -77,6 +77,37 @@ function ST_ViewportWidget(_store, _props={})
 	});
 	Add(ExpandExportOptionsButton);
 
+	GridOptions = new GUI_Canvas({
+		Width: 200,
+		Height: 90, // TODO: "auto" sizing
+		AnchorLeft: 1.0,
+		PivotTop: 1.0,
+		AnchorTop: 1.0,
+		BackgroundColor: #212121,
+		BackgroundSprite: GUI_SprContainerBorder,
+		Visible: false,
+	}, [
+		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
+			new GUI_Text("Grid:"),
+			new ST_VectorInput(ST_OMain.Gizmo.GridSize, {
+				Width: "100%",
+				Min: 0.0,
+				Step: 0.1,
+			}),
+			new GUI_Checkbox(ST_OMain.Gizmo.EnableGridSnap, {
+				OnChange: function (_value) {
+					ST_OMain.Gizmo.EnableGridSnap = _value;
+				},
+			}, [
+				new GUI_Text("Snap", {
+					AnchorLeft: 1.0,
+					PivotLeft: 1.0,
+					X: 8,
+				}),
+			]),
+		]),
+	]);
+
 	FloatingToolbar = new GUI_FloatingToolbar({
 		Draggable: true,
 		AnchorLeft: 1.0,
@@ -84,11 +115,32 @@ function ST_ViewportWidget(_store, _props={})
 		Y: 4,
 	}, [
 		new GUI_HBox({}, [
-			new GUI_IconButton(ST_SprGridIcon), // TODO: Grid glyph
+			new GUI_IconButton(ST_SprGridIcon, 0, { // TODO: Grid glyph
+				OnClick: function () {
+					ST_OMain.GridVisible = !ST_OMain.GridVisible;
+				},
+				OnUpdate: function (_iconButton) {
+					_iconButton.SetProps({
+						BackgroundSprite: ST_OMain.GridVisible ? GUI_SprButtonLight : GUI_SprButton,
+					});
+				},
+			}),
 			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
 				Font: ST_FntIcons5,
 				Width: 11,
-			}),
+				OnUpdate: method(self, function (_glyphButton) {
+					_glyphButton.SetProps({
+						BackgroundSprite: GridOptions.Visible ? GUI_SprButtonLight : GUI_SprButton,
+					});
+				}),
+				OnClick: method(self, function (_glyphButton) {
+					GridOptions.SetProps({
+						Visible: !GridOptions.Visible,
+					});
+				}),
+			}, [
+				GridOptions,
+			]),
 		]),
 		new GUI_Separator({ Width: 2, Height: 24, BackgroundColor: #444444 }),
 		new GUI_GlyphButton(ST_EIcon.ZoomOut, {

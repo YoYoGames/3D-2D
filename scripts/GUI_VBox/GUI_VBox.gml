@@ -37,7 +37,7 @@ function GUI_VBox(_props={}, _children=[])
 					Layout(_force);
 					var _bbox = GetBoundingBox();
 					_xmax = max(_xmax, _bbox[2]);
-					var _height = _bbox[3] - _bbox[1];
+					var _height = _bbox[3] - RealY;//_bbox[1];
 					_y += _height + (_spacing * (_height > 0 && i < _childCount));
 				}
 			}

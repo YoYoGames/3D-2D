@@ -148,27 +148,36 @@ global.stMaterialHighlight = false;
 
 ////////////////////////////////////////////////////////////////////////////////
 // Grid
-
-// TODO: Use a shader?
-Camera.apply();
-gpu_push_state();
-gpu_set_ztestenable(true);
-gpu_set_tex_filter(true);
-gpu_set_tex_mip_enable(mip_on);
-var _scale = power(10, floor(log10(max(Camera.Zoom - 10, 1))));
-matrix_set(matrix_world, matrix_build(0, 0, 0, 0, 0, 0, _scale, _scale, _scale));
-draw_primitive_begin(pr_linelist);
-var _count = 10;
-for (var i = -_count; i <= _count; ++i)
+if (GridVisible)
 {
-	draw_vertex_color(i, -_count, #585A5C, 1.0);
-	draw_vertex_color(i, +_count, #585A5C, 1.0);
+	var _scale = power(10, floor(log10(max(Camera.Zoom - 10, 1))));
+	var _gridSizeX = Gizmo.GridSize.X * _scale;
+	var _gridSizeY = Gizmo.GridSize.Y * _scale;
+	if (_gridSizeX > 0.0 && _gridSizeY > 0.0)
+	{
+		Camera.apply();
+		gpu_push_state();
+		gpu_set_ztestenable(true);
+		gpu_set_tex_filter(true);
+		gpu_set_tex_mip_enable(mip_on);
+		matrix_set(matrix_world, matrix_build(0, 0, 0, 0, 0, 0,
+			_gridSizeX,
+			_gridSizeY,
+			1.0));
+		draw_primitive_begin(pr_linelist);
+		var _count = 10;
+		for (var i = -_count; i <= _count; ++i)
+		{
+			draw_vertex_color(i, -_count, #585A5C, 1.0);
+			draw_vertex_color(i, +_count, #585A5C, 1.0);
+		}
+		for (var i = -_count; i <= _count; ++i)
+		{
+			draw_vertex_color(-_count, i, #585A5C, 1.0);
+			draw_vertex_color(+_count, i, #585A5C, 1.0);
+		}
+		draw_primitive_end();
+		matrix_set(matrix_world, matrix_build_identity());
+		gpu_pop_state();
+	}
 }
-for (var i = -_count; i <= _count; ++i)
-{
-	draw_vertex_color(-_count, i, #585A5C, 1.0);
-	draw_vertex_color(+_count, i, #585A5C, 1.0);
-}
-draw_primitive_end();
-matrix_set(matrix_world, matrix_build_identity());
-gpu_pop_state();

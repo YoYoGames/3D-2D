@@ -1,4 +1,4 @@
-/// @func GUI_GlyphButton(_glyph[, _props])
+/// @func GUI_GlyphButton(_glyph[, _props[, _children]])
 ///
 /// @extends GUI_Widget
 ///
@@ -6,11 +6,10 @@
 ///
 /// @param {String, Real} _glyph
 /// @param {Struct} [_props]
-function GUI_GlyphButton(_glyph, _props={})
-	: GUI_Widget(_props) constructor
+/// @param {Array<Struct.GUI_Widget>} [_children]
+function GUI_GlyphButton(_glyph, _props={}, _children=[])
+	: GUI_Widget(_props, _children) constructor
 {
-	MaxChildCount = 0;
-
 	/// @var {String, Real}
 	Glyph = _glyph;
 
@@ -46,6 +45,7 @@ function GUI_GlyphButton(_glyph, _props={})
 		{
 			draw_set_font(_font);
 		}
+		DrawChildren();
 		return self;
 	};
 }

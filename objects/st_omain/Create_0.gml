@@ -280,6 +280,7 @@ z = 0;
 Debug = false;
 
 Gizmo = new ST_Gizmo(15);
+GridVisible = true;
 
 Renderer = new ST_Renderer();
 Renderer.UseAppSurface = true;

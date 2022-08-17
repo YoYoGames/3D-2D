@@ -35,7 +35,7 @@ function GUI_HBox(_props={}, _children=[])
 					Layout(_force);
 					var _bbox = GetBoundingBox();
 					_ymax = max(_ymax, _bbox[3]);
-					var _width = _bbox[2] - _bbox[0]
+					var _width = _bbox[2] - RealX;//_bbox[0];
 					_x += _width + (_spacing * (_width > 0 && i < _childCount));
 				}
 			}
