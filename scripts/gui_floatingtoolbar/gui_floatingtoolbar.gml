@@ -12,6 +12,9 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprFloatingToolbar;
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	/// @var {Constant.Color}
 	BackgroundColor = _props[$ "BackgroundColor"] ?? c_black;
 
@@ -61,7 +64,8 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 	};
 
 	static Draw = function () {
-		draw_sprite_stretched_ext(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight,
+		draw_sprite_stretched_ext(BackgroundSprite, BackgroundSubimage,
+			RealX, RealY, RealWidth, RealHeight,
 			BackgroundColor, BackgroundAlpha);
 		if (Draggable)
 		{

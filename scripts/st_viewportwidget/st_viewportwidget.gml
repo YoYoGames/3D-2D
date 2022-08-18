@@ -137,7 +137,7 @@ function ST_ViewportWidget(_store, _props={})
 				},
 				OnUpdate: function (_iconButton) {
 					_iconButton.SetProps({
-						BackgroundSubimage: ST_OMain.GridVisible ? 2 : 0,
+						Active: ST_OMain.GridVisible,
 					});
 				},
 			}),
@@ -146,7 +146,7 @@ function ST_ViewportWidget(_store, _props={})
 				Width: 11,
 				OnUpdate: method(self, function (_glyphButton) {
 					_glyphButton.SetProps({
-						BackgroundSubimage: GridOptions.Visible ? 2 : 0,
+						Active: GridOptions.Visible,
 					});
 				}),
 				OnClick: method(self, function (_glyphButton) {

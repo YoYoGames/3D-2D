@@ -18,18 +18,39 @@ function GUI_IconButton(_sprite, _subimage=0, _props={})
 	/// @var {Real}
 	Subimage = _subimage;
 
+	/// @var {Bool}
+	Active = _props[$ "Active"] ?? false;
+
+	/// @var {Bool} If `true` then the background sprite is not visible when the
+	/// button is not pressed or the mouse is not over. Default value is `false`.
+	Minimal = _props[$ "Minimal"] ?? false;
+
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = GUI_StructGet(_props, "BackgroundSprite", GUI_SprButton);
+
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
 
 	SetSize(
 		_props[$ "Width"] ?? GUI_LINE_HEIGHT,
 		_props[$ "Height"] ?? GUI_LINE_HEIGHT
 	);
 
+	static Widget_Update = Update;
+
+	static Update = function () {
+		Widget_Update();
+		BackgroundSubimage = ((Active || Root.WidgetPressed == self) ? 2
+			: (IsMouseOver() ? 1 : 0));
+		return self;
+	};
+
 	static Draw = function () {
-		if (BackgroundSprite != undefined)
+		if (BackgroundSprite != undefined
+			&& (!Minimal || BackgroundSubimage > 0))
 		{
-			draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX, RealY, RealWidth, RealHeight);
 		}
 		var _spriteWidth = sprite_get_width(Sprite);
 		var _spriteHeight = sprite_get_height(Sprite);

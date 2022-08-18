@@ -51,6 +51,9 @@ function GUI_Input(_value, _props={}, _children=[])
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = GUI_StructGet(_props, "BackgroundSprite", GUI_SprInput);
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	/// @var {Constant.Color}
 	BeamColor = _props[$ "BeamColor"] ?? c_white;
 
@@ -461,7 +464,8 @@ function GUI_Input(_value, _props={}, _children=[])
 		// Background
 		if (BackgroundSprite != undefined)
 		{
-			draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX, RealY, RealWidth, RealHeight);
 		}
 
 		////////////////////////////////////////////////////////////////////////

@@ -53,7 +53,8 @@ function GUI_VScrollbar(_props={})
 	};
 
 	static Draw = function () {
-		draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+		draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+			RealX, RealY, RealWidth, RealHeight);
 		draw_sprite_stretched(Sprite, 0, RealX, RealY + Scroll, RealWidth, ThumbSize);
 		return self;
 	};

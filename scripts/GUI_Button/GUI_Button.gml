@@ -28,9 +28,13 @@ function GUI_Button(_text, _props={})
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprButton;
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	static Draw = function () {
 		// Background
-		draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+		draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+			RealX, RealY, RealWidth, RealHeight);
 
 		// Text
 		var _color = IsDisabled() ? ColorDisabled : Color;

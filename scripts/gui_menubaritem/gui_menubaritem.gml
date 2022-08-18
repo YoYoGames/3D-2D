@@ -41,6 +41,9 @@ function GUI_MenuBarItem(_text, _props={})
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprMenuItem;
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	Disabled = function () {
 		return (Menu == undefined);
 	};
@@ -91,7 +94,8 @@ function GUI_MenuBarItem(_text, _props={})
 	static Draw = function () {
 		if ((Menu && Menu.Root) || IsMouseOver())
 		{
-			draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX, RealY, RealWidth, RealHeight);
 		}
 		var _color = IsDisabled() ? ColorDisabled : Color;
 		draw_text_color(

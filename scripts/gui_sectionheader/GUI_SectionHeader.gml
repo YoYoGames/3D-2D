@@ -37,6 +37,9 @@ function GUI_SectionHeader(_text, _props={}, _children=[])
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = GUI_StructGet(_props, "BackgroundSprite", GUI_SprSectionHeader);
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	SetSize(
 		_props[$ "Width"] ?? "100%",
 		_props[$ "Height"] ?? (BackgroundSprite != undefined
@@ -59,7 +62,8 @@ function GUI_SectionHeader(_text, _props={}, _children=[])
 	static Draw = function () {
 		if (BackgroundSprite != undefined)
 		{
-			draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX, RealY, RealWidth, RealHeight);
 		}
 
 		var _caretWidth = sprite_get_width(SpriteCaret);

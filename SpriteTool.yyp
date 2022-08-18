@@ -123,7 +123,6 @@
     {"id":{"name":"GUI_SprContainerBorder","path":"sprites/GUI_SprContainerBorder/GUI_SprContainerBorder.yy",},"order":1,},
     {"id":{"name":"BBMOD_Class","path":"scripts/BBMOD_Class/BBMOD_Class.yy",},"order":12,},
     {"id":{"name":"GUI_AccordionBody","path":"scripts/GUI_AccordionBody/GUI_AccordionBody.yy",},"order":3,},
-    {"id":{"name":"GUI_SprButtonLight","path":"sprites/GUI_SprButtonLight/GUI_SprButtonLight.yy",},"order":2,},
     {"id":{"name":"BBMOD_DefaultShader","path":"scripts/BBMOD_DefaultShader/BBMOD_DefaultShader.yy",},"order":2,},
     {"id":{"name":"BBMOD_ShDefault","path":"shaders/BBMOD_ShDefault/BBMOD_ShDefault.yy",},"order":3,},
     {"id":{"name":"ST_ShMaterialHighlight","path":"shaders/ST_ShMaterialHighlight/ST_ShMaterialHighlight.yy",},"order":4,},

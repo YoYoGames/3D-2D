@@ -29,6 +29,9 @@ function GUI_Dropdown(_props={}, _options=[])
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprDropdown;
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	/// @var {Asset.GMSprite}
 	SpriteCaret = _props[$ "SpriteCaret"] ?? GUI_SprDropdownCaret;
 
@@ -163,8 +166,10 @@ function GUI_Dropdown(_props={}, _options=[])
 
 	static Draw = function () {
 		// Background
-		draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
-		draw_sprite_stretched(BackgroundSprite, 0, RealX + RealWidth - RealHeight, RealY, RealHeight, RealHeight);
+		draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+			RealX, RealY, RealWidth, RealHeight);
+		draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+			RealX + RealWidth - RealHeight, RealY, RealHeight, RealHeight);
 		// Caret
 		var _caretWidth = sprite_get_width(SpriteCaret);
 		var _caretHeight = sprite_get_height(SpriteCaret);

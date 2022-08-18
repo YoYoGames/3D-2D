@@ -33,6 +33,9 @@ function GUI_Canvas(_props={}, _children=[])
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = GUI_StructGet(_props, "BackgroundSprite");
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
@@ -136,7 +139,8 @@ function GUI_Canvas(_props={}, _children=[])
 		if (BackgroundSprite != undefined)
 		{
 			matrix_set(matrix_world, matrix_build(0, 0, 0, 0, 0, 0, 1, 1, 1));
-			draw_sprite_stretched(BackgroundSprite, 0, 0, 0, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				0, 0, RealWidth, RealHeight);
 		}
 		matrix_set(matrix_world, matrix_build(-RealX, -RealY, 0, 0, 0, 0, 1, 1, 1));
 		DrawChildren();

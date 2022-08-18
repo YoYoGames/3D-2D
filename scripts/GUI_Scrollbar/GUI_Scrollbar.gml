@@ -38,6 +38,9 @@ function GUI_Scrollbar(_props={})
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprScrollbarBackground;
 
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 	/// @func CalcJumpAndThumbSize()
 	///
 	/// @desc
