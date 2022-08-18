@@ -46,7 +46,7 @@ function ST_AssetWidget(_asset, _props={})
 
 		TextAnimations.Add(new GUI_GlyphButton(ST_EIcon.Grid, {
 			Font: ST_FntIcons11,
-			BackgroundSprite: undefined,
+			Minimal: true,
 			AnchorLeft: 1.0,
 			OnClick: method(self, function (_iconButton) {
 				_iconButton.SetProps({
