@@ -25,11 +25,24 @@ function GUI_Button(_text, _props={})
 	/// @var {Constant.Color}
 	ColorDisabled = _props[$ "ColorDisabled"] ?? c_gray;
 
+	/// @var {Bool} If `true` then the background sprite is not visible when the
+	/// button is not pressed or the mouse is not over. Default value is `false`.
+	Minimal = _props[$ "Minimal"] ?? false;
+
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprButton;
 
 	/// @var {Real}
 	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
+	static Widget_Update = Update;
+
+	static Update = function () {
+		Widget_Update();
+		BackgroundSubimage = ((Root.WidgetPressed == self) ? 2
+			: (IsMouseOver() ? 1 : 0));
+		return self;
+	};
 
 	static Draw = function () {
 		// Background
