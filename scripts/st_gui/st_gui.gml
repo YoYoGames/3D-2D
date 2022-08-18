@@ -20,14 +20,14 @@ function ST_GUI(_store, _props={})
 
 	HSplitterLeft = new GUI_HSplitter({
 		FlexGrow: 1,
-		Split: 0.31,
+		Split: 0.25,
 	});
 	FlexLayout.Add(HSplitterLeft);
 
 	HSplitterRight = new GUI_HSplitter({
 		Width: "100%",
 		Height: "100%",
-		Split: 0.57,
+		Split: 0.7,
 	});
 	HSplitterRight.Right.SetProps({ "Visible": false });
 	HSplitterLeft.Right.Add(HSplitterRight);
