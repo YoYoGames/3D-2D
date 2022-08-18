@@ -32,7 +32,7 @@ function GUI_Checkbox(_value, _props={}, _children=[])
 	};
 
 	static Draw = function () {
-		draw_sprite(Sprite, Value, RealX, RealY);
+		draw_sprite(Sprite, (Value * 2) + (IsMouseOver() ? 1 : 0), RealX, RealY);
 		DrawChildren();
 		return self;
 	};
