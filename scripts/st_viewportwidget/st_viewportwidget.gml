@@ -46,6 +46,8 @@ function ST_ViewportWidget(_store, _props={})
 	ExpandExportOptionsButton = new (function (_props={}) : GUI_Widget(_props) constructor {
 		BackgroundSprite = _props[$ "BackgroundSprite"] ?? ST_SprExportButton;
 
+		BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
 		SetSize(
 			_props[$ "Width"] ?? sprite_get_width(BackgroundSprite),
 			_props[$ "Height"] ?? sprite_get_height(BackgroundSprite),
@@ -54,7 +56,8 @@ function ST_ViewportWidget(_store, _props={})
 		MaxChildCount = 0;
 
 		static Draw = function () {
-			draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX, RealY, RealWidth, RealHeight);
 			return self;
 		};
 	})({
@@ -86,6 +89,19 @@ function ST_ViewportWidget(_store, _props={})
 		BackgroundColor: #212121,
 		BackgroundSprite: GUI_SprContainerBorder,
 		Visible: false,
+		OnUpdate: function (_canvas) {
+			with (_canvas)
+			{
+				if (Visible
+					&& mouse_check_button_pressed(mb_left)
+					&& !IsMouseOver()
+					&& !Parent.IsMouseOver()
+					&& !(Root && IsAncestorOf(Root.WidgetHovered)))
+				{
+					Visible = false;
+				}
+			}
+		},
 	}, [
 		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
 			new GUI_Text("Grid:"),
@@ -111,7 +127,7 @@ function ST_ViewportWidget(_store, _props={})
 	FloatingToolbar = new GUI_FloatingToolbar({
 		Draggable: true,
 		AnchorLeft: 1.0,
-		X: -/*311*/240 - ExpandExportOptionsButton.Width,
+		X: -/*311*/ /*240*/ 190 - ExpandExportOptionsButton.Width,
 		Y: 4,
 	}, [
 		new GUI_HBox({}, [
@@ -121,7 +137,7 @@ function ST_ViewportWidget(_store, _props={})
 				},
 				OnUpdate: function (_iconButton) {
 					_iconButton.SetProps({
-						BackgroundSprite: ST_OMain.GridVisible ? GUI_SprButtonLight : GUI_SprButton,
+						BackgroundSubimage: ST_OMain.GridVisible ? 2 : 0,
 					});
 				},
 			}),
@@ -130,7 +146,7 @@ function ST_ViewportWidget(_store, _props={})
 				Width: 11,
 				OnUpdate: method(self, function (_glyphButton) {
 					_glyphButton.SetProps({
-						BackgroundSprite: GridOptions.Visible ? GUI_SprButtonLight : GUI_SprButton,
+						BackgroundSubimage: GridOptions.Visible ? 2 : 0,
 					});
 				}),
 				OnClick: method(self, function (_glyphButton) {
@@ -187,15 +203,15 @@ function ST_ViewportWidget(_store, _props={})
 		//		Width: 11,
 		//	}),
 		//]),
-		new GUI_HBox({}, [
-			new GUI_GlyphButton(ST_EIcon.Move, {
-				Font: ST_FntIcons11,
-			}),
-			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
-				Font: ST_FntIcons5,
-				Width: 11,
-			}),
-		]),
+		//new GUI_HBox({}, [
+		//	new GUI_GlyphButton(ST_EIcon.Move, {
+		//		Font: ST_FntIcons11,
+		//	}),
+		//	new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+		//		Font: ST_FntIcons5,
+		//		Width: 11,
+		//	}),
+		//]),
 		//new GUI_HBox({}, [
 		//	new GUI_GlyphButton(ST_EIcon.NoSplit, {
 		//		Font: ST_FntIcons11,
