@@ -44,7 +44,7 @@ function ST_RenderPreviewWidget(_store, _props={})
 				Root.ExportOptionsPane.ExportOptions.DropdownCamera.SelectNext();
 			}),
 		}),
-		new GUI_IconButton(ST_SprCogIcon, 0, { // TODO: Add Cog glyph
+		new GUI_GlyphButton(ST_EIcon.Settings, {
 			Font: ST_FntIcons11,
 			BackgroundSprite: undefined,
 			OnClick: method(self, function () {

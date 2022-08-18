@@ -1,6 +1,8 @@
 /// @enum Enumeration of icons within the ST_FntIcons11 font.
 enum ST_EIcon
 {
+	ToolbarGridIcon = 59681,
+	Settings = 59682,
 	ArrowUp = 59648,
 	ArrowLeft = 59649,
 	ArrowDown = 59650,

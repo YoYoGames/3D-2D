@@ -131,7 +131,8 @@ function ST_ViewportWidget(_store, _props={})
 		Y: 4,
 	}, [
 		new GUI_HBox({}, [
-			new GUI_IconButton(ST_SprGridIcon, 0, { // TODO: Grid glyph
+			new GUI_GlyphButton(ST_EIcon.ToolbarGridIcon, {
+				Font: ST_FntIcons11,
 				OnClick: function () {
 					ST_OMain.GridVisible = !ST_OMain.GridVisible;
 				},
