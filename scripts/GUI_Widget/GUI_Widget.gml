@@ -197,10 +197,11 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		var _current = self;
 		while (_current != undefined)
 		{
-			if (_current.Changed)
-			{
-				break;
-			}
+			// FIXME: Does not work on all cases?!?!
+			//if (_current.Changed)
+			//{
+			//	break;
+			//}
 			_current.Changed = true;
 			_current = _current.Parent;
 		}

@@ -65,16 +65,16 @@ function ST_ViewportWidget(_store, _props={})
 		Y: 4,
 		OnClick: method(self, function (_button) {
 			Root.HSplitterRight.Right.SetProps({
-				"Visible": true,
+				Visible: true,
 			});
 			FloatingToolbar.SetProps({
-				"X": FloatingToolbar.X + _button.RealWidth,
+				X: FloatingToolbar.X + _button.RealWidth,
 			});
 			_button.SetProps({
-				"Visible": false,
+				Visible: false,
 			});
 			RenderPreview.SetProps({
-				"Visible": false,
+				Visible: false,
 			});
 		}),
 	});
@@ -98,7 +98,7 @@ function ST_ViewportWidget(_store, _props={})
 					&& !Parent.IsMouseOver()
 					&& !(Root && IsAncestorOf(Root.WidgetHovered)))
 				{
-					Visible = false;
+					SetProps({ Visible: false });
 				}
 			}
 		},
@@ -124,6 +124,59 @@ function ST_ViewportWidget(_store, _props={})
 		]),
 	]);
 
+	ExtraOptions = new GUI_Canvas({
+		Width: 200,
+		Height: 70, // TODO: "auto" sizing
+		AnchorLeft: 1.0,
+		PivotTop: 1.0,
+		AnchorTop: 1.0,
+		BackgroundColor: #212121,
+		BackgroundSprite: GUI_SprContainerBorder,
+		Visible: false,
+		OnUpdate: function (_canvas) {
+			with (_canvas)
+			{
+				if (Visible
+					&& mouse_check_button_pressed(mb_left)
+					&& !IsMouseOver()
+					&& !Parent.IsMouseOver()
+					&& !(Root && IsAncestorOf(Root.WidgetHovered)))
+				{
+					SetProps({ Visible: false });
+				}
+			}
+		},
+	}, [
+		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
+			new GUI_Text("Angle snap:"),
+			new GUI_Input(ST_OMain.Gizmo.AngleSnap, {
+				Width: "50%",
+				Min: 0.0,
+				Max: 360.0,
+				Step: 1.0,
+				OnChange: function (_value) {
+					ST_OMain.Gizmo.AngleSnap = _value;
+				},
+			}, [
+				new GUI_Checkbox(ST_OMain.Gizmo.EnableAngleSnap, {
+					AnchorLeft: 1.0,
+					PivotLeft: 1.0,
+					X: 8,
+					OnChange: function (_value) {
+						ST_OMain.Gizmo.EnableAngleSnap = _value;
+					},
+				}, [
+					new GUI_Text("Enabled", {
+						AnchorLeft: 1.0,
+						PivotLeft: 1.0,
+						X: 8,
+					}),
+				])
+			]),
+		]),
+	]);
+
+	// FIXME: DIRTY HACK!!!
 	DropdownEditType = new GUI_Dropdown({
 		DrawSelf: false,
 		Width: 60,
@@ -141,7 +194,7 @@ function ST_ViewportWidget(_store, _props={})
 	FloatingToolbar = new GUI_FloatingToolbar({
 		Draggable: true,
 		AnchorLeft: 1.0,
-		X: -/*311*/240 - ExpandExportOptionsButton.Width,
+		X: -/*311*/280 - ExpandExportOptionsButton.Width,
 		Y: 4,
 	}, [
 		new GUI_HBox({}, [
@@ -209,15 +262,22 @@ function ST_ViewportWidget(_store, _props={})
 				}
 			}),
 		}),
-		//new GUI_HBox({}, [
-		//	new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
-		//		Font: ST_FntIcons11,
-		//	}),
-		//	new GUI_GlyphButton(ST_EIcon.ArrowDown, {
-		//		Font: ST_FntIcons5,
-		//		Width: 11,
-		//	}),
-		//]),
+		new GUI_HBox({}, [
+			new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
+				Font: ST_FntIcons11,
+			}),
+			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Font: ST_FntIcons5,
+				Width: 11,
+				OnClick: method(self, function (_glyphButton) {
+					ExtraOptions.SetProps({
+						Visible: !ExtraOptions.Visible,
+					});
+				}),
+			}, [
+				ExtraOptions,
+			]),
+		]),
 		new GUI_HBox({}, [
 			new GUI_GlyphButton(ST_EIcon.Move, {
 				Font: ST_FntIcons11,

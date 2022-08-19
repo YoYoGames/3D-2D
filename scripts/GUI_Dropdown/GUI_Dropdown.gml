@@ -55,6 +55,16 @@ function GUI_Dropdown(_props={}, _options=[])
 		AddOption(_options[i++]);
 	}
 
+	static Widget_FindWidgetAt = FindWidgetAt;
+
+	static FindWidgetAt = function (_x, _y, _allowDisabled=true) {
+		if (DrawSelf)
+		{
+			return Widget_FindWidgetAt(_x, _y, _allowDisabled);
+		}
+		return undefined;
+	};
+
 	/// @func AddOption(_option)
 	///
 	/// @desc
