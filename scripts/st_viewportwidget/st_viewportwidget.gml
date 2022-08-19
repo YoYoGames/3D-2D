@@ -124,10 +124,24 @@ function ST_ViewportWidget(_store, _props={})
 		]),
 	]);
 
+	DropdownEditType = new GUI_Dropdown({
+		DrawSelf: false,
+		Width: 60,
+		AnchorLeft: 1.0,
+		AnchorTop: 1.0,
+		OnChange: function (_value) {
+			ST_OMain.Gizmo.EditType = _value;
+		},
+	}, [
+		new GUI_DropdownOption("Move", { Value: BBMOD_EEditType.Position, IsDefault: true }),
+		new GUI_DropdownOption("Rotate", { Value: BBMOD_EEditType.Rotation }),
+		new GUI_DropdownOption("Scale", { Value: BBMOD_EEditType.Scale }),
+	]);
+
 	FloatingToolbar = new GUI_FloatingToolbar({
 		Draggable: true,
 		AnchorLeft: 1.0,
-		X: -/*311*/ /*240*/ 190 - ExpandExportOptionsButton.Width,
+		X: -/*311*/240 - ExpandExportOptionsButton.Width,
 		Y: 4,
 	}, [
 		new GUI_HBox({}, [
@@ -204,15 +218,36 @@ function ST_ViewportWidget(_store, _props={})
 		//		Width: 11,
 		//	}),
 		//]),
-		//new GUI_HBox({}, [
-		//	new GUI_GlyphButton(ST_EIcon.Move, {
-		//		Font: ST_FntIcons11,
-		//	}),
-		//	new GUI_GlyphButton(ST_EIcon.ArrowDown, {
-		//		Font: ST_FntIcons5,
-		//		Width: 11,
-		//	}),
-		//]),
+		new GUI_HBox({}, [
+			new GUI_GlyphButton(ST_EIcon.Move, {
+				Font: ST_FntIcons11,
+				OnUpdate: function (_glyphButton) {
+					switch (ST_OMain.Gizmo.EditType)
+					{
+					case BBMOD_EEditType.Position:
+						_glyphButton.Glyph = ST_EIcon.Move;
+						break;
+
+					case BBMOD_EEditType.Rotation:
+						_glyphButton.Glyph = ST_EIcon.RotateBrush;
+						break;
+
+					case BBMOD_EEditType.Scale:
+						_glyphButton.Glyph = ST_EIcon.ScaleCursor;
+						break;
+					}
+				},
+			}),
+			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Font: ST_FntIcons5,
+				Width: 11,
+				OnClick: method(self, function (_glyphButton) {
+					DropdownEditType.OnClick(DropdownEditType);
+				}),
+			}, [
+				DropdownEditType,
+			]),
+		]),
 		//new GUI_HBox({}, [
 		//	new GUI_GlyphButton(ST_EIcon.NoSplit, {
 		//		Font: ST_FntIcons11,

@@ -35,6 +35,9 @@ function GUI_Dropdown(_props={}, _options=[])
 	/// @var {Asset.GMSprite}
 	SpriteCaret = _props[$ "SpriteCaret"] ?? GUI_SprDropdownCaret;
 
+	/// @var {Bool} FIXME: DIRTY HACK!!!
+	DrawSelf = _props[$ "DrawSelf"] ?? true;
+
 	OnClick = function () {
 		if (DropdownMenu.Parent)
 		{
@@ -165,23 +168,26 @@ function GUI_Dropdown(_props={}, _options=[])
 	};
 
 	static Draw = function () {
-		// Background
-		draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
-			RealX, RealY, RealWidth, RealHeight);
-		draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
-			RealX + RealWidth - RealHeight, RealY, RealHeight, RealHeight);
-		// Caret
-		var _caretWidth = sprite_get_width(SpriteCaret);
-		var _caretHeight = sprite_get_height(SpriteCaret);
-		draw_sprite(
-			SpriteCaret, 0,
-			RealX + RealWidth - _caretWidth - 8,
-			RealY + floor((RealHeight - _caretHeight) * 0.5));
-		// Text
-		GUI_DrawTextPartLeft(
-			RealX + 7,
-			RealY + floor((RealHeight - GUI_FONT_HEIGHT) * 0.5),
-			Selected ? Selected.Text : "", RealWidth - 14 - _caretWidth - 9, Color);
+		if (DrawSelf)
+		{
+			// Background
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX, RealY, RealWidth, RealHeight);
+			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+				RealX + RealWidth - RealHeight, RealY, RealHeight, RealHeight);
+			// Caret
+			var _caretWidth = sprite_get_width(SpriteCaret);
+			var _caretHeight = sprite_get_height(SpriteCaret);
+			draw_sprite(
+				SpriteCaret, 0,
+				RealX + RealWidth - _caretWidth - 8,
+				RealY + floor((RealHeight - _caretHeight) * 0.5));
+			// Text
+			GUI_DrawTextPartLeft(
+				RealX + 7,
+				RealY + floor((RealHeight - GUI_FONT_HEIGHT) * 0.5),
+				Selected ? Selected.Text : "", RealWidth - 14 - _caretWidth - 9, Color);
+		}
 		DrawChildren();
 		return self;
 	};
