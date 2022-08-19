@@ -64,7 +64,8 @@ function ST_Gizmo(_size=15)
 		//
 		if (!IsEditing || !mouse_check_button(ButtonDrag))
 		{
-			if (keyboard_check_pressed(KeyNextEditType))
+			if (KeyNextEditType != undefined
+				&& keyboard_check_pressed(KeyNextEditType))
 			{
 				if (++EditType >= BBMOD_EEditType.SIZE)
 				{
@@ -72,7 +73,8 @@ function ST_Gizmo(_size=15)
 				}
 			}
 
-			if (keyboard_check_pressed(KeyNextEditSpace))
+			if (KeyNextEditSpace != undefined
+				&& keyboard_check_pressed(KeyNextEditSpace))
 			{
 				if (++EditSpace >= BBMOD_EEditSpace.SIZE)
 				{

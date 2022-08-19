@@ -126,7 +126,7 @@ function ST_ViewportWidget(_store, _props={})
 
 	ExtraOptions = new GUI_Canvas({
 		Width: 200,
-		Height: 70, // TODO: "auto" sizing
+		Height: 124, // TODO: "auto" sizing
 		AnchorLeft: 1.0,
 		PivotTop: 1.0,
 		AnchorTop: 1.0,
@@ -172,6 +172,17 @@ function ST_ViewportWidget(_store, _props={})
 						X: 8,
 					}),
 				])
+			]),
+			new GUI_Text("Edit space:"),
+			// FIXME: Selecting value here closes the extra options widget!
+			new GUI_Dropdown({
+				Width: "100%",
+				OnChange: function (_value) {
+					ST_OMain.Gizmo.EditSpace = _value;
+				},
+			}, [
+				new GUI_DropdownOption("Global", { Value: BBMOD_EEditSpace.Global, IsDefault: true }),
+				new GUI_DropdownOption("Local", { Value: BBMOD_EEditSpace.Local }),
 			]),
 		]),
 	]);
