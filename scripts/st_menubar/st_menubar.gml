@@ -73,7 +73,7 @@ function ST_MenuBar(_props)
 			new GUI_ContextMenuOption("Preferences"),
 			new GUI_ContextMenuSeparator(),
 			new GUI_ContextMenuOption("Exit", {
-				ShortcutText: "ALFT+F4",
+				ShortcutText: "ALT+F4",
 				Action: game_end,
 			}),
 		]),
