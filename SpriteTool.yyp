@@ -231,6 +231,7 @@
     {"id":{"name":"GUI_CloseButton","path":"scripts/GUI_CloseButton/GUI_CloseButton.yy",},"order":0,},
     {"id":{"name":"__ST_CustomCamera","path":"scripts/__ST_CustomCamera/__ST_CustomCamera.yy",},"order":1,},
     {"id":{"name":"BBMOD_NotImplementedException","path":"scripts/BBMOD_NotImplementedException/BBMOD_NotImplementedException.yy",},"order":1,},
+    {"id":{"name":"ST_ViewportFloatingToolbar","path":"scripts/ST_ViewportFloatingToolbar/ST_ViewportFloatingToolbar.yy",},"order":21,},
     {"id":{"name":"GUI_SprSectionHeaderCaret","path":"sprites/GUI_SprSectionHeaderCaret/GUI_SprSectionHeaderCaret.yy",},"order":2,},
     {"id":{"name":"GUI_ShHueBox","path":"shaders/GUI_ShHueBox/GUI_ShHueBox.yy",},"order":1,},
     {"id":{"name":"GUI_HScrollbar","path":"scripts/GUI_HScrollbar/GUI_HScrollbar.yy",},"order":0,},
