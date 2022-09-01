@@ -52,6 +52,11 @@ function ST_ExportAnimatedSpriteTask(
 
 		if (_frame >= _animationDuration)
 		{
+			var _directory = filename_dir(Path);
+			if (!directory_exists(_directory))
+			{
+				directory_create(_directory);
+			}
 			sprite_save_strip(_sprite, Path);
 			sprite_delete(_sprite);
 			IsFinished = true;

@@ -29,6 +29,11 @@ function ST_ExportStaticSpriteTask(_assetRenderer, _asset, _rotation, _path, _ca
 	static Process = function () {
 		var _sprite = AssetRenderer.CreateStaticSprite(Asset, Rotation);
 		var _savePath = filename_change_ext(Path, string(Rotation) + ".png");
+		var _directory = filename_dir(_savePath);
+		if (!directory_exists(_directory))
+		{
+			directory_create(_directory);
+		}
 		sprite_save(_sprite, 0, _savePath);
 		sprite_delete(_sprite);
 		IsFinished = true;
