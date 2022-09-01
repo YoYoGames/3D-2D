@@ -33,7 +33,7 @@ function ST_MaterialThumbnailWidget(_asset, _materialIndex, _props={})
 
 	OnClick = function () {
 		global.__stMaterialSelected = MaterialIndex;
-		var _path = get_open_filename("PNG|*.png;", "");
+		var _path = get_open_filename(ST_FILTER_TEXTURE, "");
 		if (_path != "")
 		{
 			var _sprite = Asset.LoadSprite(_path);

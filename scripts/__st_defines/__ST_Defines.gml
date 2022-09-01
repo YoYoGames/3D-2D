@@ -22,4 +22,7 @@
 	+ "OBJ|*.obj"
 
 /// @macro {String}
+#macro ST_FILTER_TEXTURE "Image Files|*.png;*.jpg;*.jpeg;"
+
+/// @macro {String}
 #macro ST_FILTER_SAVE "Save Files|*.json"
