@@ -156,7 +156,6 @@
     {"id":{"name":"BBMOD_Quaternion","path":"scripts/BBMOD_Quaternion/BBMOD_Quaternion.yy",},"order":3,},
     {"id":{"name":"ST_FntOpenSans10Bold","path":"fonts/ST_FntOpenSans10Bold/ST_FntOpenSans10Bold.yy",},"order":3,},
     {"id":{"name":"GUI_Widget","path":"scripts/GUI_Widget/GUI_Widget.yy",},"order":14,},
-    {"id":{"name":"ST_SprGridIcon","path":"sprites/ST_SprGridIcon/ST_SprGridIcon.yy",},"order":9,},
     {"id":{"name":"GUI_SprColorButton","path":"sprites/GUI_SprColorButton/GUI_SprColorButton.yy",},"order":1,},
     {"id":{"name":"GUI_HSlider","path":"scripts/GUI_HSlider/GUI_HSlider.yy",},"order":0,},
     {"id":{"name":"BBMOD_ShPBR","path":"shaders/BBMOD_ShPBR/BBMOD_ShPBR.yy",},"order":3,},
