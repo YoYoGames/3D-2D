@@ -1,11 +1,3 @@
-/// @var {Array<Struct.BBMOD_DirectionalLight>}
-global.stDirectionalLights = [
-	new BBMOD_DirectionalLight(),
-];
-
-/// @var {Bool}
-global.stDirectionalLightsEnabled = true;
-
 /// @var {Bool}
 global.stMaterialHighlight = false;
 

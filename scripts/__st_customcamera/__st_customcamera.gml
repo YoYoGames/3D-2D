@@ -1,9 +1,3 @@
-/// @var {Struct.BBMOD_Vec3}
-global.stCameraPosition = new BBMOD_Vec3();
-
-/// @var {Struct.BBMOD_Vec2}
-global.stCameraDirection = new BBMOD_Vec2();
-
 /// @func ApplyCameraSetting(_value)
 ///
 /// @desc

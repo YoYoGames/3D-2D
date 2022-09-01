@@ -275,6 +275,20 @@ __LoadSave = function () {
 	// are applied in ST_ExportOptionsWidget
 };
 
+/// @var {Struct.BBMOD_Vec3}
+global.stCameraPosition = new BBMOD_Vec3();
+
+/// @var {Struct.BBMOD_Vec2}
+global.stCameraDirection = new BBMOD_Vec2();
+
+/// @var {Array<Struct.BBMOD_DirectionalLight>}
+global.stDirectionalLights = [
+	new BBMOD_DirectionalLight(),
+];
+
+/// @var {Bool}
+global.stDirectionalLightsEnabled = true;
+
 z = 0;
 
 Debug = false;
@@ -316,10 +330,10 @@ RenderPreviewFrame = 0;
 
 AmbientLightEnabled = true;
 
-AmbientLightUp = bbmod_light_ambient_get_up();
+AmbientLightUp = BBMOD_C_WHITE;
 bbmod_light_ambient_set_up(AmbientLightUp);
 
-AmbientLightDown = bbmod_light_ambient_get_down();
+AmbientLightDown = BBMOD_C_GRAY;
 bbmod_light_ambient_set_down(AmbientLightDown);
 
 TaskQueue = new ST_TaskQueue();
