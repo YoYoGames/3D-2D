@@ -61,6 +61,7 @@ function ST_ViewportWidget(_store, _props={})
 			return self;
 		};
 	})({
+		Tooltip: "Open Export Options",
 		AnchorLeft: 1.0,
 		Y: 4,
 		OnClick: method(self, function (_button) {
@@ -202,6 +203,21 @@ function ST_ViewportWidget(_store, _props={})
 		new GUI_DropdownOption("Scale", { Value: BBMOD_EEditType.Scale }),
 	]);
 
+	static CentreCamera = function () {
+		var _cameraType = CameraDropdown.Selected.Value;
+		with (Store)
+		{
+			x = 0;
+			y = 0;
+			z = 0;
+			with (Camera)
+			{
+				Zoom = 10;
+				ApplyCameraSetting(_cameraType);
+			}
+		}
+	};
+
 	FloatingToolbar = new GUI_FloatingToolbar({
 		Draggable: true,
 		AnchorLeft: 1.0,
@@ -210,6 +226,7 @@ function ST_ViewportWidget(_store, _props={})
 	}, [
 		new GUI_HBox({}, [
 			new GUI_GlyphButton(ST_EIcon.ToolbarGridIcon, {
+				Tooltip: "Toggle Grid",
 				Font: ST_FntIcons11,
 				OnClick: function () {
 					ST_OMain.GridVisible = !ST_OMain.GridVisible;
@@ -221,6 +238,7 @@ function ST_ViewportWidget(_store, _props={})
 				},
 			}),
 			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Tooltip: "Grid Options",
 				Font: ST_FntIcons5,
 				Width: 11,
 				OnUpdate: method(self, function (_glyphButton) {
@@ -239,37 +257,36 @@ function ST_ViewportWidget(_store, _props={})
 		]),
 		new GUI_Separator({ Width: 2, Height: 24, BackgroundColor: #444444 }),
 		new GUI_GlyphButton(ST_EIcon.ZoomOut, {
+			Tooltip: "Zoom Out",
 			Font: ST_FntIcons11,
 			OnClick: method(Store.Camera, function () {
 				Zoom += 1;
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ZoomReset, {
+			Tooltip: "Reset Zoom",
 			Font: ST_FntIcons11,
 			OnClick: method(Store, function () {
 				Camera.Zoom = 10;
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ZoomIn, {
+			Tooltip: "Zoom In",
 			Font: ST_FntIcons11,
 			OnClick: method(Store.Camera, function () {
 				Zoom = max(Zoom - 1, 1);
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ZoomCentreFit, {
+			Tooltip: "Centre (F)",
 			Font: ST_FntIcons11,
-			OnClick: method(self, function () {
-				var _cameraType = CameraDropdown.Selected.Value;
-				with (Store)
+			OnClick: method(self, CentreCamera),
+			OnUpdate: method(self, function () {
+				if (Store.GUI.Viewport.IsMouseOver()
+					&& Store.GUI.WidgetFocused == undefined
+					&& keyboard_check_pressed(ord("F")))
 				{
-					x = 0;
-					y = 0;
-					z = 0;
-					with (Camera)
-					{
-						Zoom = 10;
-						ApplyCameraSetting(_cameraType);
-					}
+					CentreCamera();
 				}
 			}),
 		}),
@@ -278,6 +295,7 @@ function ST_ViewportWidget(_store, _props={})
 				Font: ST_FntIcons11,
 			}),
 			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Tooltip: "Tool Options",
 				Font: ST_FntIcons5,
 				Width: 11,
 				OnClick: method(self, function (_glyphButton) {
@@ -296,20 +314,24 @@ function ST_ViewportWidget(_store, _props={})
 					switch (ST_OMain.Gizmo.EditType)
 					{
 					case BBMOD_EEditType.Position:
+						_glyphButton.Tooltip = "Move Tool";
 						_glyphButton.Glyph = ST_EIcon.Move;
 						break;
 
 					case BBMOD_EEditType.Rotation:
+						_glyphButton.Tooltip = "Rotate Tool";
 						_glyphButton.Glyph = ST_EIcon.RotateBrush;
 						break;
 
 					case BBMOD_EEditType.Scale:
+						_glyphButton.Tooltip = "Scale Tool";
 						_glyphButton.Glyph = ST_EIcon.ScaleCursor;
 						break;
 					}
 				},
 			}),
 			new GUI_GlyphButton(ST_EIcon.ArrowDown, {
+				Tooltip: "Select Tool",
 				Font: ST_FntIcons5,
 				Width: 11,
 				OnClick: method(self, function (_glyphButton) {
