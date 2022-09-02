@@ -44,6 +44,7 @@ function ST_TransformWidget(_asset, _props={})
 
 	// TODO: Implement reloading assets with new settings
 	ButtonMirrorUV = new GUI_GlyphButton(ST_EIcon.FlipBrushHorizontal, {
+		Tooltip: "Flip UVs Horizontally",
 		Font: ST_FntIcons11,
 		Minimal: true,
 		OnClick: method(self, function () {
@@ -54,6 +55,7 @@ function ST_TransformWidget(_asset, _props={})
 	_hboxFlipUV.Add(ButtonMirrorUV);
 
 	ButtonFlipUV = new GUI_GlyphButton(ST_EIcon.FlipBrushVertical, {
+		Tooltip: "Flip UVs Vertically",
 		Font: ST_FntIcons11,
 		Minimal: true,
 		OnClick: method(self, function () {
