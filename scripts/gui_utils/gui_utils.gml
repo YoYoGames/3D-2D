@@ -233,3 +233,37 @@ function GUI_ParseSize(_value, _dest, _allowAuto=true)
 	_dest[@ 0] = _sign * real(_before + _number);
 	_dest[@ 1] = (_unit == "") ? "px" : _unit;
 }
+
+/// @func GUI_RealToString(_real[, _dec])
+///
+/// @desc Converts a number into a string.
+///
+/// @param {Real} _real The number to convert.
+/// @param {Real} [_dec] Maximum number of decimal places. Default value is 4.
+///
+/// @return {String} The created string.
+function GUI_RealToString(_real, _dec=4)
+{
+	var _string = string_format(_real, -1, _dec);
+	var _stringLength = string_length(_string);
+
+	while (true)
+	{
+		var _char = string_char_at(_string, _stringLength);
+
+		if (_char == "0")
+		{
+			--_stringLength;
+			continue;
+		}
+
+		if (_char == ".")
+		{
+			--_stringLength;
+		}
+
+		break;
+	}
+
+	return string_copy(_string, 1, _stringLength);
+}

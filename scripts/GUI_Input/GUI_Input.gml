@@ -95,15 +95,15 @@ function GUI_Input(_value, _props={}, _children=[])
 		if (IsFocused())
 		{
 			EditFrom = 1;
-			EditTo = string_length(Value) + 1;
+			EditTo = string_length(InputString) + 1;
 			IndexDrawStart = 1;
 		}
 	};
 
 	OnFocus = function () {
 		BeamTimer = 1.0;
-		InputString = string(Value);
-		EditFrom = string_length(Value) + 1;
+		InputString = GUI_RealToString(Value);
+		EditFrom = string_length(InputString) + 1;
 		EditTo = EditFrom;
 		IndexDrawStart = 1;
 		keyboard_string = "";
@@ -470,7 +470,7 @@ function GUI_Input(_value, _props={}, _children=[])
 
 		////////////////////////////////////////////////////////////////////////
 		// Text
-		var _inputString = IsFocused() ? InputString : string(Value);
+		var _inputString = IsFocused() ? InputString : GUI_RealToString(Value);
 		var _string = Before + _inputString + After;
 		var _stringLength = string_length(_string);
 		IndexDrawStart = clamp(IndexDrawStart, 1, _stringLength + 1);
