@@ -12,8 +12,6 @@ function ST_AttachmentsWidget(_store, _props={})
 
 	SetWidth(_props[$ "Width"] ?? "100%");
 
-	Spacing = _props[$ "Spacing"] ?? 2;
-
 	SectionAttachmentsList = new GUI_VBox({
 		Width: "100%",
 		PaddingLeft: 19,
@@ -22,7 +20,6 @@ function ST_AttachmentsWidget(_store, _props={})
 		PaddingBottom: 12,
 		Spacing: 12,
 	});
-
 
 	ButtonAddAttachment = new GUI_Button("Add Attachment", {
 		Width: "100%",
