@@ -7,7 +7,7 @@
 /// @param {Struct} [_props]
 /// @param {Array<Struct.GUI_Tab>} [_children]
 function GUI_TabGroup(_props={}, _children=[])
-	: GUI_Widget(_props, _children) constructor
+	: GUI_Widget(_props) constructor
 {
 	/// @var {Sruct.GUI_Tab}
 	/// @readonly
@@ -17,6 +17,12 @@ function GUI_TabGroup(_props={}, _children=[])
 		_props[$ "Width"] ?? "100%",
 		_props[$ "Height"] ?? GUI_LINE_HEIGHT
 	);
+
+	var i = 0
+	repeat (array_length(_children))
+	{
+		Add(_children[i++]);
+	}
 
 	static Widget_Add = Add;
 
