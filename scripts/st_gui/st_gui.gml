@@ -89,7 +89,9 @@ function ST_GUI(_store, _props={})
 			"Progress": _taskQueue.Progress,
 			"ProgressMax": _taskQueue.ProgressMax,
 		});
-		var _animationPlayerVisible = (Store.Asset && Store.Asset.IsAnimated);
+		var _animationPlayerVisible = (Store.Asset
+			&& Store.Asset.IsAnimated
+			&& Store.Asset.AnimationIndex != undefined);
 		AnimationPlayer.SetProps({
 			"Visible": _animationPlayerVisible,
 		});

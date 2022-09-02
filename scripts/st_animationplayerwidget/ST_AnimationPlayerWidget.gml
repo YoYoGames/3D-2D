@@ -90,7 +90,7 @@ function ST_AnimationPlayerWidget(_store, _props={})
 
 				with (_input)
 				{
-					if (_asset && _asset.IsAnimated)
+					if (_asset && _asset.IsAnimated && _asset.AnimationIndex != undefined)
 					{
 						var _animationPlayer = _asset.AnimationPlayer;
 						var _animation = _animationPlayer.Animation;
@@ -124,11 +124,16 @@ function ST_AnimationPlayerWidget(_store, _props={})
 		new GUI_Text("1", {
 			OnUpdate: method(self, function (_text) {
 				var _asset = Store.Asset;
-				if (_asset && _asset.IsAnimated)
+
+				if (_asset && _asset.IsAnimated && _asset.AnimationIndex != undefined)
 				{
 					var _animationPlayer = _asset.AnimationPlayer;
 					var _animation = _animationPlayer.Animation;
-					_text.Text = string(_animation.Duration - 1);
+
+					if (_animation != undefined)
+					{
+						_text.Text = string(_animation.Duration - 1);
+					}
 				}
 				else
 				{

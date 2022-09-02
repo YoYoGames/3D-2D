@@ -23,7 +23,7 @@ if (Asset
 		}
 	}
 
-	repeat (4) // TODO: Make configurable
+	repeat (min(_animationCount, 4)) // TODO: Make configurable
 	{
 		var i = RenderPreviewAnimation;
 		var j = RenderPreviewFrame;
