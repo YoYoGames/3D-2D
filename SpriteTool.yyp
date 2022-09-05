@@ -351,6 +351,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"libBBMOD.dylib","CopyToMask":2,"filePath":"datafiles/Data/BBMOD",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.800.0.204",
+    "IDEVersion": "2022.800.0.205",
   },
 }

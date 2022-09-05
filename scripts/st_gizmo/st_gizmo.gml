@@ -254,6 +254,7 @@ function ST_Gizmo(_size=15)
 			var _planeNormal = ((EditAxis == BBMOD_EEditAxis.X) ? _forwardGizmo
 				: ((EditAxis == BBMOD_EEditAxis.Y) ? _rightGizmo
 				: _upGizmo));
+
 			var _mouseWorld = intersect_ray_plane(
 				Camera.Position,
 				Camera.screen_point_to_vec3(new BBMOD_Vec2(_mouseX, _mouseY), Renderer),
@@ -265,30 +266,24 @@ function ST_Gizmo(_size=15)
 				MouseOffset = _mouseWorld;
 			}
 
-			var _mul = (keyboard_check(KeyEditFaster) ? 2.0
-				: (keyboard_check(KeyEditSlower) ? 0.1
-				: 1.0));
 			var _v1 = MouseOffset.Sub(Position);
 			var _v2 = _mouseWorld.Sub(Position);
-			var _angle = darctan2(_v2.Cross(_v1).Dot(_planeNormal), _v1.Dot(_v2)) * _mul;
+			var _angle = darctan2(_v2.Cross(_v1).Dot(_planeNormal), _v1.Dot(_v2));
 
 			switch (EditAxis)
 			{
 			case BBMOD_EEditAxis.X:
-				RotateBy.X += _angle;
+				RotateBy.X = _angle;
 				break;
 
 			case BBMOD_EEditAxis.Y:
-				RotateBy.Y += _angle;
+				RotateBy.Y = _angle;
 				break;
 
 			case BBMOD_EEditAxis.Z:
-				RotateBy.Z += _angle;
+				RotateBy.Z = _angle;
 				break;
 			}
-
-			window_mouse_set(MouseLockAt.X, MouseLockAt.Y);
-			window_set_cursor(cr_none);
 			break;
 
 		case BBMOD_EEditType.Scale:
