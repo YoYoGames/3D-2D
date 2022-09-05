@@ -294,46 +294,43 @@ function ST_Gizmo(_size=15)
 				Position,
 				_planeNormal);
 
-			if (!MouseOffset)
+			if (MouseOffset)
 			{
-				MouseOffset = _mouseWorld;
-			}
+				var _mul = (keyboard_check(KeyEditFaster) ? 5.0
+					: (keyboard_check(KeyEditSlower) ? 0.1
+					: 1.0));
 
-			var _mul = (keyboard_check(KeyEditFaster) ? 5.0
-				: (keyboard_check(KeyEditSlower) ? 0.1
-				: 1.0));
+				var _diff = _mouseWorld.Sub(MouseOffset).Scale(_mul);
 
-			var _diff = _mouseWorld.Sub(MouseOffset).Scale(_mul);
-
-			if (EditAxis == BBMOD_EEditAxis.All)
-			{
-				var _diffX = _diff.Mul(_forwardGizmo.Abs()).Dot(_forwardGizmo);
-				var _diffY = _diff.Mul(_rightGizmo.Abs()).Dot(_rightGizmo);
-				var _scaleBy = (abs(_diffX) > abs(_diffY)) ? _diffX : _diffY;
-				ScaleBy.X += _scaleBy;
-				ScaleBy.Y += _scaleBy;
-				ScaleBy.Z += _scaleBy;
-			}
-			else
-			{
-				if (EditAxis & BBMOD_EEditAxis.X)
+				if (EditAxis == BBMOD_EEditAxis.All)
 				{
-					ScaleBy.X += _diff.Mul(_forwardGizmo.Abs()).Dot(_forwardGizmo);
+					var _diffX = _diff.Mul(_forwardGizmo.Abs()).Dot(_forwardGizmo);
+					var _diffY = _diff.Mul(_rightGizmo.Abs()).Dot(_rightGizmo);
+					var _scaleBy = (abs(_diffX) > abs(_diffY)) ? _diffX : _diffY;
+					ScaleBy.X += _scaleBy;
+					ScaleBy.Y += _scaleBy;
+					ScaleBy.Z += _scaleBy;
 				}
-
-				if (EditAxis & BBMOD_EEditAxis.Y)
+				else
 				{
-					ScaleBy.Y += _diff.Mul(_rightGizmo.Abs()).Dot(_rightGizmo);
-				}
+					if (EditAxis & BBMOD_EEditAxis.X)
+					{
+						ScaleBy.X += _diff.Mul(_forwardGizmo.Abs()).Dot(_forwardGizmo);
+					}
 
-				if (EditAxis & BBMOD_EEditAxis.Z)
-				{
-					ScaleBy.Z += _diff.Mul(_upGizmo.Abs()).Dot(_upGizmo);
+					if (EditAxis & BBMOD_EEditAxis.Y)
+					{
+						ScaleBy.Y += _diff.Mul(_rightGizmo.Abs()).Dot(_rightGizmo);
+					}
+
+					if (EditAxis & BBMOD_EEditAxis.Z)
+					{
+						ScaleBy.Z += _diff.Mul(_upGizmo.Abs()).Dot(_upGizmo);
+					}
 				}
 			}
 
-			window_mouse_set(MouseLockAt.X, MouseLockAt.Y);
-			window_set_cursor(cr_none);
+			MouseOffset = _mouseWorld;
 			break;
 		}
 
