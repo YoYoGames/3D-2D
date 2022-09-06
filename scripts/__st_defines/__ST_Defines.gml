@@ -5,7 +5,7 @@
 #macro ST_VERSION_MINOR 1
 
 /// @macro {Real}
-#macro ST_VERSION_PATCH 3
+#macro ST_VERSION_PATCH 4
 
 /// @macro {String}
 #macro ST_VERSION_STRING \
