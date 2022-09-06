@@ -196,56 +196,118 @@ function ST_Gizmo(_size=15)
 				PositionBackup = Position.Clone();
 			}
 
-			var _planeNormal = ((EditAxis == BBMOD_EEditAxis.Z) ? _forwardGizmo
-				: ((EditAxis == BBMOD_EEditAxis.All) ? BBMOD_VEC3_UP
-				: _upGizmo));
+			var _planeNormal;
+			switch (EditAxis)
+			{
+			case BBMOD_EEditAxis.X:
+				_planeNormal = _rightGizmo;
+				break;
+
+			case BBMOD_EEditAxis.Y:
+			case BBMOD_EEditAxis.Z:
+				_planeNormal = _forwardGizmo;
+				break;
+
+			case BBMOD_EEditAxis.All:
+				_planeNormal = BBMOD_VEC3_UP;
+				break;
+			}
+
 			var _mouseWorld = intersect_ray_plane(
 				Camera.Position,
 				Camera.screen_point_to_vec3(new BBMOD_Vec2(_mouseX, _mouseY), Renderer),
 				PositionBackup,
 				_planeNormal);
 
-			if (!MouseOffset)
-			{
-				MouseOffset = Position.Sub(_mouseWorld);
-			}
+			var _snap = (EnableGridSnap && !keyboard_check(KeyIgnoreSnap));
 
-			var _diff = _mouseWorld.Add(MouseOffset).Sub(Position);
-
-			if (EditAxis & BBMOD_EEditAxis.X)
+			if (EditAxis == BBMOD_EEditAxis.All)
 			{
-				Position = Position.Add(_forwardGizmo.Scale(_diff.Dot(_forwardGizmo)));
-			}
-
-			if (EditAxis & BBMOD_EEditAxis.Y)
-			{
-				Position = Position.Add(_rightGizmo.Scale(_diff.Dot(_rightGizmo)));
-			}
-
-			if (EditAxis & BBMOD_EEditAxis.Z)
-			{
-				Position = Position.Add(_upGizmo.Scale(_diff.Dot(_upGizmo)));
-			}
-
-			if (EnableGridSnap
-				&& !keyboard_check(KeyIgnoreSnap))
-			{
-				if ((EditAxis & BBMOD_EEditAxis.X)
-					&& GridSize.X != 0.0)
+				if (!MouseOffset)
 				{
-					Position.X = floor(Position.X / GridSize.X) * GridSize.X;
+					MouseOffset = _mouseWorld.Sub(Position);
 				}
 
-				if ((EditAxis & BBMOD_EEditAxis.Y)
-					&& GridSize.Y != 0.0)
+				Position = _mouseWorld.Add(MouseOffset);
+			}
+			else
+			{
+				if (!MouseOffset)
 				{
-					Position.Y = floor(Position.Y / GridSize.Y) * GridSize.Y;
+					MouseOffset = _mouseWorld;
 				}
 
-				if ((EditAxis & BBMOD_EEditAxis.Z && EditAxis != BBMOD_EEditAxis.All)
-					&& GridSize.Z != 0.0)
+				var _diff = _mouseWorld.Sub(MouseOffset);
+
+				if (EditAxis & BBMOD_EEditAxis.X)
 				{
-					Position.Z = floor(Position.Z / GridSize.Z) * GridSize.Z;
+					var _moveX = _forwardGizmo.Scale(_diff.Dot(_forwardGizmo));
+					if (_snap
+						&& EditSpace == BBMOD_EEditSpace.Local
+						&& GridSize.X != 0.0)
+					{
+						var _moveXLength = _moveX.Length();
+						if (_moveXLength > 0.0)
+						{
+							var _s = round(_moveXLength / GridSize.X) * GridSize.X;
+							_moveX = _moveX.Normalize().Scale(_s);
+						}
+					}
+					Position = PositionBackup.Add(_moveX);
+				}
+
+				if (EditAxis & BBMOD_EEditAxis.Y)
+				{
+					var _moveY = _rightGizmo.Scale(_diff.Dot(_rightGizmo));
+					if (_snap
+						&& EditSpace == BBMOD_EEditSpace.Local
+						&& GridSize.Y != 0.0)
+					{
+						var _moveYLength = _moveY.Length();
+						if (_moveYLength > 0.0)
+						{
+							var _s = round(_moveYLength / GridSize.Y) * GridSize.Y;
+							_moveY = _moveY.Normalize().Scale(_s);
+						}
+					}
+					Position = PositionBackup.Add(_moveY);
+				}
+
+				if (EditAxis & BBMOD_EEditAxis.Z)
+				{
+					var _moveZ = _upGizmo.Scale(_diff.Dot(_upGizmo));
+					if (_snap
+						&& EditSpace == BBMOD_EEditSpace.Local
+						&& GridSize.Z != 0.0)
+					{
+						var _moveZLength = _moveZ.Length();
+						if (_moveZLength > 0.0)
+						{
+							var _s = round(_moveZLength / GridSize.Z) * GridSize.Z;
+							_moveZ = _moveZ.Normalize().Scale(_s);
+						}
+					}
+					Position = PositionBackup.Add(_moveZ);
+				}
+			}
+
+			if (_snap
+				&& (EditSpace == BBMOD_EEditSpace.Global
+				|| EditAxis == BBMOD_EEditAxis.All))
+			{
+				if (GridSize.X != 0.0)
+				{
+					Position.X = round(Position.X / GridSize.X) * GridSize.X;
+				}
+
+				if (GridSize.Y != 0.0)
+				{
+					Position.Y = round(Position.Y / GridSize.Y) * GridSize.Y;
+				}
+
+				if (GridSize.Z != 0.0)
+				{
+					Position.Z = round(Position.Z / GridSize.Z) * GridSize.Z;
 				}
 			}
 			break;
