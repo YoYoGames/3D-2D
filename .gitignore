@@ -1,2 +1,4 @@
 fonts/*/*.old.png
 fonts/*/*.old.yy
+
+.DS_Store

@@ -4,7 +4,7 @@
 ///
 /// @param {String} [_tempDir] Path to the temporary directory. Default value is
 /// `<temp_directory>\SpriteTool`.
-function ST_AssetImporter(_tempDir=temp_directory + @"\SpriteTool") constructor
+function ST_AssetImporter(_tempDir=game_save_id + "Temp") constructor
 {
 	/// @var {Struct.BBMOD_DLL}
 	/// @readonly
@@ -43,7 +43,7 @@ function ST_AssetImporter(_tempDir=temp_directory + @"\SpriteTool") constructor
 		directory_create(TempDir);
 
 		// Convert and load model - throws a BBMOD_Exception if fails!
-		var _pathModel = TempDir + @"\temp.bbmod";
+		var _pathModel = TempDir + "/temp.bbmod";
 		Dll.set_sampling_rate(30);
 		Dll.set_flip_uv_horizontally(false);
 		Dll.set_flip_uv_vertically(false);
@@ -63,13 +63,13 @@ function ST_AssetImporter(_tempDir=temp_directory + @"\SpriteTool") constructor
 		// Load animations
 		var _animationNames = [];
 		var _animations = [];
-		var _fileName = file_find_first(TempDir + @"\*.bbanim", 0);
+		var _fileName = file_find_first(TempDir + "/*.bbanim", 0);
 		while (_fileName != "")
 		{
 			var _animationName = string_delete(_fileName, 1, 5); // Delete "temp_"
 			_animationName = string_copy(_animationName, 1, string_length(_animationName) - 7); // Delete ".bbanim"
 			array_push(_animationNames, _animationName);
-			var _animation = new BBMOD_Animation(TempDir + @"\" + _fileName);
+			var _animation = new BBMOD_Animation(TempDir + "/" + _fileName);
 			_animation.TransitionIn = 0.0;
 			_animation.TransitionOut = 0.0;
 			array_push(_animations, _animation);
@@ -106,7 +106,7 @@ function ST_AssetImporter(_tempDir=temp_directory + @"\SpriteTool") constructor
 		directory_create(TempDir);
 
 		// Convert and load model - throws a BBMOD_Exception if fails!
-		var _pathModel = TempDir + @"\temp.bbmod";
+		var _pathModel = TempDir + "/temp.bbmod";
 		Dll.set_disable_bone(!_asset.IsAnimated);
 		Dll.set_sampling_rate(_asset.SamplingRate);
 		Dll.set_flip_uv_horizontally(_asset.FlipUVHorizontally);
@@ -117,13 +117,13 @@ function ST_AssetImporter(_tempDir=temp_directory + @"\SpriteTool") constructor
 		// Load animations
 		var _animationNames = [];
 		var _animations = [];
-		var _fileName = file_find_first(TempDir + @"\*.bbanim", 0);
+		var _fileName = file_find_first(TempDir + "/*.bbanim", 0);
 		while (_fileName != "")
 		{
 			var _animationName = string_delete(_fileName, 1, 5); // Delete "temp_"
 			_animationName = string_copy(_animationName, 1, string_length(_animationName) - 7); // Delete ".bbanim"
 			array_push(_animationNames, _animationName);
-			var _animation = new BBMOD_Animation(TempDir + @"\" + _fileName);
+			var _animation = new BBMOD_Animation(TempDir + "/" + _fileName);
 			_animation.TransitionIn = 0.0;
 			_animation.TransitionOut = 0.0;
 			array_push(_animations, _animation);
