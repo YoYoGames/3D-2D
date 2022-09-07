@@ -102,7 +102,7 @@ function GUI_Input(_value, _props={}, _children=[])
 
 	OnFocus = function () {
 		BeamTimer = 1.0;
-		InputString = GUI_RealToString(Value);
+		InputString = is_real(Value) ? GUI_RealToString(Value) : Value;
 		EditFrom = string_length(InputString) + 1;
 		EditTo = EditFrom;
 		IndexDrawStart = 1;
@@ -470,7 +470,9 @@ function GUI_Input(_value, _props={}, _children=[])
 
 		////////////////////////////////////////////////////////////////////////
 		// Text
-		var _inputString = IsFocused() ? InputString : GUI_RealToString(Value);
+		var _inputString = IsFocused()
+			? InputString
+			: (is_real(Value) ? GUI_RealToString(Value) : Value);
 		var _string = Before + _inputString + After;
 		var _stringLength = string_length(_string);
 		IndexDrawStart = clamp(IndexDrawStart, 1, _stringLength + 1);
@@ -540,7 +542,7 @@ function GUI_Input(_value, _props={}, _children=[])
 				var _stringLength = string_length(_inputString);
 				var _charWidth = string_width(string_char_at(_inputString, _index));
 
-				while (window_mouse_get_x() > _beamX)
+				while (device_mouse_x_to_gui(0) > _beamX)
 				{
 					if (mouse_check_button_pressed(mb_left))
 					{
@@ -555,7 +557,7 @@ function GUI_Input(_value, _props={}, _children=[])
 					_charWidth = string_width(string_char_at(_inputString, _index));
 				}
 
-				while (window_mouse_get_x() < _beamX)
+				while (device_mouse_x_to_gui(0) < _beamX)
 				{
 					if (mouse_check_button_pressed(mb_left))
 					{

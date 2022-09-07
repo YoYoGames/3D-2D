@@ -247,7 +247,7 @@ function GUI_RealToString(_real, _dec=4)
 	var _string = string_format(_real, -1, _dec);
 	var _stringLength = string_length(_string);
 
-	while (true)
+	repeat (_stringLength)
 	{
 		var _char = string_char_at(_string, _stringLength);
 
