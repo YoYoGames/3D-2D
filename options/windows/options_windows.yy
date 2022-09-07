@@ -4,7 +4,7 @@
   "name": "Windows",
   "option_windows_display_name": "SpriteTool",
   "option_windows_executable_name": "${project_name}.exe",
-  "option_windows_version": "0.1.4.0",
+  "option_windows_version": "0.1.4.1",
   "option_windows_company_info": "YoYo Games Ltd",
   "option_windows_product_info": "Created with GameMaker",
   "option_windows_copyright_info": "",
