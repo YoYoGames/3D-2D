@@ -34,37 +34,54 @@ uniform vec4 bbmod_InstanceID;
 ////////////////////////////////////////////////////////////////////////////////
 // Material
 
+// Material index
+uniform float bbmod_MaterialIndex;
+
 // RGB: Base color, A: Opacity
 #define bbmod_BaseOpacity gm_BaseTexture
+
+#if !defined(X_OUTPUT_DEPTH) && !defined(X_ID)
 // RGBA
 uniform vec4 bbmod_BaseOpacityMultiplier;
-#if defined(X_PBR)
-// RGB: Tangent space normal, A: Roughness
-uniform sampler2D bbmod_NormalRoughness;
-// R: Metallic, G: Ambient occlusion
-uniform sampler2D bbmod_MetallicAO;
+#endif
+
+// If 1.0 then the material uses roughness
+uniform float bbmod_IsRoughness;
+// If 1.0 then the material uses metallic workflow
+uniform float bbmod_IsMetallic;
+// RGB: Tangent-space normal, A: Smoothness or roughness
+uniform sampler2D bbmod_NormalW;
+// RGB: specular color / R: Metallic, G: ambient occlusion
+uniform sampler2D bbmod_Material;
+
+#if !defined(X_TERRAIN)
+#if !defined(X_LIGHTMAP)
 // RGB: Subsurface color, A: Intensity
 uniform sampler2D bbmod_Subsurface;
+#endif
 // RGBA: RGBM encoded emissive color
 uniform sampler2D bbmod_Emissive;
-#else // X_PBR
+#endif
+
+#if defined(X_LIGHTMAP)
+// RGBA: RGBM encoded lightmap
+uniform sampler2D bbmod_Lightmap;
+#endif
+
 #if defined(X_2D)
 // UVs of the BaseOpacity texture
 uniform vec4 bbmod_BaseOpacityUV;
-// UVs of the NormalSmoothness texture
-uniform vec4 bbmod_NormalSmoothnessUV;
-// UVs of the SpecularColor texture
-uniform vec4 bbmod_SpecularColorUV;
+// UVs of the NormalW texture
+uniform vec4 bbmod_NormalWUV;
+// UVs of the Material texture
+uniform vec4 bbmod_MaterialUV;
 #endif // X_2D
-// RGB: Tangent space normal, A: Smoothness
-uniform sampler2D bbmod_NormalSmoothness;
-// RGB: Specular color
-uniform sampler2D bbmod_SpecularColor;
-#endif // !X_PBR
+
 // Pixels with alpha less than this value will be discarded
 uniform float bbmod_AlphaTest;
-// Material index
-uniform float bbmod_MaterialIndex;
+
+////////////////////////////////////////////////////////////////////////////////
+// Material highlight
 
 // Instance to highlight
 uniform vec4 u_vHighlightInstance;
@@ -165,11 +182,7 @@ uniform float bbmod_ShadowmapBias;
 //
 // Includes
 //
-#if defined(X_PBR)
 #pragma include("MetallicMaterial.xsh")
-#else
-#pragma include("SpecularMaterial.xsh")
-#endif
 
 #if defined(X_OUTPUT_DEPTH)
 #pragma include("DepthShader.xsh")
@@ -191,23 +204,24 @@ uniform float bbmod_ShadowmapBias;
 //
 void main()
 {
-#if defined(X_PBR)
 	Material material = UnpackMaterial(
 		bbmod_BaseOpacity,
-		bbmod_NormalRoughness,
-		bbmod_MetallicAO,
+		bbmod_IsRoughness,
+		bbmod_NormalW,
+		bbmod_IsMetallic,
+		bbmod_Material,
+#if !defined(X_TERRAIN)
+#if !defined(X_LIGHTMAP)
 		bbmod_Subsurface,
-		bbmod_Emissive,
-		v_mTBN,
-		v_vTexCoord);
-#else
-	Material material = UnpackMaterial(
-		bbmod_BaseOpacity,
-		bbmod_NormalSmoothness,
-		bbmod_SpecularColor,
-		v_mTBN,
-		v_vTexCoord);
 #endif
+		bbmod_Emissive,
+#endif
+#if defined(X_LIGHTMAP)
+		bbmod_Lightmap,
+		v_vTexCoord2,
+#endif
+		v_mTBN,
+		v_vTexCoord);
 
 #if defined(X_2D) || defined(X_PARTICLES)
 	material.Base *= v_vColor.rgb;

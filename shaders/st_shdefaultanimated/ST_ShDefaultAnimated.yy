@@ -4,7 +4,7 @@
   "name": "ST_ShDefaultAnimated",
   "type": 1,
   "parent": {
-    "name": "Shaders",
-    "path": "folders/SpriteTool/Shaders.yy",
+    "name": "SpriteTool",
+    "path": "SpriteTool.yyp",
   },
 }
