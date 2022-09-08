@@ -226,6 +226,7 @@
     {"id":{"name":"BBMOD_Light","path":"scripts/BBMOD_Light/BBMOD_Light.yy",},"order":2,},
     {"id":{"name":"BBMOD_Vertex","path":"scripts/BBMOD_Vertex/BBMOD_Vertex.yy",},"order":3,},
     {"id":{"name":"GUI_Box","path":"scripts/GUI_Box/GUI_Box.yy",},"order":0,},
+    {"id":{"name":"GUI_ShowQuestionAsync","path":"scripts/GUI_ShowQuestionAsync/GUI_ShowQuestionAsync.yy",},"order":54,},
     {"id":{"name":"bbmod_set_instance_id","path":"scripts/bbmod_set_instance_id/bbmod_set_instance_id.yy",},"order":9,},
     {"id":{"name":"ST_AnimationThumbnailWidget","path":"scripts/ST_AnimationThumbnailWidget/ST_AnimationThumbnailWidget.yy",},"order":19,},
     {"id":{"name":"GUI_MenuBar","path":"scripts/GUI_MenuBar/GUI_MenuBar.yy",},"order":0,},

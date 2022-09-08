@@ -15,10 +15,9 @@ function ST_MenuBar(_props)
 			new GUI_ContextMenuOption("New", {
 				ShortcutText: "CTRL+N",
 				Action: function () {
-					if (show_question("Are you sure you want to create a new empty project? Any unsaved progress will be lost!"))
-					{
-						ST_OMain.NewProject();
-					}
+					GUI_ShowQuestionAsync(
+						"Are you sure you want to create a new empty project? Any unsaved progress will be lost!",
+						method(ST_OMain, ST_OMain.NewProject));
 				},
 			}),
 			new GUI_ContextMenuOption("Open", {
@@ -26,14 +25,23 @@ function ST_MenuBar(_props)
 				Action: function () {
 					with (ST_OMain)
 					{
-						if (!Asset
-							|| show_question("Are you sure you want to open a different project? Any unsaved progress will be lost!"))
-						{
+						var _callback = method(self, function () {
 							var _path = get_open_filename(ST_FILTER_SAVE, "");
 							if (_path != "")
 							{
 								LoadProject(_path);
 							}
+						});
+
+						if (!Asset)
+						{
+							_callback();
+						}
+						else
+						{
+							GUI_ShowQuestionAsync(
+								"Are you sure you want to open a different project? Any unsaved progress will be lost!",
+								_callback);
 						}
 					}
 				},

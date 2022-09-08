@@ -123,10 +123,9 @@ if (keyboard_check(vk_control))
 {
 	if (keyboard_check_pressed(ord("N")))
 	{
-		if (show_question("Are you sure you want to create a new empty project? Any unsaved progress will be lost!"))
-		{
-			NewProject();
-		}
+		GUI_ShowQuestionAsync(
+			"Are you sure you want to create a new empty project? Any unsaved progress will be lost!",
+			method(self, NewProject));
 	}
 	else if (keyboard_check_pressed(ord("S")))
 	{
@@ -140,14 +139,23 @@ if (keyboard_check(vk_control))
 	}
 	else if (keyboard_check_pressed(ord("O")))
 	{
-		if (!Asset
-			|| show_question("Are you sure you want to open a different project? Any unsaved progress will be lost!"))
-		{
+		var _callback = method(self, function () {
 			var _path = get_open_filename(ST_FILTER_SAVE, "");
 			if (_path != "")
 			{
 				LoadProject(_path);
 			}
+		});
+
+		if (!Asset)
+		{
+			_callback();
+		}
+		else
+		{
+			GUI_ShowQuestionAsync(
+				"Are you sure you want to open a different project? Any unsaved progress will be lost!",
+				_callback);
 		}
 	}
 }
