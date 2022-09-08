@@ -7,6 +7,20 @@
 /// @macro {String}
 #macro __ST_PATH_PARENT ".."
 
+/// @func ST_PathNormalize(_path)
+///
+/// @desc
+///
+/// @param {String} _path
+///
+/// @return {String}
+function ST_PathNormalize(_path)
+{
+	gml_pragma("forceinline");
+	return string_replace_all(_path,
+		(os_type == os_windows) ? "/" : "\\", __ST_PATH_SEPARATOR);
+}
+
 /// @func ST_PathIsRelative(_path)
 ///
 /// @desc Checks if a path is relative.
@@ -17,6 +31,7 @@
 function ST_PathIsRelative(_path)
 {
 	gml_pragma("forceinline");
+	_path = ST_PathNormalize(_path);
 	return (ST_StringStartsWith(_path, __ST_PATH_CURRENT + __ST_PATH_SEPARATOR)
 		|| ST_StringStartsWith(_path, __ST_PATH_PARENT + __ST_PATH_SEPARATOR));
 }
@@ -50,6 +65,8 @@ function ST_PathIsAbsolute(_path)
 /// returned!
 function ST_PathGetRelative(_path, _start=working_directory)
 {
+	_path = ST_PathNormalize(_path);
+
 	var _pathExploded = [];
 	var _pathExplodedSize = ST_StringExplode(_path, __ST_PATH_SEPARATOR, _pathExploded);
 
@@ -110,6 +127,8 @@ function ST_PathGetRelative(_path, _start=working_directory)
 /// @note If the path is already absolute then an unmodified path is returned.
 function ST_PathGetAbsolute(_path, _start=working_directory)
 {
+	_path = ST_PathNormalize(_path);
+
 	if (ST_PathIsAbsolute(_path))
 	{
 		return _path;
