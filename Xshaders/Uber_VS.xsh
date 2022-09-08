@@ -177,6 +177,7 @@ void main()
 #if !defined(X_UNLIT)
 	////////////////////////////////////////////////////////////////////////////
 	// Point lights
+	v_vLight = vec3(0.0);
 	vec3 N = normalize(v_mTBN * vec3(0.0, 0.0, 1.0));
 
 	for (int i = 0; i < MAX_POINT_LIGHTS; ++i)
