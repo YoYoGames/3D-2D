@@ -1,9 +1,12 @@
 {
+  "resourceType": "GMExtension",
+  "resourceVersion": "1.2",
+  "name": "BBMOD_CameraHTML5",
   "optionsFile": "options.json",
   "options": [],
   "exportToGame": true,
   "supportedTargets": -1,
-  "extensionVersion": "3.7.2",
+  "extensionVersion": "3.10.0",
   "packageId": "",
   "productId": "",
   "author": "",
@@ -16,13 +19,13 @@
   "androidProps": false,
   "installdir": "",
   "files": [
-    {"filename":"BBMOD_CameraHTML5.js","origname":"","init":"bbmod_html5_init","final":"","kind":5,"uncompress":false,"functions":[
-        {"externalName":"bbmod_html5_pointer_lock","kind":5,"help":"bbmod_html5_pointer_lock()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"bbmod_html5_pointer_lock","resourceType":"GMExtensionFunction",},
-        {"externalName":"bbmod_html5_init","kind":5,"help":"bbmod_html5_init()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"bbmod_html5_init","resourceType":"GMExtensionFunction",},
-        {"externalName":"bbmod_html5_pointer_is_locked","kind":5,"help":"bbmod_html5_pointer_is_locked()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"bbmod_html5_pointer_is_locked","resourceType":"GMExtensionFunction",},
-        {"externalName":"bbmod_html5_pointer_get_movement_x","kind":5,"help":"bbmod_html5_pointer_get_movement_x()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"bbmod_html5_pointer_get_movement_x","resourceType":"GMExtensionFunction",},
-        {"externalName":"bbmod_html5_pointer_get_movement_y","kind":5,"help":"bbmod_html5_pointer_get_movement_y()","hidden":false,"returnType":2,"argCount":0,"args":[],"resourceVersion":"1.0","name":"bbmod_html5_pointer_get_movement_y","resourceType":"GMExtensionFunction",},
-      ],"constants":[],"ProxyFiles":[],"copyToTargets":32,"order":[],"resourceVersion":"1.0","name":"","resourceType":"GMExtensionFile",},
+    {"resourceType":"GMExtensionFile","resourceVersion":"1.0","name":"","filename":"BBMOD_CameraHTML5.js","origname":"","init":"bbmod_html5_init","final":"","kind":5,"uncompress":false,"functions":[
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"bbmod_html5_pointer_lock","externalName":"bbmod_html5_pointer_lock","kind":5,"help":"bbmod_html5_pointer_lock()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"bbmod_html5_init","externalName":"bbmod_html5_init","kind":5,"help":"bbmod_html5_init()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"bbmod_html5_pointer_is_locked","externalName":"bbmod_html5_pointer_is_locked","kind":5,"help":"bbmod_html5_pointer_is_locked()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"bbmod_html5_pointer_get_movement_x","externalName":"bbmod_html5_pointer_get_movement_x","kind":5,"help":"bbmod_html5_pointer_get_movement_x()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+        {"resourceType":"GMExtensionFunction","resourceVersion":"1.0","name":"bbmod_html5_pointer_get_movement_y","externalName":"bbmod_html5_pointer_get_movement_y","kind":5,"help":"bbmod_html5_pointer_get_movement_y()","hidden":false,"returnType":2,"argCount":0,"args":[],},
+      ],"constants":[],"ProxyFiles":[],"copyToTargets":32,"order":[],},
   ],
   "classname": "",
   "tvosclassname": null,
@@ -61,7 +64,4 @@
     "name": "Camera",
     "path": "folders/BBMOD/Camera.yy",
   },
-  "resourceVersion": "1.2",
-  "name": "BBMOD_CameraHTML5",
-  "resourceType": "GMExtension",
 }

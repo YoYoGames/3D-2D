@@ -8,9 +8,7 @@ function ST_AssetImporter(_tempDir=game_save_id + "Temp") constructor
 {
 	/// @var {Struct.BBMOD_DLL}
 	/// @readonly
-	Dll = new BBMOD_DLL((os_type == os_windows)
-		? "Data/BBMOD/BBMOD.dll"
-		: "Data/BBMOD/libBBMOD.dylib");
+	Dll = new BBMOD_DLL();
 
 	Dll.set_optimize_animations(2);
 	Dll.set_optimize_nodes(true);

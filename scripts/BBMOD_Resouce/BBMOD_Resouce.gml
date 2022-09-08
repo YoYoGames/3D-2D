@@ -168,7 +168,7 @@ function BBMOD_Resource()
 
 			try
 			{
-				Asset.from_buffer(_buffer);
+				Resource.from_buffer(_buffer);
 			}
 			catch (_err2)
 			{

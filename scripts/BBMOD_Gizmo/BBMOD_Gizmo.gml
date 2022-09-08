@@ -41,13 +41,13 @@ enum BBMOD_EEditAxis
 ///
 /// @extends BBMOD_Class
 ///
-/// @desc A Gizmo for transforming instances.
+/// @desc A gizmo for transforming instances.
 ///
-/// @param {Real} [_size] The size of the Gizmo. Default value is 10 units.
+/// @param {Real} [_size] The size of the gizmo. Default value is 10 units.
 ///
 /// @note This requries synchronnous loading of models, therefore it cannot
 /// be used on platforms like HTML5, which require asynchronnous loading.
-/// You also **must** use {@link BBMOD_Camera} for the Gizmo to work properly!
+/// You also **must** use {@link BBMOD_Camera} for the gizmo to work properly!
 function BBMOD_Gizmo(_size=10.0)
 	: BBMOD_Class() constructor
 {
@@ -59,14 +59,14 @@ function BBMOD_Gizmo(_size=10.0)
 
 	/// @var {Array<Struct.BBMOD_Model>} Gizmo models for individual edit modes.
 	/// @note Please note that these are not loaded asynchronnously, therefore
-	/// the Gizmo cannot be used on platforms that require asynchronnous loading,
+	/// the gizmo cannot be used on platforms that require asynchronnous loading,
 	/// like HTML5!
 	/// @see BBMOD_EEditType
 	/// @readonly
 	static Models = undefined;
 
 	/// @var {Array<Struct.BBMOD_Material>} Materials used when mouse-picking
-	/// the Gizmo.
+	/// the gizmo.
 	static MaterialsSelect = undefined;
 
 	if (Models == undefined)
@@ -83,7 +83,7 @@ function BBMOD_Gizmo(_size=10.0)
 
 		var _modelMove = new BBMOD_Model("Data/BBMOD/Models/GizmoMove.bbmod")
 			.freeze();
-		// TODO: Fix Gizmo model
+		// TODO: Fix gizmo model
 		_modelMove.RootNode.Transform = new BBMOD_DualQuaternion();
 		_modelMove.Materials[0] = _material;
 
@@ -102,7 +102,7 @@ function BBMOD_Gizmo(_size=10.0)
 		];
 	}
 
-	/// @var {Bool} If `true` then the Gizmo is editing selected instances.
+	/// @var {Bool} If `true` then the gizmo is editing selected instances.
 	IsEditing = false;
 
 	/// @var {Struct.BBMOD_Vec2} Screen-space coordinates to lock the mouse
@@ -110,7 +110,7 @@ function BBMOD_Gizmo(_size=10.0)
 	/// @private
 	MouseLockAt = undefined;
 
-	/// @var {Struct.BBMOD_Vec3} World-space offset from the mouse to the Gizmo
+	/// @var {Struct.BBMOD_Vec3} World-space offset from the mouse to the gizmo
 	/// or `undefined`.
 	/// @private
 	MouseOffset = undefined;
@@ -131,7 +131,7 @@ function BBMOD_Gizmo(_size=10.0)
 	/// Use values from {@link BBMOD_EEditAxis}.
 	EditAxis = BBMOD_EEditAxis.None;
 
-	/// @var {Constant.MouseButton} The mouse button used for dragging the Gizmo.
+	/// @var {Constant.MouseButton} The mouse button used for dragging the gizmo.
 	ButtonDrag = mb_left;
 
 	/// @var {Constant.VirtualKey} The virtual key used to switch to the next
@@ -152,19 +152,19 @@ function BBMOD_Gizmo(_size=10.0)
 	/// speed of editing (e.g. rotate objects by a smaller angle).
 	KeyEditSlower = vk_control;
 
-	/// @var {Real} The size of the Gizmo. Default value is 10.
+	/// @var {Real} The size of the gizmo. Default value is 10.
 	Size = _size;
 
-	/// @var {Struct.BBMOD_Vec3} The Gizmo's position in world-space.
+	/// @var {Struct.BBMOD_Vec3} The gizmo's position in world-space.
 	/// @readonly
 	Position = new BBMOD_Vec3();
 
-	/// @var {Struct.BBMOD_Vec3} The Gizmo's position in world-space before
+	/// @var {Struct.BBMOD_Vec3} The gizmo's position in world-space before
 	/// editing started or `undefined`.
 	/// @private
 	PositionBackup = undefined;
 
-	/// @var {Struct.BBMOD_Vec3} The Gizmo's rotation in euler angles.
+	/// @var {Struct.BBMOD_Vec3} The gizmo's rotation in euler angles.
 	Rotation = new BBMOD_Vec3();
 
 	/// @var {Id.DsList<Id.Instance>} A list of selected instances.
@@ -172,7 +172,7 @@ function BBMOD_Gizmo(_size=10.0)
 	Selected = ds_list_create();
 
 	/// @var {Id.DsList<Struct>} A list of additional data required for editing
-	/// instances, e.g. their original offset from the Gizmo, rotation and scale.
+	/// instances, e.g. their original offset from the gizmo, rotation and scale.
 	/// @private
 	InstanceData = ds_list_create();
 
@@ -185,7 +185,7 @@ function BBMOD_Gizmo(_size=10.0)
 	/// @private
 	RotateBy = new BBMOD_Vec3(0.0);
 
-	/// @var {Function} A function that the Gizmo uses to check whether an instance
+	/// @var {Function} A function that the gizmo uses to check whether an instance
 	/// exists. Must take the instance as the first argument and return a bool.
 	/// Defaults a function that returns the result of `instance_exists`.
 	InstanceExists = function (_instance) {
@@ -193,7 +193,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return instance_exists(_instance);
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// position on the X axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that returns the instance's `x`
 	/// variable.
@@ -202,7 +202,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return _instance.x;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// position on the X axis. Must take the instance as the first argument and
 	/// its new position on the X axis as the second argument. Defaults to a
 	/// function that assings the new position to the instance's `x` variable.
@@ -211,7 +211,7 @@ function BBMOD_Gizmo(_size=10.0)
 		_instance.x = _x;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// position on the Y axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that returns the instance's `y`
 	/// variable.
@@ -220,7 +220,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return _instance.y;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// position on the Y axis. Must take the instance as the first argument and
 	/// its new position on the Y axis as the second argument. Defaults to a
 	/// function that assings the new position to the instance's `y` variable.
@@ -229,7 +229,7 @@ function BBMOD_Gizmo(_size=10.0)
 		_instance.y = _y;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// position on the Z axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that returns the instance's `z`
 	/// variable.
@@ -238,7 +238,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return _instance.z;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// position on the Z axis. Must take the instance as the first argument and
 	/// its new position on the Z axis as the second argument. Defaults to a
 	/// function that assings the new position to the instance's `Z` variable.
@@ -247,7 +247,7 @@ function BBMOD_Gizmo(_size=10.0)
 		_instance.z = _z;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// rotation on the X axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that always returns 0.
 	GetInstanceRotationX = function (_instance) {
@@ -255,7 +255,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return 0.0;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// rotation on the X axis. Must take the instance as the first argument and
 	/// its new rotation on the X axis as the second argument. Defaults to a
 	/// function that does not do anything.
@@ -263,7 +263,7 @@ function BBMOD_Gizmo(_size=10.0)
 		gml_pragma("forceinline");
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// rotation on the Y axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that always returns 0.
 	GetInstanceRotationY = function (_instance) {
@@ -271,7 +271,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return 0.0;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// rotation on the Y axis. Must take the instance as the first argument and
 	/// its new rotation on the Y axis as the second argument. Defaults to a
 	/// function that does not do anything.
@@ -279,7 +279,7 @@ function BBMOD_Gizmo(_size=10.0)
 		gml_pragma("forceinline");
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// rotation on the Z axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that returns the instance's
 	/// `image_angle` variable.
@@ -288,7 +288,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return _instance.image_angle;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// rotation on the Z axis. Must take the instance as the first argument and
 	/// its new rotation on the Z axis as the second argument. Defaults to a
 	/// function that assings the new rotation to the instance's `image_angle`
@@ -298,7 +298,7 @@ function BBMOD_Gizmo(_size=10.0)
 		_instance.image_angle = _z;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// scale on the X axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that returns the instance's
 	/// `image_xscale` variable.
@@ -307,7 +307,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return _instance.image_xscale;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// scale on the X axis. Must take the instance as the first argument and
 	/// its new scale on the X axis as the second argument. Defaults to a
 	/// function that assings the new scale to the instance's `image_xscale`
@@ -317,7 +317,7 @@ function BBMOD_Gizmo(_size=10.0)
 		_instance.image_xscale = _x;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// scale on the Y axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that returns the instance's
 	/// `image_yscale` variable.
@@ -326,7 +326,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return _instance.image_yscale;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// scale on the Y axis. Must take the instance as the first argument and
 	/// its new scale on the Y axis as the second argument. Defaults to a
 	/// function that assings the new scale to the instance's `image_yscale`
@@ -336,7 +336,7 @@ function BBMOD_Gizmo(_size=10.0)
 		_instance.image_yscale = _y;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to retrieve an instance's
+	/// @var {Function} A function that the gizmo uses to retrieve an instance's
 	/// scale on the Z axis. Must take the instance as the first argument and
 	/// return a real. Defaults to a function that always returns 1.
 	GetInstanceScaleZ = function (_instance) {
@@ -344,7 +344,7 @@ function BBMOD_Gizmo(_size=10.0)
 		return 1.0;
 	};
 
-	/// @var {Function} A function that the Gizmo uses to change an instance's
+	/// @var {Function} A function that the gizmo uses to change an instance's
 	/// scale on the Z axis. Must take the instance as the first argument and
 	/// its new scale on the Z axis as the second argument. Defaults to a
 	/// function that does not do anything.
@@ -548,7 +548,7 @@ function BBMOD_Gizmo(_size=10.0)
 
 	/// @func update_position()
 	///
-	/// @desc Updates the Gizmo's position, based on its selected instances.
+	/// @desc Updates the gizmo's position, based on its selected instances.
 	///
 	/// @return {Struct.BBMOD_Gizmo} Returns `self`.
 	static update_position = function () {
@@ -601,7 +601,7 @@ function BBMOD_Gizmo(_size=10.0)
 
 	/// @func update(_deltaTime)
 	///
-	/// @desc Updates the Gizmo. Should be called every frame.
+	/// @desc Updates the gizmo. Should be called every frame.
 	///
 	/// @param {Real} _deltaTime How much time has passed since the last frame
 	/// (in microseconds).
@@ -641,7 +641,7 @@ function BBMOD_Gizmo(_size=10.0)
 				}
 			}
 
-			// Compute Gizmo's new position
+			// Compute gizmo's new position
 			var _size = ds_list_size(Selected);
 			var _posX = 0.0;
 			var _posY = 0.0;
@@ -988,14 +988,14 @@ function BBMOD_Gizmo(_size=10.0)
 
 	/// @func submit([_materials])
 	///
-	/// @desc Immediately submits the Gizmo for rendering.
+	/// @desc Immediately submits the gizmo for rendering.
 	///
 	/// @param {Array<Struct.BBMOD_Material>} [_materials] Materials to use or
 	/// `undefined`.
 	///
 	/// @return {Struct.BBMOD_Gizmo} Returns `self`.
 	///
-	/// @note This changes the world matrix based on the Gizmo's position and size!
+	/// @note This changes the world matrix based on the gizmo's position and size!
 	static submit = function (_materials=undefined) {
 		gml_pragma("forceinline");
 		(new BBMOD_Matrix())
@@ -1009,14 +1009,14 @@ function BBMOD_Gizmo(_size=10.0)
 
 	/// @func render([_materials])
 	///
-	/// @desc Enqueues the Gizmo for rendering.
+	/// @desc Enqueues the gizmo for rendering.
 	///
 	/// @param {Array<Struct.BBMOD_Material>} [_materials] Materials to use or
 	/// `undefined`.
 	///
 	/// @return {Struct.BBMOD_Gizmo} Returns `self`.
 	///
-	/// @note This changes the world matrix based on the Gizmo's position and size!
+	/// @note This changes the world matrix based on the gizmo's position and size!
 	static render = function (_materials=undefined) {
 		gml_pragma("forceinline");
 		new BBMOD_Matrix()

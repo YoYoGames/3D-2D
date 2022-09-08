@@ -443,9 +443,9 @@ function BBMOD_RenderQueue(_name=undefined, _priority=0)
 	///
 	/// @param {Bool} _enable Use `true` to enable fog.
 	/// @param {Constant.Color} _color The color of the fog.
-	/// @param {Real} _start The distance from the Camera at which the fog
+	/// @param {Real} _start The distance from the camera at which the fog
 	/// starts.
-	/// @param {Real} _end The distance from the Camera at which the fog reaches
+	/// @param {Real} _end The distance from the camera at which the fog reaches
 	/// maximum intensity.
 	///
 	/// @return {Struct.BBMOD_RenderQueue} Returns `self`.

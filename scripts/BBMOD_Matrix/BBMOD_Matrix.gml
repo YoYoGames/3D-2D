@@ -161,8 +161,8 @@ function BBMOD_Matrix(_raw=undefined) constructor
 	///
 	/// @desc Initializes a look-at matrix.
 	///
-	/// @param {Struct.BBMOD_Vec3} _from The position of the Camera.
-	/// @param {Struct.BBMOD_Vec3} _to The position where the Camera is looking at.
+	/// @param {Struct.BBMOD_Vec3} _from The position of the camera.
+	/// @param {Struct.BBMOD_Vec3} _to The position where the camera is looking at.
 	/// @param {Struct.BBMOD_Vec3} _up The direction up.
 	///
 	/// @return {Struct.BBMOD_Matrix} Returns `self`.

@@ -128,7 +128,7 @@ function BBMOD_BaseShader(_shader, _vertexFormat)
 	///
 	/// @desc Sets a fragment shader uniform `bbmod_CamPos` to the given position.
 	///
-	/// @param {Struct.BBMOD_Vec3} [_pos] The Camera position. If `undefined`,
+	/// @param {Struct.BBMOD_Vec3} [_pos] The camera position. If `undefined`,
 	/// then the value set by {@link bbmod_camera_set_position} is used.
 	///
 	/// @return {Struct.BBMOD_Shader} Returns `self`.
@@ -142,7 +142,7 @@ function BBMOD_BaseShader(_shader, _vertexFormat)
 	///
 	/// @desc Sets the `bbmod_Exposure` uniform.
 	///
-	/// @param {Real} [_value] The Camera exposure. If `undefined`,
+	/// @param {Real} [_value] The camera exposure. If `undefined`,
 	/// then the value set by {@link bbmod_camera_set_exposure} is used.
 	///
 	/// @return {Struct.BBMOD_BaseShader} Returns `self`.
@@ -404,9 +404,9 @@ global.__bbmodCameraExposure = 1.0;
 
 /// @func bbmod_camera_get_position()
 ///
-/// @desc Retrieves the position of the Camera that is passed to shaders.
+/// @desc Retrieves the position of the camera that is passed to shaders.
 ///
-/// @return {Struct.BBMOD_Vec3} The Camera position.
+/// @return {Struct.BBMOD_Vec3} The camera position.
 ///
 /// @see bbmod_camera_set_position
 function bbmod_camera_get_position()
@@ -417,9 +417,9 @@ function bbmod_camera_get_position()
 
 /// @func bbmod_camera_set_position(_position)
 ///
-/// @desc Defines position of the Camera passed to shaders.
+/// @desc Defines position of the camera passed to shaders.
 ///
-/// @param {Struct.BBMOD_Vec3} _position The new Camera position.
+/// @param {Struct.BBMOD_Vec3} _position The new camera position.
 ///
 /// @see bbmod_camera_get_position
 function bbmod_camera_set_position(_position)
@@ -456,9 +456,9 @@ function bbmod_camera_set_zfar(_value)
 
 /// @func bbmod_camera_get_exposure()
 ///
-/// @desc Retrieves Camera exposure value passed to shaders.
+/// @desc Retrieves camera exposure value passed to shaders.
 ///
-/// @return {Real} The Camera exposure value.
+/// @return {Real} The camera exposure value.
 ///
 /// @see bbmod_camera_set_exposure
 function bbmod_camera_get_exposure()
@@ -469,9 +469,9 @@ function bbmod_camera_get_exposure()
 
 /// @func bbmod_camera_set_exposure(_exposure)
 ///
-/// @desc Defines Camera exposure value passed to shaders.
+/// @desc Defines camera exposure value passed to shaders.
 ///
-/// @param {Real} _exposure The new Camera exposure value.
+/// @param {Real} _exposure The new camera exposure value.
 ///
 /// @see bbmod_camera_get_exposure
 function bbmod_camera_set_exposure(_exposure)
@@ -492,6 +492,10 @@ global.__bbmodAmbientLightUp = BBMOD_C_WHITE;
 /// @var {Struct.BBMOD_Color}
 /// @private
 global.__bbmodAmbientLightDown = BBMOD_C_GRAY;
+
+/// @var {Bool}
+/// @private
+global.__bbmodAmbientAffectLightmap = true;
 
 /// @func bbmod_light_ambient_set(_color)
 ///
@@ -586,6 +590,32 @@ function bbmod_light_ambient_set_down(_color)
 {
 	gml_pragma("forceinline");
 	global.__bbmodAmbientLightDown = _color;
+}
+
+/// @func bbmod_light_ambient_get_affect_lightmaps()
+///
+/// @desc Checks whether ambient light affects materials that use baked
+/// lightmaps.
+///
+/// @return {Bool} Returns `true` if ambient light affects materials that
+/// use lightmaps.
+function bbmod_light_ambient_get_affect_lightmaps()
+{
+	gml_pragma("forceinline");
+	return global.__bbmodAmbientAffectLightmap;
+}
+
+/// @func bbmod_light_ambient_set_affect_lightmaps(_enable)
+///
+/// @desc Configures whether ambient light affects materials that use baked
+/// lightmaps.
+///
+/// @param {Bool} _enable Use `true` to enable ambient light affecting materials
+/// that use baked lightmaps.
+function bbmod_light_ambient_set_affect_lightmaps(_enable)
+{
+	gml_pragma("forceinline");
+	global.__bbmodAmbientAffectLightmap = _enable;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -828,9 +858,9 @@ global.__bbmodFogEnd = 1.0;
 /// color is white.
 /// @param {Real} _intensity The intensity of the fog. Use values in range 0..1.
 /// The default fog intensity is 0 (no fog).
-/// @param {Real} _start The distance from the Camera where the fog starts at.
+/// @param {Real} _start The distance from the camera where the fog starts at.
 /// The default fog start is 0.
-/// @param {Real} _end The distance from the Camera where the fog has the
+/// @param {Real} _end The distance from the camera where the fog has the
 /// maximum intensity. The default fog end is 1.
 ///
 /// @see bbmod_fog_get_color

@@ -26,10 +26,11 @@
 ///
 /// @extends BBMOD_Class
 ///
-/// @desc Loads a DLL which allows you to convert models into BBMOD.
+/// @desc Loads a dynamic library which allows you to convert models into BBMOD.
 ///
-/// @param {String} [_path] The path to the DLL file. Defaults to
-/// "Data/BBMOD/BBMOD.dll".
+/// @param {String} [_path] The path to the dynamic library file. Defaults to
+/// "Data/BBMOD/BBMOD.dll" on Windows and "Data/BBMOD/libBBMOD.dylib"
+/// on macOS.
 ///
 /// @throws {BBMOD_Exception} If the DLL file does not exist.
 ///
@@ -41,8 +42,9 @@
 /// _dll.destroy();
 /// modHouse = new BBMOD_Model("House.bbmod");
 /// ```
-function BBMOD_DLL(_path="Data/BBMOD/BBMOD.dll")
-	: BBMOD_Class() constructor
+function BBMOD_DLL(
+	_path=((os_type == os_windows) ? "Data/BBMOD/BBMOD.dll" : "Data/BBMOD/libBBMOD.dylib")
+) : BBMOD_Class() constructor
 {
 	BBMOD_CLASS_GENERATED_BODY;
 
@@ -50,7 +52,7 @@ function BBMOD_DLL(_path="Data/BBMOD/BBMOD.dll")
 		destroy: destroy,
 	};
 
-	/// @var {String} Path to the DLL file.
+	/// @var {String} Path to the dynamic library.
 	/// @readonly
 	Path = _path;
 
@@ -350,6 +352,45 @@ function BBMOD_DLL(_path="Data/BBMOD/BBMOD.dll")
 		gml_pragma("forceinline");
 		static _fn = external_define(
 			Path, "bbmod_dll_set_disable_uv", dll_cdecl, ty_real, 1, ty_real);
+		var _retval = external_call(_fn, _disable);
+		if (_retval != BBMOD_DLL_SUCCESS)
+		{
+			throw new BBMOD_Exception();
+		}
+		return self;
+	};
+
+	/// @func get_disable_uv2()
+	///
+	/// @desc Checks whether second UV channel is disabled.
+	///
+	/// @return {Bool} If `true` then second UV channel is disabled.
+	///
+	/// @see BBMOD_DLL.set_disable_uv2
+	static get_disable_uv2 = function () {
+		gml_pragma("forceinline");
+		static _fn = external_define(
+			Path, "bbmod_dll_get_disable_uv2", dll_cdecl, ty_real, 0);
+		return external_call(_fn);
+	};
+
+	/// @func set_disable_uv2(_disable)
+	///
+	/// @desc Enables/disables second UV channel. Second UV channel is by
+	/// default **disabled**. Changing this makes the model incompatible
+	/// with the default shaders!
+	///
+	/// @param {Bool} _disable `true` to disable second UV channel.
+	///
+	/// @return {Struct.BBMOD_DLL} Returns `self`.
+	///
+	/// @throws {BBMOD_Exception} If the operation fails.
+	///
+	/// @see BBMOD_DLL.get_disable_uv2
+	static set_disable_uv2 = function (_disable) {
+		gml_pragma("forceinline");
+		static _fn = external_define(
+			Path, "bbmod_dll_set_disable_uv2", dll_cdecl, ty_real, 1, ty_real);
 		var _retval = external_call(_fn, _disable);
 		if (_retval != BBMOD_DLL_SUCCESS)
 		{

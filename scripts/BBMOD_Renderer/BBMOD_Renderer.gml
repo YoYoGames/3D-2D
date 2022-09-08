@@ -2,7 +2,7 @@
 ///
 /// @extends BBMOD_Class
 ///
-/// @desc Implements a basic Renderer, which executes
+/// @desc Implements a basic renderer, which executes
 /// [render commands](./BBMOD_RenderCommand.html) created with method
 /// [render](./BBMOD_Model.render.html).
 ///
@@ -11,34 +11,34 @@
 /// [BBMOD_ERenderPass.Forward](./BBMOD_ERenderPass.Forward.html).
 ///
 /// @example
-/// Following code is a typical use of the Renderer.
+/// Following code is a typical use of the renderer.
 /// ```gml
 /// // Create event
-/// Renderer = new BBMOD_Renderer()
+/// renderer = new BBMOD_Renderer()
 ///     .add(OCharacter)
 ///     .add(OTree)
 ///     .add(OTerrain)
 ///     .add(OSky);
-/// Renderer.UseAppSurface = true;
-/// Renderer.EnableShadows = true;
+/// renderer.UseAppSurface = true;
+/// renderer.EnableShadows = true;
 ///
-/// Camera = new BBMOD_Camera();
-/// Camera.FollowObject = OPlayer;
+/// camera = new BBMOD_Camera();
+/// camera.FollowObject = OPlayer;
 ///
 /// // Step event
-/// Camera.set_mouselook(true);
-/// Camera.update(delta_time);
-/// Renderer.update(delta_time);
+/// camera.set_mouselook(true);
+/// camera.update(delta_time);
+/// renderer.update(delta_time);
 ///
 /// // Draw event
-/// Camera.apply();
-/// Renderer.render();
+/// camera.apply();
+/// renderer.render();
 ///
 /// // Post-Draw event
-/// Renderer.present();
+/// renderer.present();
 ///
 /// // Clean Up event
-/// Renderer.destroy();
+/// renderer.destroy();
 /// ```
 ///
 /// @see BBMOD_IRenderable
@@ -52,19 +52,19 @@ function BBMOD_Renderer()
 		destroy: destroy,
 	};
 
-	/// @var {Real} The X position of the Renderer on the screen. Default value
+	/// @var {Real} The X position of the renderer on the screen. Default value
 	/// is 0.
 	X = 0;
 
-	/// @var {Real} The Y position of the Renderer on the screen. Default value
+	/// @var {Real} The Y position of the renderer on the screen. Default value
 	/// is 0.
 	Y = 0;
 
-	/// @var {Real} The width of the Renderer on the screen. If `undefined` then
+	/// @var {Real} The width of the renderer on the screen. If `undefined` then
 	/// the window width is used. Default value is `undefined`.
 	Width = undefined;
 
-	/// @var {Real} The height of the Renderer on the screen. If `undefined`
+	/// @var {Real} The height of the renderer on the screen. If `undefined`
 	/// then the window height is used. Default value is `undefined`.
 	Height = undefined;
 
@@ -78,7 +78,7 @@ function BBMOD_Renderer()
 	/// @private
 	SurInstanceHighlight = noone;
 
-	/// @var {Struct.BBMOD_Color} Outline color of instances selected by Gizmo.
+	/// @var {Struct.BBMOD_Color} Outline color of instances selected by gizmo.
 	/// Default value is {@link BBMOD_C_ORANGE}.
 	/// @see BBMOD_Renderer.Gizmo
 	InstanceHighlightColor = BBMOD_C_ORANGE;
@@ -86,7 +86,7 @@ function BBMOD_Renderer()
 	/// @var {Bool} If `true` then edit mode is enabled. Default value is `false`.
 	EditMode = false;
 
-	/// @var {Bool} If `true` then mousepicking of Gizmo and instances is enabled.
+	/// @var {Bool} If `true` then mousepicking of gizmo and instances is enabled.
 	/// Default value is `true`.
 	/// @note This can be useful for example to disable mousepicking when the
 	/// mouse cursor is over UI.
@@ -103,17 +103,17 @@ function BBMOD_Renderer()
 	/// @see BBMOD_Renderer.EditMode
 	KeyMultiSelect = vk_shift;
 
-	/// @var {Struct.BBMOD_Gizmo} A Gizmo for transforming instances when
+	/// @var {Struct.BBMOD_Gizmo} A gizmo for transforming instances when
 	/// {@link BBMOD_Renderer.EditMode} is enabled. This is by default `undefined`.
 	/// @see BBMOD_Gizmo
 	Gizmo = undefined;
 
-	/// @var {Id.Surface} A surface containing the Gizmo. Used to enable
+	/// @var {Id.Surface} A surface containing the gizmo. Used to enable
 	/// z-testing against itself, but ingoring the scene geometry.
 	/// @private
 	SurGizmo = noone;
 
-	/// @var {Id.Surface} Surface for mouse-picking the Gizmo.
+	/// @var {Id.Surface} Surface for mouse-picking the gizmo.
 	/// @private
 	SurSelect = noone;
 
@@ -248,9 +248,9 @@ function BBMOD_Renderer()
 
 	/// @func get_width()
 	///
-	/// @desc Retrieves the width of the Renderer on the screen.
+	/// @desc Retrieves the width of the renderer on the screen.
 	///
-	/// @return {Real} The width of the Renderer on the screen.
+	/// @return {Real} The width of the renderer on the screen.
 	static get_width = function () {
 		gml_pragma("forceinline");
 		return max((Width == undefined) ? window_get_width() : Width, 1);
@@ -258,9 +258,9 @@ function BBMOD_Renderer()
 
 	/// @func get_height()
 	///
-	/// @desc Retrieves the height of the Renderer on the screen.
+	/// @desc Retrieves the height of the renderer on the screen.
 	///
-	/// @return {Real} The height of the Renderer on the screen.
+	/// @return {Real} The height of the renderer on the screen.
 	static get_height = function () {
 		gml_pragma("forceinline");
 		return max((Height == undefined) ? window_get_height() : Height, 1);
@@ -268,11 +268,11 @@ function BBMOD_Renderer()
 
 	/// @func get_render_width()
 	///
-	/// @desc Retrieves the width of the Renderer with
+	/// @desc Retrieves the width of the renderer with
 	///
 	/// {@link BBMOD_Renderer.RenderScale} applied.
 	///
-	/// @return {Real} The width of the Renderer after `RenderScale` is applied.
+	/// @return {Real} The width of the renderer after `RenderScale` is applied.
 	static get_render_width = function () {
 		gml_pragma("forceinline");
 		return max(get_width() * RenderScale, 1);
@@ -280,10 +280,10 @@ function BBMOD_Renderer()
 
 	/// @func get_render_height()
 	///
-	/// @desc Retrieves the height of the Renderer with
+	/// @desc Retrieves the height of the renderer with
 	/// {@link BBMOD_Renderer.RenderScale} applied.
 	///
-	/// @return {Real} The height of the Renderer after `RenderScale` is applied.
+	/// @return {Real} The height of the renderer after `RenderScale` is applied.
 	static get_render_height = function () {
 		gml_pragma("forceinline");
 		return max(get_height() * RenderScale, 1);
@@ -291,7 +291,7 @@ function BBMOD_Renderer()
 
 	/// @func set_position(_x, _y)
 	///
-	/// @desc Changes the Renderer's position on the screen.
+	/// @desc Changes the renderer's position on the screen.
 	///
 	/// @param {Real} _x The new X position on the screen.
 	/// @param {Real} _y The new Y position on the screen.
@@ -306,7 +306,7 @@ function BBMOD_Renderer()
 
 	/// @func set_size(_width, _height)
 	///
-	/// @desc Changes the Renderer's size on the screen.
+	/// @desc Changes the renderer's size on the screen.
 	///
 	/// @param {Real} _width The new width on the screen.
 	/// @param {Real} _height The new height on the screen.
@@ -321,7 +321,7 @@ function BBMOD_Renderer()
 
 	/// @func set_rectangle(_x, _y, _width, _height)
 	///
-	/// @desc Changes the Renderer's position and size on the screen.
+	/// @desc Changes the renderer's position and size on the screen.
 	///
 	/// @param {Real} _x The new X position on the screen.
 	/// @param {Real} _y The new Y position on the screen.
@@ -338,15 +338,15 @@ function BBMOD_Renderer()
 
 	/// @func select_gizmo(_screenX, _screenY)
 	///
-	/// @desc Tries to select a Gizmo at given screen coordinates and
+	/// @desc Tries to select a gizmo at given screen coordinates and
 	/// automatically changes its {@link BBMOD_Gizmo.EditAxis} and
-	/// {@link BBMOD_Gizmo.EditType} based on which part of the Gizmo
+	/// {@link BBMOD_Gizmo.EditType} based on which part of the gizmo
 	/// was selected.
 	///
 	/// @param {Real} _screenX The X position on the screen.
 	/// @param {Real} _screenY The Y position on the screen.
 	///
-	/// @return {Bool} Returns `true` if the Gizmo was selected.
+	/// @return {Bool} Returns `true` if the gizmo was selected.
 	///
 	/// @note {@link BBMOD_Renderer.Gizmo} must be defined.
 	///
@@ -404,7 +404,7 @@ function BBMOD_Renderer()
 
 	/// @func add(_renderable)
 	///
-	/// @desc Adds a renderable object or struct to the Renderer.
+	/// @desc Adds a renderable object or struct to the renderer.
 	///
 	/// @param {Struct.BBMOD_IRenderable} _renderable The renderable object or
 	/// struct to add.
@@ -421,7 +421,7 @@ function BBMOD_Renderer()
 
 	/// @func remove(_renderable)
 	///
-	/// @desc Removes a renderable object or a struct from the Renderer.
+	/// @desc Removes a renderable object or a struct from the renderer.
 	///
 	/// @param {Struct.BBMOD_IRenderable} _renderable The renderable object or
 	/// struct to remove.
@@ -444,7 +444,7 @@ function BBMOD_Renderer()
 
 	/// @func update(_deltaTime)
 	///
-	/// @desc Updates the Renderer. This should be called in the Step event.
+	/// @desc Updates the renderer. This should be called in the Step event.
 	///
 	/// @param {Real} _deltaTime How much time has passed since the last frame
 	/// (in microseconds).

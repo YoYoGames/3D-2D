@@ -1,10 +1,10 @@
 {
-  "type": 1,
-  "parent": {
-    "name": "PBR",
-    "path": "folders/BBMOD/Rendering/PBR.yy",
-  },
+  "resourceType": "GMShader",
   "resourceVersion": "1.0",
   "name": "BBMOD_ShSky",
-  "resourceType": "GMShader",
+  "type": 1,
+  "parent": {
+    "name": "Sky",
+    "path": "folders/BBMOD/Rendering/Sky.yy",
+  },
 }

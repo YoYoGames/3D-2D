@@ -82,11 +82,11 @@ function BBMOD_Node(_model) constructor
 	static set_renderable = function () {
 		gml_pragma("forceinline");
 		var _current = self;
-		while (_current)
+		while (_current != undefined)
 		{
 			//if (_current.IsRenderable)
 			//{
-			//	return;
+			//	break;
 			//}
 			_current.IsRenderable = true;
 			_current = _current.Parent;
@@ -135,7 +135,11 @@ function BBMOD_Node(_model) constructor
 		var _meshCount = buffer_read(_buffer, buffer_u32);
 		var _meshes = array_create(_meshCount, undefined);
 		Meshes = _meshes;
-		IsRenderable = (_meshCount > 0);
+
+		if (_meshCount > 0)
+		{
+			set_renderable();
+		}
 
 		i = 0;
 		repeat (_meshCount)
@@ -149,12 +153,9 @@ function BBMOD_Node(_model) constructor
 
 		repeat (_childCount)
 		{
-			var _child = new BBMOD_Node(Model).from_buffer(_buffer);
+			var _child = new BBMOD_Node(Model);
 			add_child(_child);
-			if (_child.IsRenderable)
-			{
-				set_renderable();
-			}
+			_child.from_buffer(_buffer);
 		}
 
 		return self;
@@ -198,8 +199,7 @@ function BBMOD_Node(_model) constructor
 			repeat (array_length(_meshIndices))
 			{
 				var _mesh = _meshes[_meshIndices[i++]];
-				var _materialIndex = _mesh.MaterialIndex;
-				var _material = _materials[_materialIndex];
+				var _material = _materials[_mesh.MaterialIndex];
 
 				if (_mesh.VertexFormat.Bones)
 				{
@@ -273,8 +273,7 @@ function BBMOD_Node(_model) constructor
 			repeat (array_length(_meshIndices))
 			{
 				var _mesh = _meshes[_meshIndices[i++]];
-				var _materialIndex = _mesh.MaterialIndex;
-				var _material = _materials[_materialIndex];
+				var _material = _materials[_mesh.MaterialIndex];
 
 				var _meshMatrix;
 

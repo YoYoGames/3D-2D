@@ -71,7 +71,7 @@ function BBMOD_Mesh(_vertexFormat, _model=undefined)
 
 		if (Model.VersionMinor >= 2)
 		{
-			VertexFormat = bbmod_vertex_format_load(_buffer);
+			VertexFormat = bbmod_vertex_format_load(_buffer, Model.VersionMinor);
 			PrimitiveType = buffer_read(_buffer, buffer_u32);
 		}
 
@@ -115,11 +115,15 @@ function BBMOD_Mesh(_vertexFormat, _model=undefined)
 		{
 			return self;
 		}
-		if (_transform != undefined)
+		with (BBMOD_SHADER_CURRENT)
 		{
-			BBMOD_SHADER_CURRENT.set_bones(_transform);
+			if (_transform != undefined)
+			{
+				set_bones(_transform);
+			}
+			set_instance_id();
+			set_material_index(other.MaterialIndex);
 		}
-		BBMOD_SHADER_CURRENT.set_instance_id();
 		vertex_submit(VertexBuffer, PrimitiveType, _material.BaseOpacity);
 		return self;
 	};
