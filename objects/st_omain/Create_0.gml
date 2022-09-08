@@ -140,11 +140,12 @@ __LoadAssetFromSave = function (_assetSave, _isAttachment) {
 	AssetImporter.Dll.set_sampling_rate(_samplingRate);
 
 	var _assetPath = ST_PathGetAbsolute(_assetSave.Path, global.stSavePath);
+	_assetSave.Path = _assetPath;
 
 	if (!file_exists(_assetPath))
 	{
 		show_message("Could not find file \"" + _assetPath + "\"! Please select it again.");
-		_assetPath = get_open_filename("", filename_name(_assetPath));
+		_assetPath = get_open_filename(ST_FILTER_MODEL, filename_name(_assetPath));
 	}
 
 	var _asset = _isAttachment
@@ -174,12 +175,14 @@ __LoadAssetFromSave = function (_assetSave, _isAttachment) {
 			&& _texturePath != pointer_null)
 		{
 			_texturePath = ST_PathGetAbsolute(_texturePath, global.stSavePath);
+			_materialSaved.Texture = _texturePath;
 
 			if (!file_exists(_texturePath))
 			{
 				show_message("Could not find file \"" + _texturePath + "\"! Please select it again.");
-				_texturePath = get_open_filename("", filename_name(_texturePath));
+				_texturePath = get_open_filename(ST_FILTER_TEXTURE, filename_name(_texturePath));
 			}
+
 			var _sprite = _asset.LoadSprite(_texturePath);
 			_asset.Materials[i].BaseOpacity = sprite_get_texture(_sprite, 0);
 			_asset.MaterialSprites[@ i] = _texturePath;
