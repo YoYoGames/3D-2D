@@ -72,8 +72,9 @@ void DefaultShader(Material material, float depth)
 	Exposure();
 	GammaCorrect();
 
-	if (u_fMaterialHighlight > -1.0
-		&& u_fMaterialHighlight != bbmod_MaterialIndex)
+	if (u_fHighlightMaterial > -1.0
+		&& u_vHighlightInstance == bbmod_InstanceID
+		&& u_fHighlightMaterial != bbmod_MaterialIndex)
 	{
 		gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vHighlightColor.rgb,
 			/*(sin(u_fTime * 0.005) * 0.5 + 0.5) **/ u_vHighlightColor.a);

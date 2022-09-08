@@ -1297,37 +1297,14 @@ function BBMOD_RenderQueue(_name=undefined, _priority=0)
 					_condition = false;
 					continue;
 				}
-				BBMOD_SHADER_CURRENT.set_instance_id(_id);
-				matrix_set(matrix_world, _renderCommands[| i++]);
-
-				// TODO: Fix hacks!
-				shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "bbmod_MaterialIndex"),
-					_renderCommands[| i++] / 255.0);
-				if (global.stMaterialHighlight
-					&& global.stMaterialHighlightInstance == _id)
+				with (BBMOD_SHADER_CURRENT)
 				{
-					shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fMaterialHighlight"),
-						global.stMaterialHighlightIndex / 255.0);
-					shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_vHighlightColor"),
-						global.stMaterialHighlightColor.Red / 255.0,
-						global.stMaterialHighlightColor.Green / 255.0,
-						global.stMaterialHighlightColor.Blue / 255.0,
-						global.stMaterialHighlightColor.Alpha);
+					set_instance_id(_id);
+					matrix_set(matrix_world, _renderCommands[| i++]);
+					set_material_index(_renderCommands[| i++]);
 				}
-				else
-				{
-					shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fMaterialHighlight"),
-						-1);
-				}
-				shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fTime"),
-					current_time);
-
 				var _primitiveType = _renderCommands[| i++];
 				vertex_submit(_renderCommands[| i++], _primitiveType, _material.BaseOpacity);
-
-				// TODO: OMFG
-				shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fMaterialHighlight"),
-					-1);
 				break;
 
 			case BBMOD_ERenderCommand.DrawMeshAnimated:
@@ -1340,38 +1317,15 @@ function BBMOD_RenderQueue(_name=undefined, _priority=0)
 					_condition = false;
 					continue;
 				}
-				BBMOD_SHADER_CURRENT.set_instance_id(_id);
-				matrix_set(matrix_world, _renderCommands[| i++]);
-				BBMOD_SHADER_CURRENT.set_bones(_renderCommands[| i++]);
-
-				// TODO: Fix hacks!
-				shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "bbmod_MaterialIndex"),
-					_renderCommands[| i++] / 255);
-				if (global.stMaterialHighlight
-					&& global.stMaterialHighlightInstance == _id)
+				with (BBMOD_SHADER_CURRENT)
 				{
-					shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fMaterialHighlight"),
-						global.stMaterialHighlightIndex / 255);
-					shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_vHighlightColor"),
-						global.stMaterialHighlightColor.Red / 255.0,
-						global.stMaterialHighlightColor.Green / 255.0,
-						global.stMaterialHighlightColor.Blue / 255.0,
-						global.stMaterialHighlightColor.Alpha);
+					set_instance_id(_id);
+					matrix_set(matrix_world, _renderCommands[| i++]);
+					set_bones(_renderCommands[| i++]);
+					set_material_index(_renderCommands[| i++]);
 				}
-				else
-				{
-					shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fMaterialHighlight"),
-						-1);
-				}
-				shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fTime"),
-					current_time);
-
 				var _primitiveType = _renderCommands[| i++];
 				vertex_submit(_renderCommands[| i++], _primitiveType, _material.BaseOpacity);
-
-				// TODO: OMFG
-				shader_set_uniform_f(shader_get_uniform(BBMOD_SHADER_CURRENT.Raw, "u_fMaterialHighlight"),
-					-1);
 				break;
 
 			case BBMOD_ERenderCommand.DrawMeshBatched:

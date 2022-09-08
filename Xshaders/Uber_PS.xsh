@@ -26,6 +26,12 @@ precision highp float;
 //
 
 ////////////////////////////////////////////////////////////////////////////////
+// Instance IDs
+
+// The id of the instance that draws the mesh.
+uniform vec4 bbmod_InstanceID;
+
+////////////////////////////////////////////////////////////////////////////////
 // Material
 
 // RGB: Base color, A: Opacity
@@ -60,8 +66,10 @@ uniform float bbmod_AlphaTest;
 // Material index
 uniform float bbmod_MaterialIndex;
 
+// Instance to highlight
+uniform vec4 u_vHighlightInstance;
 // Material to highlight
-uniform float u_fMaterialHighlight;
+uniform float u_fHighlightMaterial;
 // Color of material highlight
 uniform vec4 u_vHighlightColor;
 // Current time in milliseconds

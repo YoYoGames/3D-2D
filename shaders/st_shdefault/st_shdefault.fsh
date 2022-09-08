@@ -36,6 +36,12 @@ varying vec3 v_vPosShadowmap;
 //
 
 ////////////////////////////////////////////////////////////////////////////////
+// Instance IDs
+
+// The id of the instance that draws the mesh.
+uniform vec4 bbmod_InstanceID;
+
+////////////////////////////////////////////////////////////////////////////////
 // Material
 
 // RGB: Base color, A: Opacity
@@ -51,8 +57,10 @@ uniform float bbmod_AlphaTest;
 // Material index
 uniform float bbmod_MaterialIndex;
 
+// Instance to highlight
+uniform vec4 u_vHighlightInstance;
 // Material to highlight
-uniform float u_fMaterialHighlight;
+uniform float u_fHighlightMaterial;
 // Color of material highlight
 uniform vec4 u_vHighlightColor;
 // Current time in milliseconds
@@ -421,8 +429,9 @@ void DefaultShader(Material material, float depth)
 	Exposure();
 	GammaCorrect();
 
-	if (u_fMaterialHighlight > -1.0
-		&& u_fMaterialHighlight != bbmod_MaterialIndex)
+	if (u_fHighlightMaterial > -1.0
+		&& u_vHighlightInstance == bbmod_InstanceID
+		&& u_fHighlightMaterial != bbmod_MaterialIndex)
 	{
 		gl_FragColor.rgb = mix(gl_FragColor.rgb, u_vHighlightColor.rgb,
 			/*(sin(u_fTime * 0.005) * 0.5 + 0.5) **/ u_vHighlightColor.a);

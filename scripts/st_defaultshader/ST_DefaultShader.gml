@@ -55,8 +55,18 @@ function ST_DefaultShader(_shader, _vertexFormat)
 
 	ULightDirectionalData = get_uniform("u_vLightDirectionalData");
 
+	UHighlightInstance = get_uniform("u_vHighlightInstance");
+
+	UHighlightMaterial = get_uniform("u_fHighlightMaterial");
+
+	UHighlightColor = get_uniform("u_vHighlightColor");
+
+	UTime = get_uniform("u_fTime");
+
 	static on_set = function () {
 		method(self, Super_DefaultShader.on_set)();
+
+		// Pass directional lights
 		var _index = 0;
 		var _indexMax = MaxDirectionalLights * 8;
 		var _directionalLights = array_create(_indexMax, 0);
@@ -78,5 +88,29 @@ function ST_DefaultShader(_shader, _vertexFormat)
 			}
 		}
 		set_uniform_f_array(ULightDirectionalData, _directionalLights);
+
+		// Pass material highlight
+		if (global.stMaterialHighlight)
+		{
+			var _instanceId = global.stMaterialHighlightInstance ?? 0;
+			set_uniform_f4(
+				UHighlightInstance,
+				((_instanceId & $000000FF) >> 0) / 255,
+				((_instanceId & $0000FF00) >> 8) / 255,
+				((_instanceId & $00FF0000) >> 16) / 255,
+				((_instanceId & $FF000000) >> 24) / 255);
+			set_uniform_f(UHighlightMaterial, global.stMaterialHighlightIndex);
+			var _color = global.stMaterialHighlightColor;
+			set_uniform_f4(UHighlightColor,
+				_color.Red / 255.0,
+				_color.Green / 255.0,
+				_color.Blue / 255.0,
+				_color.Alpha);
+			set_uniform_f(UTime, current_time);
+		}
+		else
+		{
+			set_uniform_f(UHighlightMaterial, -1);
+		}
 	};
 }
