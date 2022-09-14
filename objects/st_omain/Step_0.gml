@@ -130,7 +130,7 @@ if (keyboard_check(vk_control))
 	else if (keyboard_check_pressed(ord("S")))
 	{
 		var _path = (global.stSavePath == undefined || keyboard_check(vk_shift))
-			? get_save_filename(ST_FILTER_SAVE, "")
+			? GetSaveFileName(ST_FILTER_SAVE, "", ST_ENVVAR_HOME, "Save As")
 			: global.stSavePath;
 		if (_path != "")
 		{
@@ -140,7 +140,7 @@ if (keyboard_check(vk_control))
 	else if (keyboard_check_pressed(ord("O")))
 	{
 		var _callback = method(self, function () {
-			var _path = get_open_filename(ST_FILTER_SAVE, "");
+			var _path = GetOpenFileName(ST_FILTER_SAVE, "", ST_ENVVAR_HOME, "Open");
 			if (_path != "")
 			{
 				LoadProject(_path);

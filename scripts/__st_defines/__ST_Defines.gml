@@ -26,3 +26,6 @@
 
 /// @macro {String}
 #macro ST_FILTER_SAVE "Save Files|*.json"
+
+/// @macro {String}
+#macro ST_ENVVAR_HOME environment_get_variable((os_type == os_windows) ? "USERPROFILE" : "HOME")

@@ -26,7 +26,7 @@ function ST_MenuBar(_props)
 					with (ST_OMain)
 					{
 						var _callback = method(self, function () {
-							var _path = get_open_filename(ST_FILTER_SAVE, "");
+							var _path = GetOpenFileName(ST_FILTER_SAVE, "", ST_ENVVAR_HOME, "Open");
 							if (_path != "")
 							{
 								LoadProject(_path);
@@ -55,7 +55,7 @@ function ST_MenuBar(_props)
 					with (ST_OMain)
 					{
 						var _path = (global.stSavePath == undefined)
-							? get_save_filename(ST_FILTER_SAVE, "")
+							? GetSaveFileName(ST_FILTER_SAVE, "",  ST_ENVVAR_HOME, "Save As")
 							: global.stSavePath;
 						if (_path != "")
 						{
@@ -69,7 +69,7 @@ function ST_MenuBar(_props)
 				Action: function () {
 					with (ST_OMain)
 					{
-						var _path = get_save_filename(ST_FILTER_SAVE, "");
+						var _path = GetSaveFileName(ST_FILTER_SAVE, "", ST_ENVVAR_HOME, "Save As");
 						if (_path != "")
 						{
 							SaveProject(_path);

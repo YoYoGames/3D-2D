@@ -34,8 +34,8 @@ function GUI_FileInput(_path, _props={})
 		X: -1,
 		OnClick: method(self, function () {
 			Change(Save
-				? get_save_filename(Filter, Filename)
-				: get_open_filename(Filter, Filename));
+				? GetSaveFileName(Filter, Filename, ST_ENVVAR_HOME, "Save As")
+				: GetOpenFileName(Filter, Filename, ST_ENVVAR_HOME, "Open"));
 		}),
 	});
 	SelectButton.Disabled = Disabled;
