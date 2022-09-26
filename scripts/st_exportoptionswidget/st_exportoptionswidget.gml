@@ -202,7 +202,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 	InputExportPath = new GUI_FileInput(_store.Save ? _store.Save.ExportPath : "", {
 		Width: "100%",
 		Save: true,
-		Filter: "PNG|*.png;",
+		Filter: ST_FILTER_TEXTURE,
 	});
 	_vboxExportOptions.Add(InputExportPath);
 

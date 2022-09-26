@@ -1,3 +1,61 @@
+/// @func __bbmod_material_get_map()
+///
+/// @desc Retrieves a map of registered materials.
+///
+/// @return {Id.DsMap<String, Struct.BBMOD_Material>} The map of registered
+/// materials.
+///
+/// @private
+function __bbmod_material_get_map()
+{
+	static _map = ds_map_create();
+	return _map;
+}
+
+/// @func bbmod_material_register(_name, _material)
+///
+/// @desc Registers a material.
+///
+/// @param {String} _name The name of the material.
+/// @param {Struct.BBMOD_Material} _material The material.
+function bbmod_material_register(_name, _material)
+{
+	gml_pragma("forceinline");
+	static _map =__bbmod_material_get_map();
+	_map[? _name] = _material;
+	_material.Name = _name;
+}
+
+/// @func bbmod_material_exists(_name)
+///
+/// @desc Checks if there is a material registered under the name.
+///
+/// @param {String} _name The name of the material.
+///
+/// @return {Bool} Returns `true` if there is a material registered under the
+/// name.
+function bbmod_material_exists(_name)
+{
+	gml_pragma("forceinline");
+	static _map =__bbmod_material_get_map();
+	return ds_map_exists(_map, _name);
+}
+
+/// @func bbmod_material_get(_name)
+///
+/// @desc Retrieves a material registered under the name.
+///
+/// @param {String} _name The name of the material.
+///
+/// @return {Struct.BBMOD_Material} The material or `undefined` if no
+/// material registered under the given name exists.
+function bbmod_material_get(_name)
+{
+	gml_pragma("forceinline");
+	static _map =__bbmod_material_get_map();
+	return _map[? _name];
+}
+
 /// @var {Struct.BBMOD_Material} The currently applied material or `undefined`.
 /// @private
 global.__bbmodMaterialCurrent = undefined;
@@ -22,6 +80,11 @@ function BBMOD_Material(_shader=undefined)
 	static Super_Resource = {
 		destroy: destroy,
 	};
+
+	/// @var {String} The name under which is this material registered or
+	/// `undefined`.
+	/// @private
+	Name = undefined;
 
 	/// @var {Real} Render passes in which is the material rendered. Defaults
 	/// to 0 (no passes).
@@ -102,6 +165,7 @@ function BBMOD_Material(_shader=undefined)
 	///
 	/// @return {Struct.BBMOD_Material} Returns `self`.
 	static copy = function (_dest) {
+		_dest.Name = Name;
 		_dest.RenderPass = RenderPass;
 		_dest.Shaders = array_create(BBMOD_ERenderPass.SIZE, undefined);
 		array_copy(_dest.Shaders, 0, Shaders, 0, BBMOD_ERenderPass.SIZE);
@@ -146,6 +210,243 @@ function BBMOD_Material(_shader=undefined)
 		var _clone = new BBMOD_Material();
 		copy(_clone);
 		return _clone;
+	};
+
+	/// @func to_json(_json)
+	///
+	/// @desc Saves material properties to a JSON object.
+	///
+	/// @param {Struct} _json The object to save the properties to.
+	///
+	/// @return {Struct.BBMOD_Material} Returns `self`.
+	///
+	/// @throws {BBMOD_Exception} If an error occurs.
+	static to_json = function (_json) {
+		var _shaders = {};
+		var _pass = 0;
+		repeat (BBMOD_ERenderPass.SIZE)
+		{
+			var _shader = Shaders[_pass];
+			if (_shader != undefined)
+			{
+				var _passName = bbmod_render_pass_to_string(_pass);
+				if (_shader.Name == undefined)
+				{
+					throw new BBMOD_Exception(
+						"Cannot save to JSON, shader for render pass \""
+						+ _passName + "\" is not registered!");
+				}
+				else
+				{
+					_shaders[$ _passName] = _shader.Name;
+				}
+			}
+			++_pass;
+		}
+		_json.Shaders = _shaders;
+
+		if (RenderQueue.Name != undefined)
+		{
+			_json.RenderQueue = RenderQueue.Name;
+		}
+
+		// TODO: Save OnApply
+
+		_json.BlendMode = BlendMode;
+		_json.Culling = Culling;
+		_json.ZWrite = ZWrite;
+		_json.ZTest = ZTest;
+		_json.ZFunc = ZFunc;
+		_json.AlphaTest = AlphaTest;
+		_json.AlphaBlend = AlphaBlend;
+		_json.Mipmapping = Mipmapping;
+		_json.Filtering = Filtering;
+		_json.Repeat = Repeat;
+
+		// TODO: Save BaseOpacity/BaseOpacitySprite
+
+		return self;
+	};
+
+	/// @func from_json(_json)
+	///
+	/// @desc Loads material properties from a JSON object.
+	///
+	/// @param {Struct} _json The object to load the properties from.
+	///
+	/// @return {Struct.BBMOD_Material} Returns `self`.
+	///
+	/// @throws {BBMOD_Exception} If an error occurs.
+	static from_json = function (_json) {
+		if (variable_struct_exists(_json, "Shaders"))
+		{
+			var _shaders = _json.Shaders;
+			var _keys = variable_struct_get_names(_shaders);
+			var _index = 0;
+			repeat (array_length(_keys))
+			{
+				var _passName = _keys[_index++];
+				var _pass = bbmod_render_pass_from_string(_passName);
+				var _shader = _shaders[$ _passName];
+				if (is_string(_shader))
+				{
+					_shader = bbmod_shader_get(_shader);
+				}
+				set_shader(_pass, _shader);
+			}
+		}
+
+		if (variable_struct_exists(_json, "RenderQueue"))
+		{
+			var _renderQueue = _json.RenderQueue;
+			if (is_string(_renderQueue))
+			{
+				var _renderQueues = bbmod_render_queues_get();
+				var _index = 0;
+				repeat (array_length(_renderQueues))
+				{
+					with (_renderQueues[_index++])
+					{
+						if (Name == _renderQueue)
+						{
+							_renderQueue = self;
+							break;
+						}
+					}
+				}
+				if (is_string(_renderQueue))
+				{
+					throw new BBMOD_Exception("Invalid render queue \"" + _renderQueue + "\"!");
+				}
+			}
+		}
+
+		if (variable_struct_exists(_json, "OnApply"))
+		{
+			OnApply = _json.OnApply;
+		}
+
+		if (variable_struct_exists(_json, "BlendMode"))
+		{
+			BlendMode = _json.BlendMode;
+		}
+
+		if (variable_struct_exists(_json, "Culling"))
+		{
+			Culling = _json.Culling;
+		}
+
+		if (variable_struct_exists(_json, "ZWrite"))
+		{
+			ZWrite = _json.ZWrite;
+		}
+
+		if (variable_struct_exists(_json, "ZTest"))
+		{
+			ZTest = _json.ZTest;
+		}
+
+		if (variable_struct_exists(_json, "ZFunc"))
+		{
+			ZFunc = _json.ZFunc;
+		}
+
+		if (variable_struct_exists(_json, "AlphaTest"))
+		{
+			AlphaTest = _json.AlphaTest;
+		}
+
+		if (variable_struct_exists(_json, "AlphaBlend"))
+		{
+			AlphaBlend = _json.AlphaBlend;
+		}
+
+		if (variable_struct_exists(_json, "Mipmapping"))
+		{
+			Mipmapping = _json.Mipmapping;
+		}
+
+		if (variable_struct_exists(_json, "Filtering"))
+		{
+			Filtering = _json.Filtering;
+		}
+
+		if (variable_struct_exists(_json, "Repeat"))
+		{
+			Repeat = _json.Repeat;
+		}
+
+		if (variable_struct_exists(_json, "BaseOpacity"))
+		{
+			if (BaseOpacitySprite != undefined)
+			{
+				sprite_delete(BaseOpacitySprite);
+				BaseOpacitySprite = undefined;
+			}
+
+			BaseOpacity = _json.BaseOpacity;
+		}
+
+		return self;
+	};
+
+	static to_file = function (_file) {
+		var _dirname = filename_dir(_file);
+		if (!directory_exists(_dirname))
+		{
+			directory_create(_dirname);
+		}
+
+		var _json = {};
+		to_json(_json);
+
+		var _jsonFile = file_text_open_write(_file);
+		file_text_write_string(_jsonFile, json_stringify(_json));
+		file_text_close(_jsonFile);
+
+		return self;
+	};
+
+	static from_file = function (_file, _sha1=undefined) {
+		Path = _file;
+		check_file(_file, _sha1);
+		from_json(bbmod_json_load(_file));
+		IsLoaded = true;
+		return self;
+	};
+
+	static from_file_async = function (_file, _sha1=undefined, _callback=undefined) {
+		Path = _file;
+
+		if (!check_file(_file, _sha1, _callback ?? bbmod_empty_callback))
+		{
+			return self;
+		}
+
+		var _json;
+
+		try
+		{
+			_json = bbmod_json_load(_file);
+		}
+		catch (_err)
+		{
+			if (_callback)
+			{
+				_callback(_err, self);
+			}
+			return self;
+		}
+
+		from_json(_json);
+		IsLoaded = true;
+
+		if (_callback != undefined)
+		{
+			_callback(undefined, self);
+		}
+
+		return self;
 	};
 
 	static _make_sprite = function (_r, _g, _b, _a) {
