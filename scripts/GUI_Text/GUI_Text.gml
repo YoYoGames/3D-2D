@@ -18,7 +18,8 @@ function GUI_Text(_text, _props={}, _children=[])
 
 	/// @var {String}
 	/// Possible options are "clip", "ellipsis" or `undefined`.
-	TextOverflow = GUI_StructGet(_props, "TextOverflow");
+	/// Default value is "clip".
+	TextOverflow = _props[$ "TextOverflow"] ?? "clip";
 
 	/// @var {Real}
 	TextAlign = _props[$ "TextAlign"] ?? 0.0;

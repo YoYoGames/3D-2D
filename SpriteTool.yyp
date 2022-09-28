@@ -11,7 +11,6 @@
     {"id":{"name":"GUI_Tab","path":"scripts/GUI_Tab/GUI_Tab.yy",},"order":0,},
     {"id":{"name":"ST_ExportAnimatedSpriteTask","path":"scripts/ST_ExportAnimatedSpriteTask/ST_ExportAnimatedSpriteTask.yy",},"order":3,},
     {"id":{"name":"ST_OAttachment","path":"objects/ST_OAttachment/ST_OAttachment.yy",},"order":1,},
-    {"id":{"name":"RmDev","path":"rooms/RmDev/RmDev.yy",},"order":0,},
     {"id":{"name":"BBMOD_DualQuaternion","path":"scripts/BBMOD_DualQuaternion/BBMOD_DualQuaternion.yy",},"order":0,},
     {"id":{"name":"ST_AnimationPlayerWidget","path":"scripts/ST_AnimationPlayerWidget/ST_AnimationPlayerWidget.yy",},"order":14,},
     {"id":{"name":"GUI_Text","path":"scripts/GUI_Text/GUI_Text.yy",},"order":10,},
@@ -121,7 +120,6 @@
     {"id":{"name":"ST_ShMaterialIndex","path":"shaders/ST_ShMaterialIndex/ST_ShMaterialIndex.yy",},"order":1,},
     {"id":{"name":"BBMOD_PBRMaterial","path":"scripts/BBMOD_PBRMaterial/BBMOD_PBRMaterial.yy",},"order":1,},
     {"id":{"name":"GUI_Input","path":"scripts/GUI_Input/GUI_Input.yy",},"order":2,},
-    {"id":{"name":"ODev","path":"objects/ODev/ODev.yy",},"order":1,},
     {"id":{"name":"BBMOD_SprWhite","path":"sprites/BBMOD_SprWhite/BBMOD_SprWhite.yy",},"order":17,},
     {"id":{"name":"GUI_SprContainerBorder","path":"sprites/GUI_SprContainerBorder/GUI_SprContainerBorder.yy",},"order":1,},
     {"id":{"name":"GUI_AccordionBody","path":"scripts/GUI_AccordionBody/GUI_AccordionBody.yy",},"order":3,},
@@ -275,7 +273,6 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"RmDev","path":"rooms/RmDev/RmDev.yy",},},
     {"roomId":{"name":"ST_RmMain","path":"rooms/ST_RmMain/ST_RmMain.yy",},},
   ],
   "Folders": [
@@ -304,7 +301,6 @@
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Renderer","folderPath":"folders/BBMOD/Rendering/Renderer.yy","order":6,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Sky","folderPath":"folders/BBMOD/Rendering/Sky.yy","order":7,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"SSAO","folderPath":"folders/BBMOD/Rendering/SSAO.yy","order":8,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Dev","folderPath":"folders/Dev.yy","order":5,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"GUI","folderPath":"folders/GUI.yy","order":3,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Accordion","folderPath":"folders/GUI/Accordion.yy","order":48,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Box","folderPath":"folders/GUI/Box.yy","order":25,},

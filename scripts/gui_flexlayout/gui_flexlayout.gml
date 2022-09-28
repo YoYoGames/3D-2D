@@ -117,14 +117,15 @@ function GUI_FlexLayout(_props={}, _children=[])
 					_y += RealHeight + _gap;
 				}
 
+				Layout(_force);
+
 				_maxItemWidth = max(RealWidth, _maxItemWidth);
 				_maxItemHeight = max(RealHeight, _maxItemHeight);
-
-				Layout(_force);
 			}
 		}
 
-		ApplyAutoSize(_maxItemWidth, _maxItemHeight);
+		var _bbox = GetInnerBoundingBox();
+		ApplyAutoSize(_bbox[2] + _paddingRight - RealX, _bbox[3] + _paddingBottom - RealY);
 
 		return self;
 	};

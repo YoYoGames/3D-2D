@@ -7,11 +7,16 @@
 /// @param {Struct} [_props]
 /// @param {Array<Struct.GUI_AccordionHeader, Struct.GUI_AccordionBody>} [_children]
 function GUI_AccordionItem(_props={}, _children=[])
-	: GUI_VBox(_props, _children) constructor
+	: GUI_FlexLayout(_props, _children) constructor
 {
 	MaxChildCount = 2;
 
-	SetWidth(_props[$ "Width"] ?? "100%");
+	FlexDirection = _props[$ "FlexDirection"] ?? "column";
+
+	SetSize(
+		_props[$ "Width"] ?? "100%",
+		_props[$ "Height"] ?? "auto"
+	);
 
 	/// @var {Bool}
 	/// @readonly

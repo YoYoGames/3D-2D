@@ -212,6 +212,33 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @readonly
 	EventListeners = undefined;
 
+	/// @func FindFromId(_id)
+	///
+	/// @desc
+	///
+	/// @param {String} _id
+	///
+	/// @return {Struct.GUI_Widget} The found widget or `undefined`.
+	static FindFromId = function (_id) {
+		if (Id == _id)
+		{
+			return self;
+		}
+		var i = 0;
+		repeat (array_length(Children))
+		{
+			with (Children[i++])
+			{
+				var _widget = FindFromId(_id);
+				if (_widget != undefined)
+				{
+					return _widget;
+				}
+			}
+		}
+		return undefined;
+	};
+
 	/// @func MarkChanged()
 	///
 	/// @desc
