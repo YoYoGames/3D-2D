@@ -80,7 +80,7 @@ function GUI_Dropdown(_props={}, _options=[])
 		if (!Selected && _option.IsDefault)
 		{
 			SetProps({
-				Selected: option,
+				Selected: _option,
 			});
 		}
 		return self;

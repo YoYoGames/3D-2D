@@ -124,19 +124,7 @@ function GUI_FlexLayout(_props={}, _children=[])
 			}
 		}
 
-		// Note: This should also affect the child widgets, but then the layout
-		// would have to be done in multiple passes, which could get very slow!
-		if (Width == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "row"))
-		{
-			_maxItemWidth = GetClampedRealWidth(_maxItemWidth, Parent.RealWidth);
-			SetProps({ RealWidth: _maxItemWidth });
-		}
-
-		if (Height == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "column"))
-		{
-			_maxItemHeight = GetClampedRealHeight(_maxItemHeight, Parent.RealHeight);
-			SetProps({ RealHeight: _maxItemHeight });
-		}
+		ApplyAutoSize(_maxItemWidth, _maxItemHeight);
 
 		return self;
 	};

@@ -29,7 +29,7 @@ function GUI_Tab(_text, _props={}, _children=[])
 	if (Target)
 	{
 		Target.SetProps({
-			Visible: sSelected,
+			Visible: IsSelected,
 		});
 	}
 
@@ -51,14 +51,14 @@ function GUI_Tab(_text, _props={}, _children=[])
 			}
 			var _self = self;
 			Parent.SetProps({
-				Selected: self,
+				Selected: _self,
 			});
 		}
-		SetProps({ IsSelected: rue });
+		SetProps({ IsSelected: true });
 		if (Target)
 		{
 			Target.SetProps({
-				Visible: rue,
+				Visible: true,
 			});
 		}
 		return self;
@@ -72,14 +72,14 @@ function GUI_Tab(_text, _props={}, _children=[])
 	static Unselect = function () {
 		if (Parent && variable_struct_exists(Parent, "Selected") && Parent.Selected == self)
 		{
-			Parent.Selected.SetProps({ IsSelected: alse });
-			Parent.SetProps({ Selected: ndefined });
+			Parent.Selected.SetProps({ IsSelected: false });
+			Parent.SetProps({ Selected: undefined });
 		}
-		SetProps({ IsSelected: alse });
+		SetProps({ IsSelected: false });
 		if (Target)
 		{
 			Target.SetProps({
-				Visible: alse,
+				Visible: false,
 			});
 		}
 		return self;

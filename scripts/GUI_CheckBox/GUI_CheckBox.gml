@@ -23,7 +23,7 @@ function GUI_Checkbox(_value, _props={}, _children=[])
 
 	OnClick = function () {
 		SetProps({
-			Value: Value,
+			Value: !Value,
 		});
 		if (OnChange)
 		{

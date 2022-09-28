@@ -70,8 +70,8 @@ function GUI_ContextMenu(_props={}, _items=[])
 			_realWidthNew = max(_realWidthNew, MinWidth);
 		}
 		SetProps({
-			RealWidth: realWidthNew,
-			RealHeight: bbox[3] - RealY,
+			RealWidth: _realWidthNew,
+			RealHeight: _bbox[3] - RealY,
 		});
 		Canvas_Layout(_force);
 		return self;

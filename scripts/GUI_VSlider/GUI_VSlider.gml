@@ -31,7 +31,7 @@ function GUI_VSlider(_min, _max, _props={}, _children=[])
 			if (_value != _valueOld)
 			{
 				SetProps({
-					Value: value,
+					Value: _value,
 				});
 				if (OnChange)
 				{

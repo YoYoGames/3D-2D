@@ -44,9 +44,9 @@ GUI = new GUI_Root({
 			TextOverflow: "ellipsis",
 			Color: c_white,
 			BackgroundColor: c_maroon,
-			OnUpdate: function (_text) {
-				_text.SetProps({ Width: window_mouse_get_x() - _text.RealX });
-			},
+			//OnUpdate: function (_text) {
+			//	_text.SetProps({ Width: window_mouse_get_x() - _text.RealX });
+			//},
 		}),
 		new GUI_Text("Some other text here", {
 			PaddingLeft: 10,

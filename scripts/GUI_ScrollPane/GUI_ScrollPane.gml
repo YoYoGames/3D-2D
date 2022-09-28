@@ -121,8 +121,8 @@ function GUI_ScrollPane(_props={}, _children=[])
 		}
 
 		Canvas.SetProps({
-			ScrollX: ScrollbarH.GetScroll(),
-			ScrollY: ScrollbarV.GetScroll(),
+			ScrollX: -ScrollbarH.GetScroll(),
+			ScrollY: -ScrollbarV.GetScroll(),
 		});
 		Canvas.Layout(_force);
 		ScrollbarH.Layout(_force);

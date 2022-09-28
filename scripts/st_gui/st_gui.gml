@@ -12,13 +12,19 @@ function ST_GUI(_store, _props={})
 	/// @var {Id.Instance, Struct}
 	Store = _store;
 
-	FlexLayout = new GUI_FlexLayout({ FlexDirection: "column" });
+	FlexLayout = new GUI_FlexLayout({
+		FlexDirection: "column",
+		Width: "100%",
+		Height: "100%",
+	});
 	Add(FlexLayout);
 
 	Menu = new ST_MenuBar();
 	FlexLayout.Add(Menu);
 
 	HSplitterLeft = new GUI_HSplitter({
+		Width: "100%",
+		Height: "100%",
 		FlexGrow: 1,
 		Split: 0.25,
 	});
@@ -33,11 +39,15 @@ function ST_GUI(_store, _props={})
 	HSplitterLeft.Right.Add(HSplitterRight);
 
 	FlexLayout = new GUI_FlexLayout({
+		Width: "100%",
+		Height: "100%",
 		FlexDirection: "column",
 	});
 	HSplitterRight.Left.Add(FlexLayout);
 
 	Viewport = new ST_ViewportWidget(Store, {
+		Width: "100%",
+		Height: "100%",
 		FlexGrow: 1,
 	});
 	FlexLayout.Add(Viewport);

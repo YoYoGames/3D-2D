@@ -535,6 +535,33 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return self;
 	};
 
+	/// @func ApplyAutoSize(_width, _height)
+	///
+	/// @desc
+	///
+	/// @param {Real} _width
+	/// @param {Real} _height
+	///
+	/// @return {Struct.GUI_Widget} Returns `self`.
+	static ApplyAutoSize = function (_width, _height) {
+		// Note: This should also affect the child widgets, but then the layout
+		// would have to be done in multiple passes, which could get very slow!
+
+		if (Width == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "row"))
+		{
+			_width = GetClampedRealWidth(_width, Parent.RealWidth);
+			SetProps({ RealWidth: _width });
+		}
+
+		if (Height == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "column"))
+		{
+			_height = GetClampedRealHeight(_height, Parent.RealHeight);
+			SetProps({ RealHeight: _height });
+		}
+
+		return self;
+	};
+
 	/// @func IsDisabled()
 	///
 	/// @desc

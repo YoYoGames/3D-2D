@@ -120,9 +120,8 @@ function ST_VectorInput(_vector, _props={})
 		{
 			with (Children[i])
 			{
+				ComputeRealSize(_parentWidth, _parentHeight);
 				SetProps({
-					RealWidth: (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0)),
-					RealHeight: (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0)),
 					RealX: _x,
 					RealY: _y,
 				});

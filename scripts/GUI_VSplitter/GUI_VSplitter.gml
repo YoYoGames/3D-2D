@@ -61,18 +61,18 @@ function GUI_VSplitter(_props={}, _children=[])
 		var _splitterY = GetSplitterY();
 
 		Top.SetProps({
-			RealX: ealX,
-			RealY: ealY,
-			RealWidth: ealWidth,
-			RealHeight: ottom.Visible ? max(_splitterY - RealY, 0) : RealHeight,
+			RealX: RealX,
+			RealY: RealY,
+			RealWidth: RealWidth,
+			RealHeight: Bottom.Visible ? max(_splitterY - RealY, 0) : RealHeight,
 		});
 		Top.Layout(_force);
 
 		Bottom.SetProps({
-			RealX: ealX,
-			RealY: op.Visible ? (_splitterY + Size) : RealY,
-			RealWidth: ealWidth,
-			RealHeight: op.Visible ? max(RealY + RealHeight - Bottom.RealY, 0) : RealHeight,
+			RealX: RealX,
+			RealY: Top.Visible ? (_splitterY + Size) : RealY,
+			RealWidth: RealWidth,
+			RealHeight: Top.Visible ? max(RealY + RealHeight - Bottom.RealY, 0) : RealHeight,
 		});
 		Bottom.Layout(_force);
 
@@ -93,7 +93,7 @@ function GUI_VSplitter(_props={}, _children=[])
 				var _split = (_mouseY - RealY + MouseOffset) / RealHeight;
 				_split = clamp(_split, 0.1, 0.9);
 				SetProps({
-					Split: split,
+					Split: _split,
 				});
 			}
 			else
