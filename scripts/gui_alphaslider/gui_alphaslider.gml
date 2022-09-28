@@ -19,7 +19,7 @@ function GUI_AlphaSlider(_props={}, _children=[])
 
 	OnChange = function (_value) {
 		Parent.SetProps({
-			"Alpha": _value,
+			Alpha: value,
 		});
 	};
 

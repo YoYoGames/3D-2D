@@ -61,8 +61,8 @@ function GUI_Canvas(_props={}, _children=[])
 					var _x = ((_parentWidth - RealWidth) * AnchorLeft) + (RealWidth * PivotLeft) + X;
 					var _y = ((_parentHeight - RealHeight) * AnchorTop) + (RealHeight * PivotTop) + Y;
 					SetProps({
-						"RealX": round(_parentX + _x + _scrollX),
-						"RealY": round(_parentY + _y + _scrollY),
+						RealX: round(_parentX + _x + _scrollX),
+						RealY: round(_parentY + _y + _scrollY),
 					});
 					Layout(_force);
 				}
@@ -73,16 +73,16 @@ function GUI_Canvas(_props={}, _children=[])
 		{
 			var _bbox = GetInnerBoundingBox();
 			SetProps({
-				"ContentWidth": _bbox[2] - (RealX + ScrollX) + (PaddingRight ?? Padding),
-				"ContentHeight": _bbox[3] - (RealY + ScrollY) + (PaddingBottom ?? Padding),
+				ContentWidth: _bbox[2] - (RealX + ScrollX) + (PaddingRight ?? Padding),
+				ContentHeight: _bbox[3] - (RealY + ScrollY) + (PaddingBottom ?? Padding),
 			});
 			
 		}
 		else
 		{
 			SetProps({
-				"ContentWidth": 0,
-				"ContentHeight": 0,
+				ContentWidth: 0,
+				ContentHeight: 0,
 			});
 		}
 

@@ -24,7 +24,7 @@ function GUI_SectionHeader(_text, _props={}, _children=[])
 	if (Target)
 	{
 		Target.SetProps({
-			"Visible": !Collapsed,
+			Visible: !Collapsed,
 		});
 	}
 
@@ -49,12 +49,12 @@ function GUI_SectionHeader(_text, _props={}, _children=[])
 
 	OnClick = function () {
 		SetProps({
-			"Collapsed": !Collapsed,
+			Collapsed: !Collapsed,
 		});
 		if (Target)
 		{
 			Target.SetProps({
-				"Visible": !Collapsed,
+				Visible: !Collapsed,
 			});
 		}
 	};

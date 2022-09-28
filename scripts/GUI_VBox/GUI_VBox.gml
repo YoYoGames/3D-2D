@@ -31,8 +31,8 @@ function GUI_VBox(_props={}, _children=[])
 				{
 					ComputeRealSize(_parentWidth, _parentHeight);
 					SetProps({
-						"RealX": _x,
-						"RealY": _y,
+						RealX: _x,
+						RealY: _y,
 					});
 					Layout(_force);
 					var _bbox = GetBoundingBox();
@@ -44,8 +44,8 @@ function GUI_VBox(_props={}, _children=[])
 		}
 
 		SetProps({
-			"RealWidth": _xmax - RealX + (PaddingRight ?? Padding),
-			"RealHeight": _y - RealY + (PaddingBottom ?? Padding),
+			RealWidth: _xmax - RealX + (PaddingRight ?? Padding),
+			RealHeight: _y - RealY + (PaddingBottom ?? Padding),
 		});
 
 		return self;

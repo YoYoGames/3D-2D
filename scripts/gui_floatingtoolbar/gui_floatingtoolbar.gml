@@ -27,7 +27,7 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 
 	OnDrag = function (_self, _diffX, _diffY) {
 		SetProps({
-			"X": X + _diffX,
+			X: X + _diffX,
 		});
 	};
 
@@ -50,7 +50,7 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 		CHECK_LAYOUT_CHANGED;
 		Widget_Layout(_force);
 		SetProps({
-			"RealWidth": GetInnerBoundingBox()[2] - RealX + 5,
+			RealWidth: GetInnerBoundingBox()[2] - RealX + 5,
 		});
 		return self;
 	};

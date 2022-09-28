@@ -57,10 +57,10 @@ function GUI_TabGroup(_props={}, _children=[])
 				with (Children[i])
 				{
 					SetProps({
-						"RealWidth": _tabWidth,
-						"RealHeight": _parentHeight - 1,
-						"RealX": _x,
-						"RealY": _y,
+						RealWidth: tabWidth,
+						RealHeight: parentHeight - 1,
+						RealX: x,
+						RealY: y,
 					});
 					_x += _tabWidth;
 				}

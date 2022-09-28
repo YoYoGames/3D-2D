@@ -38,6 +38,24 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @readonly
 	Children = [];
 
+	/// @var {Constant.Color}
+	BackgroundColor = GUI_StructGet(_props, "BackgroundColor");
+
+	/// @var {Real}
+	BackgroundAlpha = _props[$ "BackgroundAlpha"] ?? 1.0;
+
+	/// @var {Asset.GMSprite}
+	BackgroundSprite = GUI_StructGet(_props, "BackgroundSprite");
+
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
+	/// @var {Constant.Color}
+	BackgroundSpriteColor = _props[$ "BackgroundSpriteColor"] ?? c_white;
+
+	/// @var {Real}
+	BackgroundSpriteAlpha = _props[$ "BackgroundSpriteAlpha"] ?? 1.0;
+
 	var i = 0
 	repeat (array_length(_children))
 	{
@@ -76,8 +94,11 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		SetWidth(_props[$ "Width"]);
 	}
 
-	/// @var {Real}
+	/// @var {Real, String}
 	MinWidth = GUI_StructGet(_props, "MinWidth");
+
+	/// @var {Real, String}
+	MaxWidth = GUI_StructGet(_props, "MaxWidth");
 
 	/// @var {Real}
 	/// @readonly
@@ -96,8 +117,11 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		SetHeight(_props[$ "Height"]);
 	}
 
-	/// @var {Real}
+	/// @var {Real, String}
 	MinHeight = GUI_StructGet(_props, "MinHeight");
+
+	/// @var {Real, String}
+	MaxHeight = GUI_StructGet(_props, "MaxHeight");
 
 	/// @var {Real}
 	/// @readonly
@@ -367,8 +391,8 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		static _dest = [];
 		GUI_ParseSize(_value, _dest);
 		SetProps({
-			"Width": _dest[0],
-			"WidthUnit": _dest[1],
+			Width: _dest[0],
+			WidthUnit: _dest[1],
 		});
 		return self;
 	};
@@ -387,8 +411,8 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		static _dest = [];
 		GUI_ParseSize(_value, _dest);
 		SetProps({
-			"Height": _dest[0],
-			"HeightUnit": _dest[1],
+			Height: _dest[0],
+			HeightUnit: _dest[1],
 		});
 		return self;
 	};
@@ -410,6 +434,31 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return self;
 	};
 
+	/// @func GetClampedRealWidth(_realWidth, _parentWidth)
+	///
+	/// @desc
+	///
+	/// @param {Real} _realWidth
+	/// @param {Real} _parentWidth
+	///
+	/// @return {Real}
+	static GetClampedRealWidth = function (_realWidth, _parentWidth) {
+		static _dest = array_create(2);
+		if (MinWidth != undefined)
+		{
+			GUI_ParseSize(MinWidth, _dest);
+			var _realMinWidth = (_dest[1] == "px") ? _dest[0] : (_parentWidth * (_dest[0] / 100.0));
+			_realWidth = max(_realWidth, _realMinWidth);
+		}
+		if (MaxWidth != undefined)
+		{
+			GUI_ParseSize(MaxWidth, _dest);
+			var _realMaxWidth = (_dest[1] == "px") ? _dest[0] : (_parentWidth * (_dest[0] / 100.0));
+			_realWidth = min(_realWidth, _realMaxWidth);
+		}
+		return _realWidth;
+	};
+
 	/// @func ComputeRealWidth(_parentWidth)
 	///
 	/// @desc
@@ -419,15 +468,38 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static ComputeRealWidth = function (_parentWidth) {
 		gml_pragma("forceinline");
-		var _realWidth = (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0));
-		if (MinWidth != undefined)
+		if (Width != "auto")
 		{
-			_realWidth = max(_realWidth, MinWidth);
+			var _realWidth = (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0));
+			_realWidth = GetClampedRealWidth(_realWidth, _parentWidth);
+			SetProps({ RealWidth: _realWidth });
 		}
-		SetProps({
-			"RealWidth": _realWidth,
-		});
 		return self;
+	};
+
+	/// @func GetClampedRealHeight(_realHeight, _parentHeight)
+	///
+	/// @desc
+	///
+	/// @param {Real} _realHeight
+	/// @param {Real} _parentHeight
+	///
+	/// @return {Real}
+	static GetClampedRealHeight = function (_realHeight, _parentHeight) {
+		static _dest = array_create(2);
+		if (MinHeight != undefined)
+		{
+			GUI_ParseSize(MinHeight, _dest);
+			var _realMinHeight = (_dest[1] == "px") ? _dest[0] : (_parentHeight * (_dest[0] / 100.0));
+			_realHeight = max(_realHeight, _realMinHeight);
+		}
+		if (MaxHeight != undefined)
+		{
+			GUI_ParseSize(MaxHeight, _dest);
+			var _realMaxHeight = (_dest[1] == "px") ? _dest[0] : (_parentHeight * (_dest[0] / 100.0));
+			_realHeight = min(_realHeight, _realMaxHeight);
+		}
+		return _realHeight;
 	};
 
 	/// @func ComputeRealHeight(_parentHeight)
@@ -439,14 +511,12 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static ComputeRealHeight = function (_parentHeight) {
 		gml_pragma("forceinline");
-		var _realHeight = (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0));
-		if (MinHeight != undefined)
+		if (Height != "auto")
 		{
-			_realHeight = max(_realHeight, MinHeight);
+			var _realHeight = (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0));
+			_realHeight = GetClampedRealHeight(_realHeight, _parentHeight);
+			SetProps({ RealHeight: _realHeight });
 		}
-		SetProps({
-			"RealHeight": _realHeight,
-		});
 		return self;
 	};
 
@@ -557,7 +627,9 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		var _parentWidth = RealWidth;
 		var _parentHeight = RealHeight;
 		var _paddingLeft = PaddingLeft ?? Padding;
+		var _paddingRight = PaddingRight ?? Padding;
 		var _paddingTop = PaddingTop ?? Padding;
+		var _paddingBottom = PaddingBottom ?? Padding;
 
 		var i = 0;
 		repeat (array_length(Children))
@@ -566,7 +638,10 @@ function GUI_Widget(_props={}, _children=[]) constructor
 			{
 				if (Visible)
 				{
-					ComputeRealSize(_parentWidth, _parentHeight);
+					ComputeRealSize(
+						_parentWidth - _paddingLeft - _paddingRight,
+						_parentHeight - _paddingTop - _paddingBottom
+					);
 					RealX = round(_parentX + _paddingLeft + ((_parentWidth - RealWidth) * AnchorLeft) + (RealWidth * PivotLeft) + X);
 					RealY = round(_parentY + _paddingTop + ((_parentHeight - RealHeight) * AnchorTop) + (RealHeight * PivotTop) + Y);
 					Layout(_force);
@@ -851,6 +926,25 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return self;
 	};
 
+	/// @func DrawBackground()
+	///
+	/// @desc
+	///
+	/// @return {Struct.GUI_Widget} Returns `self`.
+	static DrawBackground = function () {
+		gml_pragma("forceinline");
+		if (BackgroundColor != undefined)
+		{
+			GUI_DrawRectangle(RealX, RealY, RealWidth, RealHeight, BackgroundColor, BackgroundAlpha);
+		}
+		if (BackgroundSprite != undefined)
+		{
+			draw_sprite_stretched_ext(BackgroundSprite, BackgroundSubimage, RealX, RealY, RealWidth, RealHeight,
+				BackgroundSpriteColor, BackgroundSpriteAlpha);
+		}
+		return self;
+	};
+
 	/// @func DrawChildren()
 	///
 	/// @desc Draws all *visible* child widgets.
@@ -877,6 +971,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static Draw = function () {
+		DrawBackground();
 		DrawChildren();
 		return self;
 	};

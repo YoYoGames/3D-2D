@@ -81,10 +81,10 @@ function GUI_ScrollPane(_props={}, _children=[])
 		with (Canvas)
 		{
 			SetProps({
-				"RealWidth": _parentWidth,
-				"RealHeight": _parentHeight,
-				"RealX": _parentX,
-				"RealY": _parentY,
+				RealWidth: _parentWidth,
+				RealHeight: _parentHeight,
+				RealX: _parentX,
+				RealY: _parentY,
 			});
 		}
 
@@ -92,9 +92,9 @@ function GUI_ScrollPane(_props={}, _children=[])
 		{
 			ComputeRealHeight(_parentHeight);
 			SetProps({
-				"RealWidth": _parentWidth,
-				"RealX": _parentX,
-				"RealY": _parentY + _parentHeight - RealHeight,
+				RealWidth: _parentWidth,
+				RealX: _parentX,
+				RealY: _parentY + _parentHeight - RealHeight,
 			});
 		}
 
@@ -102,9 +102,9 @@ function GUI_ScrollPane(_props={}, _children=[])
 		{
 			ComputeRealWidth(_parentWidth);
 			SetProps({
-				"RealHeight": _parentHeight,
-				"RealX": _parentX + _parentWidth - RealWidth,
-				"RealY": _parentY,
+				RealHeight: _parentHeight,
+				RealX: _parentX + _parentWidth - RealWidth,
+				RealY: _parentY,
 			});
 		}
 
@@ -121,8 +121,8 @@ function GUI_ScrollPane(_props={}, _children=[])
 		}
 
 		Canvas.SetProps({
-			"ScrollX": -ScrollbarH.GetScroll(),
-			"ScrollY": -ScrollbarV.GetScroll(),
+			ScrollX: ScrollbarH.GetScroll(),
+			ScrollY: ScrollbarV.GetScroll(),
 		});
 		Canvas.Layout(_force);
 		ScrollbarH.Layout(_force);
@@ -133,10 +133,10 @@ function GUI_ScrollPane(_props={}, _children=[])
 		ScrollbarH.CalcJumpAndThumbSize(ScrollbarH.RealWidth, _contentWidth);
 		ScrollbarV.CalcJumpAndThumbSize(ScrollbarV.RealHeight, _contentHeight);
 		ScrollbarH.SetProps({
-			"Visible": (EnableScrollbarH && _contentWidth > Canvas.RealWidth),
+			Visible: (EnableScrollbarH && _contentWidth > Canvas.RealWidth),
 		})
 		ScrollbarV.SetProps({
-			"Visible": (EnableScrollbarV && _contentHeight > Canvas.RealHeight),
+			Visible: (EnableScrollbarV && _contentHeight > Canvas.RealHeight),
 		});
 
 		return self;

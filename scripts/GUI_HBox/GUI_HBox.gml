@@ -29,8 +29,8 @@ function GUI_HBox(_props={}, _children=[])
 				{
 					ComputeRealSize(_parentWidth, _parentHeight);
 					SetProps({
-						"RealX": _x,
-						"RealY": _y,
+						RealX: _x,
+						RealY: _y,
 					})
 					Layout(_force);
 					var _bbox = GetBoundingBox();
@@ -42,8 +42,8 @@ function GUI_HBox(_props={}, _children=[])
 		}
 
 		SetProps({
-			"RealWidth": _x - RealX,
-			"RealHeight": _ymax - RealY,
+			RealWidth: _x - RealX,
+			RealHeight: _ymax - RealY,
 		});
 
 		return self;

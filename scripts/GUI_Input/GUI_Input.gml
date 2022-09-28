@@ -176,7 +176,7 @@ function GUI_Input(_value, _props={}, _children=[])
 			}
 		}
 		SetProps({
-			"Value": _value,
+			Value: _value,
 		});
 		return self;
 	};

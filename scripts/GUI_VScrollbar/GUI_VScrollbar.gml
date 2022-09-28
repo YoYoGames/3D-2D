@@ -24,7 +24,7 @@ function GUI_VScrollbar(_props={})
 			var _scroll = _mouseY - RealY;
 			_scroll = clamp(_scroll, 0, RealHeight - ThumbSize);
 			SetProps({
-				"Scroll": _scroll,
+				Scroll: _scroll,
 			});
 		}
 	};
@@ -47,7 +47,7 @@ function GUI_VScrollbar(_props={})
 		}
 		_scroll = max(min(_scroll, RealHeight - ThumbSize), 0);
 		SetProps({
-			"Scroll": _scroll,
+			Scroll: _scroll,
 		});
 		return self;
 	};

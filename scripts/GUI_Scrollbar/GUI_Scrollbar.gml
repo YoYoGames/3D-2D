@@ -77,7 +77,7 @@ function GUI_Scrollbar(_props={})
 	static SetScroll = function (_scroll) {
 		gml_pragma("forceinline");
 		SetProps({
-			"Scroll": _scroll / ScrollJump,
+			Scroll: _scroll / ScrollJump,
 		});
 		return self;
 	};

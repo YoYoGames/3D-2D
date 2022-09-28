@@ -107,7 +107,7 @@ function ST_VectorInput(_vector, _props={})
 		for (var i = 0; i < VectorSize; ++i)
 		{
 			var _text = LabelWidgets[i];
-			_inputWidth -= _text.Width;
+			_inputWidth -= _text.RealWidth;
 		}
 		_inputWidth = floor((_inputWidth - (_spacing * (MaxChildCount - 1))) / VectorSize);
 
@@ -121,10 +121,10 @@ function ST_VectorInput(_vector, _props={})
 			with (Children[i])
 			{
 				SetProps({
-					"RealWidth": (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0)),
-					"RealHeight": (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0)),
-					"RealX": _x,
-					"RealY": _y,
+					RealWidth: (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0)),
+					RealHeight: (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0)),
+					RealX: _x,
+					RealY: _y,
 				});
 				_x += RealWidth + _spacing;
 			}

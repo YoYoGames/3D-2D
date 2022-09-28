@@ -117,10 +117,10 @@ function GUI_Root(_props={}, _children=[])
 	static Layout = function (_force=false) {
 		//CHECK_LAYOUT_CHANGED;
 		SetProps({
-			"RealX": X,
-			"RealY": Y,
-			"RealWidth": (WidthUnit == "px") ? Width : (window_get_width() * (Width / 100.0)),
-			"RealHeight": (HeightUnit == "px") ? Height : (window_get_height() * (Height / 100.0)),
+			RealX: X,
+			RealY: Y,
+			RealWidth: (WidthUnit == "px") ? Width : (window_get_width() * (Width / 100.0)),
+			RealHeight: (HeightUnit == "px") ? Height : (window_get_height() * (Height / 100.0)),
 		});
 		Widget_Layout(_force);
 		return self;
@@ -295,6 +295,7 @@ function GUI_Root(_props={}, _children=[])
 	static Draw = function () {
 		if (Visible)
 		{
+			DrawBackground();
 			DrawChildren();
 			//DrawDebug();
 			if (WidgetHovered && !WidgetDragged)

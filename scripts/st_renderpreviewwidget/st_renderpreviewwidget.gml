@@ -61,7 +61,7 @@ function ST_RenderPreviewWidget(_store, _props={})
 		Widget_Update();
 		SetHeight(Header.Collapsed ? Header.Height : 244);
 		Toolbar.SetProps({
-			"Visible": !Header.Collapsed,
+			Visible: !Header.Collapsed,
 		});
 		return self;
 	};

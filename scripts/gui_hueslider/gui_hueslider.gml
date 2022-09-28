@@ -17,7 +17,7 @@ function GUI_HueSlider(_props={})
 
 	OnChange = function (_value) {
 		Parent.SetProps({
-			"Hue": _value,
+			Hue: _value,
 		});
 	};
 

@@ -37,18 +37,18 @@ function ST_ExportOptionsPane(_store, _props={})
 				X: -19,
 				OnClick: function (_iconButton) {
 					_iconButton.Root.HSplitterRight.Right.SetProps({
-						"Visible": false,
+						Visible: false,
 					});
 					var _expandExportOptionsButton = _iconButton.Root.Viewport.ExpandExportOptionsButton;
 					_expandExportOptionsButton.SetProps({
-						"Visible": true,
+						Visible: true,
 					});
 					var _floatingToolbar = _iconButton.Root.Viewport.FloatingToolbar;
 					_floatingToolbar.SetProps({
-						"X": _floatingToolbar.X - _expandExportOptionsButton.Width,
+						X: _floatingToolbar.X - _expandExportOptionsButton.Width,
 					})
 					_iconButton.Root.Viewport.RenderPreview.SetProps({
-						"Visible": true,
+						Visible: true,
 					});
 				},
 			}),

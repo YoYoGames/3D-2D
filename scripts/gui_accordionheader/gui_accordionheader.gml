@@ -24,7 +24,7 @@ function GUI_AccordionHeader(_text, _props={}, _children=[])
 	if (Target)
 	{
 		Target.SetProps({
-			"Visible": !Collapsed,
+			Visible: !Collapsed,
 		});
 	}
 
@@ -50,12 +50,12 @@ function GUI_AccordionHeader(_text, _props={}, _children=[])
 		if (window_mouse_get_x() < RealX + 5 + _caretWidth + 7)
 		{
 			SetProps({
-				"Collapsed": !Collapsed,
+				Collapsed: !Collapsed,
 			});
 			if (Target)
 			{
 				Target.SetProps({
-					"Visible": !Collapsed,
+					Visible: !Collapsed,
 				});
 			}
 		}
@@ -72,7 +72,7 @@ function GUI_AccordionHeader(_text, _props={}, _children=[])
 		}
 
 		Parent.SetProps({
-			"IsSelected": true,
+			IsSelected: true,
 		});
 	};
 

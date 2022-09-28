@@ -22,7 +22,7 @@ function GUI_AccordionBody(_props={}, _children=[])
 
 	OnClick = function () {
 		Parent.SetProps({
-			"IsSelected": true,
+			IsSelected: true,
 		});
 	};
 

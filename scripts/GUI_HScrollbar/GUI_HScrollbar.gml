@@ -24,7 +24,7 @@ function GUI_HScrollbar(_props={})
 			var _scroll = _mouseX - RealX;
 			_scroll = clamp(_scroll, 0, RealWidth - ThumbSize);
 			SetProps({
-				"Scroll": _scroll,
+				Scroll: _scroll,
 			});
 		}
 	};
@@ -47,7 +47,7 @@ function GUI_HScrollbar(_props={})
 		}
 		_scroll = max(min(_scroll, RealWidth - ThumbSize), 0);
 		SetProps({
-			"Scroll": _scroll,
+			Scroll: _scroll,
 		});
 		return self;
 	};
