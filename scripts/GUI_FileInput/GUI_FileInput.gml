@@ -23,6 +23,9 @@ function GUI_FileInput(_path, _props={})
 	/// @var {String}
 	Filename = _props[$ "Filename"] ?? "";
 
+	/// @var {Function}
+	OnSelect = _props[$ "OnSelect"];
+
 	BackgroundSprite = _props[$ "Sprite"] ?? GUI_SprButton;
 
 	/// @var {Struct.GUI_Button}
@@ -33,9 +36,17 @@ function GUI_FileInput(_path, _props={})
 		PivotLeft: 1.0,
 		X: -1,
 		OnClick: method(self, function () {
-			Change(Save
+			var _path = Save
 				? get_save_filename(Filter, Filename)
-				: get_open_filename(Filter, Filename));
+				: get_open_filename(Filter, Filename);
+			if (_path != "")
+			{
+				Change(_path);
+				if (OnSelect)
+				{
+					OnSelect(_path);
+				}
+			}
 		}),
 	});
 	SelectButton.Disabled = Disabled;

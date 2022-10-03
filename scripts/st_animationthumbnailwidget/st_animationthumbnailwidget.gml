@@ -45,8 +45,8 @@ function ST_AnimationThumbnailWidget(_asset, _animationIndex, _props={})
 			var _surface = Asset.AnimationsPreview[AnimationIndex][_frame];
 			if (surface_exists(_surface))
 			{
-				//gpu_push_state();
-				//gpu_set_tex_filter(true);
+				gpu_push_state();
+				gpu_set_tex_filter(true);
 
 				var _surfaceWidth = surface_get_width(_surface);
 				var _surfaceHeight = surface_get_height(_surface);
@@ -58,7 +58,7 @@ function ST_AnimationThumbnailWidget(_asset, _animationIndex, _props={})
 					RealY + floor((_backgroundHeight - (_surfaceHeight * _scale)) * 0.5),
 					_scale, _scale, 0.0, c_white, 1.0);
 
-				//gpu_pop_state();
+				gpu_pop_state();
 			}
 		}
 

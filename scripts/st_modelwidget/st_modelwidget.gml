@@ -36,9 +36,26 @@ function ST_ModelWidget(_store, _props={})
 		? Store.Save.Asset.Path
 		: "";
 
+	DoImport = function () {
+		var _path = inputImportPath.Value;
+		if (_path != "")
+		{
+			Store.ImportAsset(_path);
+			if (Store.Asset)
+			{
+				vboxAsset
+					.RemoveChildWidgets()
+					.Add(new ST_AssetWidget(Store.Asset));
+				Root.FramesPane.AddFrames();
+				Root.MainPane.Attachments.Reset();
+			}
+		}
+	};
+
 	inputImportPath = new GUI_FileInput(_assetPath, {
 		Filter: ST_FILTER_MODEL,
 		Width: "100%",
+		OnSelect: method(self, DoImport),
 	});
 	vboxImport.Add(inputImportPath);
 
@@ -47,21 +64,7 @@ function ST_ModelWidget(_store, _props={})
 		Disabled: method(self, function () {
 			return (inputImportPath.Value == "");
 		}),
-		OnClick: method(self, function () {
-			var _path = inputImportPath.Value;
-			if (_path != "")
-			{
-				Store.ImportAsset(_path);
-				if (Store.Asset)
-				{
-					vboxAsset
-						.RemoveChildWidgets()
-						.Add(new ST_AssetWidget(Store.Asset));
-					Root.FramesPane.AddFrames();
-					Root.MainPane.Attachments.Reset();
-				}
-			}
-		}),
+		OnClick: method(self, DoImport),
 	});
 	vboxImport.Add(buttonImport);
 
