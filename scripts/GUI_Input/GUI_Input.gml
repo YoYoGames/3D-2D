@@ -306,9 +306,11 @@ function GUI_Input(_value, _props={}, _children=[])
 			}
 
 			// Type
-			var _keyboardStringLength = string_length(keyboard_string);
+			// Note: 127 is ASCII for delete. This fixes issues on Mac.
+			var _stringToInsert = string_replace_all(keyboard_string, chr(127), "");
+			var _insertLength = string_length(_stringToInsert);
 
-			if (_keyboardStringLength > 0)
+			if (_insertLength > 0)
 			{
 				// Delete selected part
 				if (EditFrom != EditTo)
@@ -317,8 +319,8 @@ function GUI_Input(_value, _props={}, _children=[])
 				}
 
 				// Insert string
-				InputString = string_insert(keyboard_string, InputString, EditFrom);
-				EditFrom += _keyboardStringLength;
+				InputString = string_insert(_stringToInsert, InputString, EditFrom);
+				EditFrom += _insertLength;
 				EditTo = EditFrom;
 				keyboard_string = "";
 			}
@@ -336,6 +338,12 @@ function GUI_Input(_value, _props={}, _children=[])
 					}
 					else
 					{
+						show_debug_message([
+							current_time,
+							string_length(InputString),
+							EditFrom - 1,
+							EditTo - 1,
+						]);
 						InputString = string_delete(InputString, EditFrom - 1, 1);
 						EditFrom = max(EditFrom - 1, 1);
 						EditTo = EditFrom;
