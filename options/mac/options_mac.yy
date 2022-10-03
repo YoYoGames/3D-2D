@@ -16,7 +16,7 @@
   "option_mac_display_cursor": true,
   "option_mac_start_fullscreen": false,
   "option_mac_allow_fullscreen": true,
-  "option_mac_interpolate_pixels": true,
+  "option_mac_interpolate_pixels": false,
   "option_mac_vsync": false,
   "option_mac_resize_window": true,
   "option_mac_enable_retina": false,
