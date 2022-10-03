@@ -62,7 +62,6 @@ function GUI_ContextMenu(_props={}, _items=[])
 	static Canvas_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		var _bbox = GetInnerBoundingBox();
 		var _realWidthNew = _bbox[2] - RealX;
 		if (MinWidth != undefined)

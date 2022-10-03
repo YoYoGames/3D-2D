@@ -47,7 +47,6 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		Widget_Layout(_force);
 		SetProps({
 			RealWidth: GetInnerBoundingBox()[2] - RealX + 5,

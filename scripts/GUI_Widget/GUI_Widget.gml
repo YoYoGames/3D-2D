@@ -1,10 +1,14 @@
 #macro CHECK_LAYOUT_CHANGED \
 	if (Changed) \
 	{ \
-		_force = true; \
+		_force = true; \ // The widget has changed, we have to recompute layout for all child widgets!
 		Changed = false; \
 	} \
-	if (!_force) return self
+	if (!BranchChanged && !_force) \
+	{ \
+		return self; \
+	} \
+	BranchChanged = false
 
 /// @func GUI_Widget([_props[, _children]])
 ///
@@ -14,9 +18,14 @@
 /// @param {Array<Struct.GUI_Widget>} [_children]
 function GUI_Widget(_props={}, _children=[]) constructor
 {
-	/// @var {Bool}
+	/// @var {Bool} If `true` then widget's properties have changed.
 	/// @private
 	Changed = true;
+
+	/// @var {Bool} If `true` then properties in the widget's subtree
+	/// have changed.
+	/// @private
+	BranchChanged = true;
 
 	/// @var {Struct}
 	/// @private
@@ -245,15 +254,15 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static MarkChangedUp = function () {
-		var _current = self;
+		Changed = true;
+		var _current = Parent;
 		while (_current != undefined)
 		{
-			// FIXME: Does not work on all cases?!?!
-			//if (_current.Changed)
-			//{
-			//	break;
-			//}
-			_current.Changed = true;
+			if (_current.BranchChanged)
+			{
+				break;
+			}
+			_current.BranchChanged = true;
 			_current = _current.Parent;
 		}
 		return self;
@@ -307,22 +316,26 @@ function GUI_Widget(_props={}, _children=[]) constructor
 			var _valueNew = self[$ _name];
 			if (_valueNew != _valueOld)
 			{
+				//show_debug_message([current_time, _name, _valueNew, _valueOld]);
+				Changed = true;
 				_changed = true;
 				break;
 			}
 		}
 		PropsChanged = {};
 
-		if (!_changed)
+		if (!BranchChanged)
 		{
 			var i = 0;
 			repeat (array_length(Children))
 			{
-				_changed |= Children[i++].CheckPropChanges();
+				if (Children[i++].CheckPropChanges())
+				{
+					BranchChanged = true;
+					_changed = true;
+				}
 			}
 		}
-
-		Changed |= _changed;
 
 		return _changed;
 	};

@@ -115,7 +115,6 @@ function GUI_Root(_props={}, _children=[])
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		//CHECK_LAYOUT_CHANGED;
 		SetProps({
 			RealX: X,
 			RealY: Y,

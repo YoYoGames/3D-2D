@@ -55,7 +55,6 @@ function GUI_FileInput(_path, _props={})
 	static Input_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		RealWidth -= SelectButton.RealWidth;
 		Input_Layout(_force);
 		return self;

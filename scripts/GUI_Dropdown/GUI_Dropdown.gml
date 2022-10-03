@@ -169,7 +169,6 @@ function GUI_Dropdown(_props={}, _options=[])
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		DropdownMenu.X = RealX;
 		DropdownMenu.Y = RealY + RealHeight;
 		DropdownMenu.SetWidth(RealWidth);
