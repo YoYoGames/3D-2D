@@ -338,12 +338,6 @@ function GUI_Input(_value, _props={}, _children=[])
 					}
 					else
 					{
-						show_debug_message([
-							current_time,
-							string_length(InputString),
-							EditFrom - 1,
-							EditTo - 1,
-						]);
 						InputString = string_delete(InputString, EditFrom - 1, 1);
 						EditFrom = max(EditFrom - 1, 1);
 						EditTo = EditFrom;
