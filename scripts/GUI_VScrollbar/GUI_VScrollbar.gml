@@ -23,9 +23,12 @@ function GUI_VScrollbar(_props={})
 		{
 			var _scroll = _mouseY - RealY;
 			_scroll = clamp(_scroll, 0, RealHeight - ThumbSize);
-			SetProps({
-				Scroll: _scroll,
-			});
+			SetProps({ Scroll: _scroll });
+			if (Target)
+			{
+				CalcJumpAndThumbSize(RealHeight, Target.ContentHeight);
+				Target.SetProps({ ScrollY: -GetScroll() });
+			}
 		}
 	};
 
@@ -38,7 +41,7 @@ function GUI_VScrollbar(_props={})
 		{
 			if (mouse_check_button(mb_left))
 			{
-				var _scroll = window_mouse_get_y() - RealY + MouseOffset;
+				_scroll = window_mouse_get_y() - RealY + MouseOffset;
 			}
 			else
 			{
@@ -46,9 +49,12 @@ function GUI_VScrollbar(_props={})
 			}
 		}
 		_scroll = max(min(_scroll, RealHeight - ThumbSize), 0);
-		SetProps({
-			Scroll: _scroll,
-		});
+		SetProps({ Scroll: _scroll });
+		if (Target)
+		{
+			CalcJumpAndThumbSize(RealHeight, Target.ContentHeight);
+			Target.SetProps({ ScrollY: -GetScroll() });
+		}
 		return self;
 	};
 

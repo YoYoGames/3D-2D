@@ -50,6 +50,11 @@ function GUI_Canvas(_props={}, _children=[])
 		var _scrollX = ScrollX;
 		var _scrollY = ScrollY;
 
+		var _xStart = 0;
+		var _yStart = 0;
+		var _xMax = _xStart;
+		var _yMax = _yStart;
+
 		var i = 0;
 		repeat (array_length(Children))
 		{
@@ -65,26 +70,16 @@ function GUI_Canvas(_props={}, _children=[])
 						RealY: round(_parentY + _y + _scrollY),
 					});
 					Layout(_force);
+					_xMax = max(_x + RealWidth, _xMax);
+					_yMax = max(_y + RealHeight, _yMax);
 				}
 			}
 		}
 
-		if (array_length(Children) > 0)
-		{
-			var _bbox = GetInnerBoundingBox();
-			SetProps({
-				ContentWidth: _bbox[2] - (RealX + ScrollX) + (PaddingRight ?? Padding),
-				ContentHeight: _bbox[3] - (RealY + ScrollY) + (PaddingBottom ?? Padding),
-			});
-			
-		}
-		else
-		{
-			SetProps({
-				ContentWidth: 0,
-				ContentHeight: 0,
-			});
-		}
+		SetProps({
+			ContentWidth: _xMax - _xStart,
+			ContentHeight: _yMax - _yStart,
+		});
 
 		return self;
 	};

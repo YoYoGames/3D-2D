@@ -1,10 +1,10 @@
 #macro CHECK_LAYOUT_CHANGED \
-	if (!_force && !Changed) \
+	if (Changed) \
 	{ \
-		return self; \
+		_force = true; \
+		Changed = false; \
 	} \
-	_force = true; \
-	Changed = false
+	if (!_force) return self
 
 /// @func GUI_Widget([_props[, _children]])
 ///
@@ -239,12 +239,12 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return undefined;
 	};
 
-	/// @func MarkChanged()
+	/// @func MarkChangedUp()
 	///
 	/// @desc
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
-	static MarkChanged = function () {
+	static MarkChangedUp = function () {
 		var _current = self;
 		while (_current != undefined)
 		{
@@ -291,10 +291,12 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @desc
 	///
-	/// @return {Struct.GUI_Widget} Returns `self`.
+	/// @return {Bool}
 	///
 	/// @private
 	static CheckPropChanges = function () {
+		var _changed = false;
+
 		var _props = PropsChanged;
 		var _names = variable_struct_get_names(_props);
 		var i = 0;
@@ -305,12 +307,24 @@ function GUI_Widget(_props={}, _children=[]) constructor
 			var _valueNew = self[$ _name];
 			if (_valueNew != _valueOld)
 			{
-				MarkChanged();
+				_changed = true;
 				break;
 			}
 		}
 		PropsChanged = {};
-		return self;
+
+		if (!_changed)
+		{
+			var i = 0;
+			repeat (array_length(Children))
+			{
+				_changed |= Children[i++].CheckPropChanges();
+			}
+		}
+
+		Changed |= _changed;
+
+		return _changed;
 	};
 
 	/// @func AddEventListener(_event, _callback)
@@ -870,7 +884,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		array_push(Children, _widget);
 		_widget.Parent = self;
 		PassRoot(_widget, Root);
-		MarkChanged();
+		MarkChangedUp();
 		return self;
 	};
 
@@ -880,7 +894,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static RemoveSelf = function () {
-		MarkChanged();
+		MarkChangedUp();
 		if (Parent)
 		{
 			for (var i = array_length(Parent.Children) - 1; i >= 0; --i)
@@ -903,7 +917,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static RemoveChildWidgets = function () {
-		MarkChanged();
+		MarkChangedUp();
 		for (var i = array_length(Children) - 1; i >= 0; --i)
 		{
 			Children[i].Destroy();

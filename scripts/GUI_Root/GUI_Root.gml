@@ -141,7 +141,6 @@ function GUI_Root(_props={}, _children=[])
 		{
 			with (ds_stack_pop(_updateStack))
 			{
-				CheckPropChanges();
 				var _children = Children;
 				var i = 0;
 				repeat (array_length(_children))
@@ -170,7 +169,6 @@ function GUI_Root(_props={}, _children=[])
 				{
 					DragEnd();
 				}
-				CheckPropChanges();
 			}
 		}
 
@@ -282,6 +280,7 @@ function GUI_Root(_props={}, _children=[])
 			MouseLastY = _mouseY;
 		}
 
+		CheckPropChanges();
 		Layout();
 
 		if (window_get_cursor() != Cursor)

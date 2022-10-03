@@ -10,6 +10,9 @@ function GUI_Scrollbar(_props={})
 {
 	MaxChildCount = 0;
 
+	/// @var {Struct.GUI_Canvas}
+	Target = _props[$ "Target"];
+
 	/// @var {Real}
 	/// @ignore
 	Scroll = 0;

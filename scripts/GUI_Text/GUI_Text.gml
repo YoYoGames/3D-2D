@@ -43,8 +43,8 @@ function GUI_Text(_text, _props={}, _children=[])
 
 	static Widget_Layout = Layout;
 
-	static Layout = function () {
-		Widget_Layout();
+	static Layout = function (_force) {
+		Widget_Layout(_force);
 
 		var _paddingLeft = PaddingLeft ?? Padding;
 		var _paddingRight = PaddingRight ?? Padding;

@@ -34,8 +34,6 @@ function GUI_FlexLayout(_props={}, _children=[])
 		var _gap = Gap;
 		var _direction = FlexDirection;
 		var _growTotal = 0;
-		var _maxItemWidth = 0;
-		var _maxItemHeight = 0;
 
 		var _sizeTotal;
 		if (FlexDirection == "row")
@@ -81,6 +79,10 @@ function GUI_FlexLayout(_props={}, _children=[])
 
 		var _x = RealX + _paddingLeft;
 		var _y = RealY + _paddingTop;
+		var _xStart = _x;
+		var _yStart = _y;
+		var _xMax = _xStart;
+		var _yMax = _yStart;
 
 		for (var i = 0; i < _childCount; ++i)
 		{
@@ -119,13 +121,15 @@ function GUI_FlexLayout(_props={}, _children=[])
 
 				Layout(_force);
 
-				_maxItemWidth = max(RealWidth, _maxItemWidth);
-				_maxItemHeight = max(RealHeight, _maxItemHeight);
+				_xMax = max(RealX + RealWidth, _xMax);
+				_yMax = max(RealY + RealHeight, _yMax);
 			}
 		}
 
-		var _bbox = GetInnerBoundingBox();
-		ApplyAutoSize(_bbox[2] + _paddingRight - RealX, _bbox[3] + _paddingBottom - RealY);
+		ApplyAutoSize(
+			_paddingLeft + (_xMax - _xStart) + _paddingRight,
+			_paddingTop + (_yMax - _yStart) + _paddingBottom
+		);
 
 		return self;
 	};
