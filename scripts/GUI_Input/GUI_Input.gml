@@ -25,6 +25,14 @@ function GUI_Input(_value, _props={}, _children=[])
 
 	Draggable = _props[$ "Draggable"] ?? IsReal;
 
+	/// @var {Real}
+	/// @private
+	DragValue = 0.0;
+
+	/// @var {Real}
+	/// @private
+	DragDist = 0.0;
+
 	SetSize(
 		_props[$ "Width"] ?? 200,
 		_props[$ "Height"] ?? GUI_LINE_HEIGHT
@@ -118,22 +126,34 @@ function GUI_Input(_value, _props={}, _children=[])
 		if (Root && IsReal)
 		{
 			Root.LockCursor();
+			DragValue = Value;
+			DragDist = 0.0;
 		}
 	};
 
 	OnDrag = function (_self, _diffX, _diffY) {
 		if (IsReal)
 		{
-			var _step = Step;
+			var _scale = Step;
 			if (keyboard_check(vk_shift))
 			{
-				_step += 10.0;
+				_scale *= 10.0;
 			}
 			else if (keyboard_check(vk_control))
 			{
-				_step /= 10.0;
+				_scale /= 10.0;
 			}
-			Change(Value + (_diffX * _step));
+			DragDist += _diffX * _scale;
+			var _step = 24.0;
+			if (Min != undefined)
+			{
+				DragDist = max(DragDist, (Min - DragValue) * _step);
+			}
+			if (Max != undefined)
+			{
+				DragDist = min(DragDist, (Max - DragValue) * _step);
+			}
+			Change(DragValue + (DragDist / _step));
 		}
 	};
 
