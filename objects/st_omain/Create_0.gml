@@ -319,6 +319,8 @@ Camera.DirectionUp = -45.0;
 Camera.Zoom = 10.0;
 Camera.MouseSensitivity = 0.5;
 
+PanningCamera = false;
+
 Gizmo.Renderer = Renderer;
 Gizmo.Camera = Camera;
 
