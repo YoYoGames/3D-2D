@@ -103,7 +103,7 @@ function GUI_FlexLayout(_props={}, _children=[])
 					if (FlexGrow > 0)
 					{
 						SetProps({
-							RealWidth: _sizeTotal * (FlexGrow / _growTotal),
+							RealWidth: round(_sizeTotal * (FlexGrow / _growTotal)),
 						});
 					}
 					_x += RealWidth + _gap;
@@ -113,7 +113,7 @@ function GUI_FlexLayout(_props={}, _children=[])
 					if (FlexGrow > 0)
 					{
 						SetProps({
-							RealHeight: _sizeTotal * (FlexGrow / _growTotal),
+							RealHeight: round(_sizeTotal * (FlexGrow / _growTotal)),
 						});
 					}
 					_y += RealHeight + _gap;

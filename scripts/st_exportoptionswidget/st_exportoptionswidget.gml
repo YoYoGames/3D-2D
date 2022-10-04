@@ -13,7 +13,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 	SetWidth(_props[$ "Width"] ?? "100%");
 
 	var _styleInputSpriteSize = {
-		Width: 70,
+		FlexGrow: 1,
 		Min: 1,
 		WholeNumbers: true,
 	};
@@ -54,14 +54,6 @@ function ST_ExportOptionsWidget(_store, _props={})
 	Add(_vboxExportOptions);
 
 	// Sprite size
-	var _textSpriteSize = new GUI_Text("Sprite Size");
-	_vboxExportOptions.Add(_textSpriteSize);
-
-	var _hboxSpriteSize = new GUI_HBox({ X: 119, Spacing: 4 });
-	_textSpriteSize.Add(_hboxSpriteSize);
-
-	_hboxSpriteSize.Add(new GUI_Text("W"));
-
 	inputSpriteWidth = new GUI_Input(
 		Store.AssetRenderer.Width,
 		GUI_StructExtend({}, _styleInputSpriteSize, {
@@ -75,9 +67,6 @@ function ST_ExportOptionsWidget(_store, _props={})
 				Store.AssetRenderer.Width = _value;
 			}),
 		}));
-	_hboxSpriteSize.Add(inputSpriteWidth);
-
-	_hboxSpriteSize.Add(new GUI_Text("H"));
 
 	inputSpriteHeight = new GUI_Input(
 		Store.AssetRenderer.Height,
@@ -92,21 +81,36 @@ function ST_ExportOptionsWidget(_store, _props={})
 				Store.AssetRenderer.Height = _value;
 			}),
 		}));
-	_hboxSpriteSize.Add(inputSpriteHeight);
 
 	checkboxSpriteKeepAspectRation = new GUI_Checkbox(true, { Tooltip: "Keep aspect ratio" });
-	_hboxSpriteSize.Add(checkboxSpriteKeepAspectRation);
+
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Sprite Size", { Width: 119, MaxWidth: "35%" }),
+			new GUI_FlexLayout({
+				FlexGrow: 1,
+				Height: "auto",
+				Gap: 4,
+			}, [
+				new GUI_Text("W"),
+				inputSpriteWidth,
+				new GUI_Text("H"),
+				inputSpriteHeight,
+				checkboxSpriteKeepAspectRation,
+			]),
+		])
+	);
 
 	_vboxExportOptions.Add(new GUI_VSeparator());
 
 	// Camera
-	var _textCamera = new GUI_Text("Camera");
-	_vboxExportOptions.Add(_textCamera);
-
 	OptionCustom = new GUI_DropdownOption("Custom");
 
 	DropdownCamera = new GUI_Dropdown(GUI_StructExtend({}, styleColumnRight, {
-		Width: 283,
+		FlexGrow: 1,
 		OnChange: method(Store.AssetRenderer.Camera, ApplyCameraSetting),
 	}), [
 		new GUI_DropdownOption("Isometric", { IsDefault: true }),
@@ -119,80 +123,120 @@ function ST_ExportOptionsWidget(_store, _props={})
 		new GUI_DropdownOption("Bottom"),
 		OptionCustom,
 	]);
-	_textCamera.Add(DropdownCamera);
+
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Camera", { Width: 119, MaxWidth: "35%" }),
+			DropdownCamera,
+		])
+	);
 
 	_vboxExportOptions.Add(new GUI_VSeparator());
 
 	// Transform
-	var _textPosition = new GUI_Text("Model Position");
-	_vboxExportOptions.Add(_textPosition);
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Model Position", { Width: 119, MaxWidth: "35%" }),
+			new ST_VectorInput(Store.AssetRenderer.Position, {
+				FlexGrow: 1,
+				Step: 0.1,
+			}),
+		])
+	);
 
-	var _inputPosition = new ST_VectorInput(Store.AssetRenderer.Position, { X: 119, Step: 0.1 });
-	_textPosition.Add(_inputPosition);
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Model Rotation", { Width: 119, MaxWidth: "35%" }),
+			new ST_VectorInput(Store.AssetRenderer.Rotation, {
+				FlexGrow: 1,
+			}),
+		])
+	);
 
-	var _textRotation = new GUI_Text("Model Rotation");
-	_vboxExportOptions.Add(_textRotation);
-
-	var _inputRotation = new ST_VectorInput(Store.AssetRenderer.Rotation, { X: 119 });
-	_textRotation.Add(_inputRotation);
-
-	var _textScale = new GUI_Text("Model Scale");
-	_vboxExportOptions.Add(_textScale);
-
-	_textScale.Add(new GUI_Input(Store.AssetRenderer.Scale, {
-		X: 119,
-		Width: 70,
-		Step: 0.01,
-		Min: 0.0,
-		OnChange: method(Store.AssetRenderer, function (_value) {
-			Scale = _value;
-		}),
-	}));
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Model Scale", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Input(Store.AssetRenderer.Scale, {
+				FlexGrow: 1,
+				Step: 0.01,
+				Min: 0.0,
+				OnChange: method(Store.AssetRenderer, function (_value) {
+					Scale = _value;
+				}),
+			}),
+		])
+	);
 
 	_vboxExportOptions.Add(new GUI_VSeparator());
 
 	// Number of Rotations
-	var _textRotations = new GUI_Text("Rotations");
-	_vboxExportOptions.Add(_textRotations);
-
-	inputRotations = new GUI_Input(Rotations, GUI_StructExtend({}, styleColumnRight, {
-		Min: 1,
-		Max: 360,
-		WholeNumbers: true,
-		OnChange: method(self, function (_value) {
-			Rotations = _value;
-		}),
-		X: 119,
-		Width: 70,
-	}));
-	_textRotations.Add(inputRotations);
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Rotations", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Input(Rotations, {
+				FlexGrow: 1,
+				Min: 1,
+				Max: 360,
+				WholeNumbers: true,
+				OnChange: method(self, function (_value) {
+					Rotations = _value;
+				}),
+			}),
+		])
+	);
 
 	_vboxExportOptions.Add(new GUI_VSeparator());
 
 	// Do export attachments
-	var _textExportAttachments = new GUI_Text("Export Attached");
-	_vboxExportOptions.Add(_textExportAttachments);
-
 	checkboxExportAttachments = new GUI_Checkbox(
 		_store.Save ? _store.Save.ExportAttachments : true,
-		GUI_StructExtend({}, styleColumnRight, {
+		{
 			OnChange: method(self, function (_value) {
 				if (Store.Asset)
 				{
 					Store.Asset.AreAttachmentsVisible = _value;
 				}
 			}),
-		}));
-	_textExportAttachments.Add(checkboxExportAttachments);
+		});
+
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Export Attached", { Width: 119, MaxWidth: "35%" }),
+			checkboxExportAttachments,
+		])
+	);
 
 	// Export attachments only
-	var _textAttachmentsOnly = new GUI_Text("Attached Only");
-	_vboxExportOptions.Add(_textAttachmentsOnly);
-
 	CheckboxAttachmentsOnly = new GUI_Checkbox(
-		_store.Save ? _store.Save.ExportAttachmentsOnly : false,
-		styleColumnRight);
-	_textAttachmentsOnly.Add(CheckboxAttachmentsOnly);
+		_store.Save ? _store.Save.ExportAttachmentsOnly : false);
+
+	_vboxExportOptions.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Attached Only", { Width: 119, MaxWidth: "35%" }),
+			CheckboxAttachmentsOnly,
+		])
+	);
 
 	_vboxExportOptions.Add(new GUI_VSeparator());
 

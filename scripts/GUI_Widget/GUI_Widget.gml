@@ -580,7 +580,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		{
 			var _realWidth = (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0));
 			_realWidth = GetClampedRealWidth(_realWidth, _parentWidth);
-			SetProps({ RealWidth: _realWidth });
+			SetProps({ RealWidth: round(_realWidth) });
 		}
 		return self;
 	};
@@ -623,7 +623,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		{
 			var _realHeight = (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0));
 			_realHeight = GetClampedRealHeight(_realHeight, _parentHeight);
-			SetProps({ RealHeight: _realHeight });
+			SetProps({ RealHeight: round(_realHeight) });
 		}
 		return self;
 	};
@@ -658,13 +658,13 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		if (Width == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "row"))
 		{
 			_width = GetClampedRealWidth(_width, Parent.RealWidth);
-			SetProps({ RealWidth: _width });
+			SetProps({ RealWidth: round(_width) });
 		}
 
 		if (Height == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "column"))
 		{
 			_height = GetClampedRealHeight(_height, Parent.RealHeight);
-			SetProps({ RealHeight: _height });
+			SetProps({ RealHeight: round(_height) });
 		}
 
 		return self;
