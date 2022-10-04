@@ -118,6 +118,29 @@ function GUI_Canvas(_props={}, _children=[])
 		return undefined;
 	};
 
+	static DrawChildren = function () {
+		var _xMin = RealX;
+		var _yMin = RealY;
+		var _xMax = RealX + RealWidth;
+		var _yMax = RealY + RealHeight;
+		var i = 0;
+		repeat (array_length(Children))
+		{
+			with (Children[i++])
+			{
+				if (Visible
+					&& !(RealX + RealWidth < _xMin
+					|| RealY + RealHeight < _yMin
+					|| RealX > _xMax
+					|| RealY > _yMax))
+				{
+					Draw();
+				}
+			}
+		}
+		return self;
+	};
+
 	static Draw = function () {
 		if (floor(RealWidth) <= 0 || floor(RealHeight) <= 0)
 		{
