@@ -10,7 +10,7 @@ function GUI_VBox(_props={}, _children=[])
 	: GUI_Box(_props, _children) constructor
 {
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _paddingLeft = PaddingLeft ?? Padding;
 		var _paddingTop = PaddingTop ?? Padding;

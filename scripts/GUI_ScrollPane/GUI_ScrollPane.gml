@@ -71,7 +71,7 @@ function GUI_ScrollPane(_props={}, _children=[])
 	};
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _parentX = RealX;
 		var _parentY = RealY;

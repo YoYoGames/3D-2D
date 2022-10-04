@@ -29,7 +29,7 @@ function GUI_Grid(_columns, _rows=undefined, _props={}, _children=[])
 	AlignTop = _props[$ "AlignTop"] ?? 0.5;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _x = RealX;
 		var _y = RealY;

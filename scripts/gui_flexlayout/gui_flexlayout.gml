@@ -22,7 +22,7 @@ function GUI_FlexLayout(_props={}, _children=[])
 	//);
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _paddingLeft = PaddingLeft ?? Padding;
 		var _paddingRight = PaddingRight ?? Padding;

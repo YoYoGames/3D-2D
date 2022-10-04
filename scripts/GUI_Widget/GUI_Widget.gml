@@ -1,4 +1,4 @@
-#macro CHECK_LAYOUT_CHANGED \
+#macro GUI_CHECK_LAYOUT_CHANGED \
 	if (Changed) \
 	{ \
 		_force = true; \ // The widget has changed, we have to recompute layout for all child widgets!
@@ -9,6 +9,60 @@
 		return self; \
 	} \
 	BranchChanged = false
+
+/// @var {Id.DsStack}
+/// @private
+global.__guiClipStack = ds_stack_create();
+
+/// @var {Array<Real>, Undefined}
+/// @private
+global.__guiClipArea = undefined;
+
+/// @func GUI_ClipAreaPush(_x, _y, _width, _height)
+///
+/// @desc
+///
+/// @param {Real} _x
+/// @param {Real} _y
+/// @param {Real} _width
+/// @param {Real} _height
+function GUI_ClipAreaPush(_x, _y, _width, _height)
+{
+	ds_stack_push(global.__guiClipStack, global.__guiClipArea);
+	if (global.__guiClipArea == undefined)
+	{
+		global.__guiClipArea = [_x, _y, _x + _width, _y + _height];
+	}
+	else
+	{
+		global.__guiClipArea = [
+			max(global.__guiClipArea[0], _x),
+			max(global.__guiClipArea[1], _y),
+			min(global.__guiClipArea[2], _x + _width),
+			min(global.__guiClipArea[3], _y + _height)
+		];
+	}
+}
+
+/// @func GUI_ClipAreaPop()
+///
+/// @desc
+function GUI_ClipAreaPop()
+{
+	global.__guiClipArea = ds_stack_top(global.__guiClipStack);
+	ds_stack_pop(global.__guiClipStack);
+}
+
+/// @func GUI_ClipAreaGet()
+///
+/// @desc
+///
+/// @return {Array<Real>, Undefined}
+function GUI_ClipAreaGet()
+{
+	gml_pragma("forceinline");
+	return global.__guiClipArea;
+}
 
 /// @func GUI_Widget([_props[, _children]])
 ///
@@ -701,7 +755,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _parentX = RealX;
 		var _parentY = RealY;
@@ -1032,17 +1086,40 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static DrawChildren = function () {
+		var _xMin, _yMin, _xMax, _yMax;
+
+		var _clipArea = GUI_ClipAreaGet();
+		if (_clipArea != undefined)
+		{
+			_xMin = _clipArea[0];
+			_yMin = _clipArea[1];
+			_xMax = _clipArea[2];
+			_yMax = _clipArea[3];
+		}
+		else
+		{
+			_xMin = Root.RealX;
+			_yMin = Root.RealY;
+			_xMax = Root.RealX + Root.RealWidth;
+			_yMax = Root.RealY + Root.RealHeight;
+		}
+
 		var i = 0;
 		repeat (array_length(Children))
 		{
 			with (Children[i++])
 			{
-				if (Visible)
+				if (Visible
+					&& !(RealX + RealWidth < _xMin
+					|| RealY + RealHeight < _yMin
+					|| RealX > _xMax
+					|| RealY > _yMax))
 				{
 					Draw();
 				}
 			}
 		}
+
 		return self;
 	};
 

@@ -39,7 +39,7 @@ function GUI_Canvas(_props={}, _children=[])
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _paddingLeft = PaddingLeft ?? Padding;
 		var _paddingTop = PaddingTop ?? Padding;
@@ -118,29 +118,6 @@ function GUI_Canvas(_props={}, _children=[])
 		return undefined;
 	};
 
-	static DrawChildren = function () {
-		var _xMin = RealX;
-		var _yMin = RealY;
-		var _xMax = RealX + RealWidth;
-		var _yMax = RealY + RealHeight;
-		var i = 0;
-		repeat (array_length(Children))
-		{
-			with (Children[i++])
-			{
-				if (Visible
-					&& !(RealX + RealWidth < _xMin
-					|| RealY + RealHeight < _yMin
-					|| RealX > _xMax
-					|| RealY > _yMax))
-				{
-					Draw();
-				}
-			}
-		}
-		return self;
-	};
-
 	static Draw = function () {
 		if (floor(RealWidth) <= 0 || floor(RealHeight) <= 0)
 		{
@@ -151,8 +128,10 @@ function GUI_Canvas(_props={}, _children=[])
 
 		gpu_push_state();
 		gpu_set_colorwriteenable(true, true, true, false);
+
 		surface_set_target(Surface);
 		draw_clear(BackgroundColor);
+	
 		var _matrixWorld = matrix_get(matrix_world);
 		if (BackgroundSprite != undefined)
 		{
@@ -160,10 +139,15 @@ function GUI_Canvas(_props={}, _children=[])
 			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
 				0, 0, RealWidth, RealHeight);
 		}
+
 		matrix_set(matrix_world, matrix_build(-RealX, -RealY, 0, 0, 0, 0, 1, 1, 1));
+		GUI_ClipAreaPush(RealX, RealY, RealWidth, RealHeight);
 		DrawChildren();
+		GUI_ClipAreaPop();
 		matrix_set(matrix_world, _matrixWorld);
+
 		surface_reset_target();
+
 		gpu_pop_state();
 
 		draw_surface(Surface, RealX, RealY);
