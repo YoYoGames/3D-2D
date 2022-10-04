@@ -68,11 +68,12 @@ function GUI_VSplitter(_props={}, _children=[])
 		});
 		Top.Layout(_force);
 
+		var _bottomRealY = Top.Visible ? (_splitterY + Size) : RealY;
 		Bottom.SetProps({
 			RealX: RealX,
-			RealY: Top.Visible ? (_splitterY + Size) : RealY,
+			RealY: _bottomRealY,
 			RealWidth: RealWidth,
-			RealHeight: Top.Visible ? max(RealY + RealHeight - Bottom.RealY, 0) : RealHeight,
+			RealHeight: Top.Visible ? max(RealY + RealHeight - _bottomRealY, 0) : RealHeight,
 		});
 		Bottom.Layout(_force);
 

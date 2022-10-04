@@ -68,10 +68,11 @@ function GUI_HSplitter(_props={}, _children=[])
 		});
 		Left.Layout(_force);
 
+		var _rightRealX = Left.Visible ? (_splitterX + Size) : RealX;
 		Right.SetProps({
-			RealX: Left.Visible ? (_splitterX + Size) : RealX,
+			RealX: _rightRealX,
 			RealY: RealY,
-			RealWidth: Left.Visible ? max(RealX + RealWidth - Right.RealX, 0) : RealWidth,
+			RealWidth: Left.Visible ? max(RealX + RealWidth - _rightRealX, 0) : RealWidth,
 			RealHeight: RealHeight,
 		});
 		Right.Layout(_force);
