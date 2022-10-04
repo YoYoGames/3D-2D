@@ -79,26 +79,35 @@ function ST_AttachmentSettingsWidget(
 		var _columnRightX     = 109;
 		var _columnRightWidth = 282;
 
-		SettingsContainer.Add(new GUI_Widget({ Width: "100%" }, [
-			new GUI_Text("Name"),
-			new GUI_Input(Asset.Name, {
-				X: _columnRightX,
-				Width: _columnRightWidth,
-				OnChange: method(self, function (_value) {
-					Asset.Name = _value;
-					AttachmentName = _value;
-					ListItem.Text = _value;
+		var _columnWidth = 129;
+		var _styleLabel = {
+			Width: _columnWidth,
+			MaxWidth: "25%",
+		};
+
+		SettingsContainer.Add(
+			new GUI_FlexLayout({
+				Width: "100%",
+				Height: "auto",
+			}, [
+				new GUI_Text("Name", _styleLabel),
+				new GUI_Input(Asset.Name, {
+					FlexGrow: 1,
+					OnChange: method(self, function (_value) {
+						Asset.Name = _value;
+						AttachmentName = _value;
+						ListItem.Text = _value;
+					}),
 				}),
-			}),
-		]));
+			])
+		);
 
 		SettingsContainer.Add(new GUI_VSeparator());
 
 		if (Store.Asset.IsAnimated)
 		{
 			var _dropdownBone = new GUI_Dropdown({
-				X: _columnRightX,
-				Width: _columnRightWidth,
+				FlexGrow: 1,
 				OnChange: method(Asset, function (_value) {
 					AttachedToBone = _value;
 				}),
@@ -124,10 +133,15 @@ function ST_AttachmentSettingsWidget(
 				}
 			}
 
-			SettingsContainer.Add(new GUI_Widget({ Width: "100%" }, [
-				new GUI_Text("Bone"),
-				_dropdownBone,
-			]));
+			SettingsContainer.Add(
+				new GUI_FlexLayout({
+					Width: "100%",
+					Height: "auto",
+				}, [
+					new GUI_Text("Bone", _styleLabel),
+					_dropdownBone,
+				])
+			);
 
 			SettingsContainer.Add(new GUI_VSeparator());
 		}
@@ -137,7 +151,8 @@ function ST_AttachmentSettingsWidget(
 		SettingsContainer.Add(new GUI_VSeparator());
 
 		var _materialsGrid = new GUI_Grid(3, undefined, {
-			X: _columnRightX,
+			//FlexGrow: 1,
+			//MinWidth: _columnRightWidth,
 			Width: _columnRightWidth,
 		});
 
@@ -146,10 +161,15 @@ function ST_AttachmentSettingsWidget(
 			_materialsGrid.Add(new ST_MaterialThumbnailWidget(Asset, i));
 		}
 
-		SettingsContainer.Add(new GUI_Widget({ Width: "100%" }, [
-			new GUI_Text("Materials"),
-			_materialsGrid,
-		]));
+		SettingsContainer.Add(
+			new GUI_FlexLayout({
+				Width: "100%",
+				Height: "auto",
+			}, [
+				new GUI_Text("Materials", _styleLabel),
+				_materialsGrid,
+			])
+		);
 	};
 
 	//var _buttonDuplicate = new GUI_Button("Duplicate", {
