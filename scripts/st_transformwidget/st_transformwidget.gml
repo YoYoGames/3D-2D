@@ -21,7 +21,7 @@ function ST_TransformWidget(_asset, _props={})
 		_props[$ "Height"] ?? "auto"
 	);
 
-	var _columnWidth = 109;
+	var _columnWidth = 129;
 	var _styleLabel = {
 		Width: _columnWidth,
 		MaxWidth: "25%",
@@ -41,7 +41,6 @@ function ST_TransformWidget(_asset, _props={})
 		FlexGrow: 1,
 	});
 
-	// TODO: Implement reloading assets with new settings
 	ButtonMirrorUV = new GUI_GlyphButton(ST_EIcon.FlipBrushHorizontal, {
 		Tooltip: "Flip UVs Horizontally",
 		Font: ST_FntIcons11,

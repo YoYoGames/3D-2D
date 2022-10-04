@@ -14,8 +14,9 @@ function ST_ModelWidget(_store, _props={})
 
 	SetWidth(_props[$ "Width"] ?? "100%");
 
-	styleColumnRight = {
-		X: 129,
+	var _styleColumnLeft = {
+		Width: 129,
+		MaxWidth: "25%",
 	};
 
 	var _styleSectionVBox = {
@@ -85,53 +86,41 @@ function ST_ModelWidget(_store, _props={})
 	Add(textAmbientLight);
 	Add(vboxAmbientLight);
 
-	var _textAmbientEnabled = new GUI_Text("Enabled");
-	vboxAmbientLight.Add(_textAmbientEnabled);
+	vboxAmbientLight.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Enabled", _styleColumnLeft),
+			new GUI_Checkbox(Store.AmbientLightEnabled, {
+				OnChange: method(self, function (_value) {
+					Store.AmbientLightEnabled = _value;
+					bbmod_light_ambient_set_up(_value ? Store.AmbientLightUp : BBMOD_C_BLACK);
+					bbmod_light_ambient_set_down(_value ? Store.AmbientLightDown : BBMOD_C_BLACK);
+				}),
+			}),
+		])
+	);
 
-	var _checkboxAmbientEnabled = new GUI_Checkbox(Store.AmbientLightEnabled, GUI_StructExtend({}, styleColumnRight, {
-		OnChange: method(self, function (_value) {
-			Store.AmbientLightEnabled = _value;
-			bbmod_light_ambient_set_up(_value ? Store.AmbientLightUp : BBMOD_C_BLACK);
-			bbmod_light_ambient_set_down(_value ? Store.AmbientLightDown : BBMOD_C_BLACK);
-		}),
-	}));
-	_textAmbientEnabled.Add(_checkboxAmbientEnabled);
+	vboxAmbientLight.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Colour Up", _styleColumnLeft),
+			new GUI_ColorInput(Store.AmbientLightUp, { FlexGrow: 1 }),
+		])
+	);
 
-	var _textAmbientUpColor = new GUI_Text("Colour Up");
-	vboxAmbientLight.Add(_textAmbientUpColor);
-
-	_textAmbientUpColor.Add(new GUI_ColorInput(Store.AmbientLightUp, GUI_StructExtend({}, styleColumnRight, {
-		Width: 282,
-	})));
-
-	var _textAmbientDownColor = new GUI_Text("Colour Down");
-	vboxAmbientLight.Add(_textAmbientDownColor);
-
-	_textAmbientDownColor.Add(new GUI_ColorInput(Store.AmbientLightDown, GUI_StructExtend({}, styleColumnRight, {
-		Width: 282,
-	})));
-
-	//checkboxAmbientLock = new GUI_Checkbox(true, {
-	//	Tooltip: "Use same as Colour Up",
-	//	OnChange: method(self, function (_value) {
-	//		if (_value)
-	//		{
-	//			AmbientLightDown.Red = AmbientLightUp.Red;
-	//			AmbientLightDown.Green = AmbientLightUp.Green;
-	//			AmbientLightDown.Blue = AmbientLightUp.Blue;
-
-	//			inputAmbientDownR.SetValue(AmbientLightDown.Red);
-	//			inputAmbientDownG.SetValue(AmbientLightDown.Green);
-	//			inputAmbientDownB.SetValue(AmbientLightDown.Blue);
-	//		}
-
-	//		inputAmbientDownR.Disabled = _value;
-	//		inputAmbientDownG.Disabled = _value;
-	//		inputAmbientDownB.Disabled = _value;
-	//	}),
-	//});
-
-	//_hboxAmbientDownColor.Add(checkboxAmbientLock);
+	vboxAmbientLight.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Colour Down", _styleColumnLeft),
+			new GUI_ColorInput(Store.AmbientLightDown, { FlexGrow: 1 }),
+		])
+	);
 
 	////////////////////////////////////////////////////////////////////////////////
 	// Directional light
@@ -140,15 +129,19 @@ function ST_ModelWidget(_store, _props={})
 	Add(textDirectionalLights);
 	Add(sectionDirectionalLights);
 
-	var _textDirectionalEnabled = new GUI_Text("Enabled");
-	sectionDirectionalLights.Add(_textDirectionalEnabled);
-
-	var _checkboxDirectionalEnabled = new GUI_Checkbox(global.stDirectionalLightsEnabled, GUI_StructExtend({}, styleColumnRight, {
-		OnChange: function (_value) {
-			global.stDirectionalLightsEnabled = _value;
-		},
-	}));
-	_textDirectionalEnabled.Add(_checkboxDirectionalEnabled);
+	sectionDirectionalLights.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Enabled", _styleColumnLeft),
+			new GUI_Checkbox(global.stDirectionalLightsEnabled, {
+				OnChange: function (_value) {
+					global.stDirectionalLightsEnabled = _value;
+				},
+			}),
+		])
+	);
 
 	buttonAddDirectionalLight = new GUI_Button("Add", {
 		Width: "100%",
