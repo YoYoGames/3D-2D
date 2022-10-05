@@ -54,7 +54,7 @@ function ST_AssetSave(_asset=undefined) constructor
 	///
 	/// @return {Struct.ST_AssetSave} Returns `self`.
 	static MakePathsRelative = function (_root) {
-		Path = ST_PathGetRelative(Path, _root);
+		Path = bbmod_path_get_relative(Path, _root);
 
 		for (var i = array_length(Materials) - 1; i >= 0; --i)
 		{

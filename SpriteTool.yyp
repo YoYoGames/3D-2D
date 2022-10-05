@@ -146,7 +146,6 @@
     {"id":{"name":"__bbmod_async","path":"scripts/__bbmod_async/__bbmod_async.yy",},"order":1,},
     {"id":{"name":"GUI_SprScrollbarBackground","path":"sprites/GUI_SprScrollbarBackground/GUI_SprScrollbarBackground.yy",},"order":3,},
     {"id":{"name":"GUI_FileInput","path":"scripts/GUI_FileInput/GUI_FileInput.yy",},"order":0,},
-    {"id":{"name":"__ST_Path","path":"scripts/__ST_Path/__ST_Path.yy",},"order":13,},
     {"id":{"name":"GUI_Splitter","path":"scripts/GUI_Splitter/GUI_Splitter.yy",},"order":0,},
     {"id":{"name":"ST_RenderPreviewWidget","path":"scripts/ST_RenderPreviewWidget/ST_RenderPreviewWidget.yy",},"order":12,},
     {"id":{"name":"__bbmod_ssao","path":"scripts/__bbmod_ssao/__bbmod_ssao.yy",},"order":0,},

@@ -134,7 +134,7 @@ if (keyboard_check(vk_control))
 	if (keyboard_check_pressed(ord("N")))
 	{
 		GUI_ShowQuestionAsync(
-			"Are you sure you want to create a new empty project? Any unsaved progress will be lost!",
+			"Are you sure you want to create a new empty project?\nAny unsaved progress will be lost!",
 			method(self, NewProject));
 	}
 	else if (keyboard_check_pressed(ord("S")))
@@ -164,7 +164,7 @@ if (keyboard_check(vk_control))
 		else
 		{
 			GUI_ShowQuestionAsync(
-				"Are you sure you want to open a different project? Any unsaved progress will be lost!",
+				"Are you sure you want to open a different project?\nAny unsaved progress will be lost!",
 				_callback);
 		}
 	}

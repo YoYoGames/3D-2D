@@ -27,7 +27,7 @@ function ST_MaterialSave(_asset=undefined, _materialIndex=0) constructor
 	static MakePathsRelative = function (_root) {
 		if (Texture != undefined)
 		{
-			Texture = ST_PathGetRelative(Texture, _root);
+			Texture = bbmod_path_get_relative(Texture, _root);
 		}
 		return self;
 	};
