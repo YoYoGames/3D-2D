@@ -20,6 +20,11 @@ function ST_ExportOptionsWidget(_store, _props={})
 
 	styleColumnRight = { X: 119 };
 
+	var _styleLabel = {
+		Width: 119,
+		MaxWidth: "35%",
+	};
+
 	Rotations = _store.Save ? _store.Save.ExportNumberOfRotations : 8;
 
 	// Export preview
@@ -89,7 +94,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Sprite Size", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Sprite Size", _styleLabel),
 			new GUI_FlexLayout({
 				FlexGrow: 1,
 				Height: "auto",
@@ -129,7 +134,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Camera", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Camera", _styleLabel),
 			DropdownCamera,
 		])
 	);
@@ -142,7 +147,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Model Position", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Model Position", _styleLabel),
 			new ST_VectorInput(Store.AssetRenderer.Position, {
 				FlexGrow: 1,
 				Step: 0.1,
@@ -155,7 +160,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Model Rotation", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Model Rotation", _styleLabel),
 			new ST_VectorInput(Store.AssetRenderer.Rotation, {
 				FlexGrow: 1,
 			}),
@@ -167,7 +172,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Model Scale", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Model Scale", _styleLabel),
 			new GUI_Input(Store.AssetRenderer.Scale, {
 				FlexGrow: 1,
 				Step: 0.01,
@@ -187,7 +192,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Rotations", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Rotations", _styleLabel),
 			new GUI_Input(Rotations, {
 				FlexGrow: 1,
 				Min: 1,
@@ -219,21 +224,26 @@ function ST_ExportOptionsWidget(_store, _props={})
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Export Attached", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Export Attached", _styleLabel),
 			checkboxExportAttachments,
 		])
 	);
 
 	// Export attachments only
 	CheckboxAttachmentsOnly = new GUI_Checkbox(
-		_store.Save ? _store.Save.ExportAttachmentsOnly : false);
+		_store.Save ? _store.Save.ExportAttachmentsOnly : false,
+		{
+			Disabled: method(self, function () {
+				return !checkboxExportAttachments.Value;
+			}),
+		});
 
 	_vboxExportOptions.Add(
 		new GUI_FlexLayout({
 			Width: "100%",
 			Height: "auto",
 		}, [
-			new GUI_Text("Attached Only", { Width: 119, MaxWidth: "35%" }),
+			new GUI_Text("Attached Only", _styleLabel),
 			CheckboxAttachmentsOnly,
 		])
 	);
