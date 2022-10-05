@@ -13,6 +13,9 @@ function GUI_Canvas(_props={}, _children=[])
 	/// @readonly
 	Surface = noone;
 
+	/// @var {Bool}
+	Redraw = true;
+
 	/// @var {Real}
 	ScrollX = _props[$ "ScrollX"] ?? 0;
 
@@ -40,6 +43,7 @@ function GUI_Canvas(_props={}, _children=[])
 
 	static Layout = function (_force=false) {
 		GUI_CHECK_LAYOUT_CHANGED;
+		Redraw = true;
 
 		var _paddingLeft = PaddingLeft ?? Padding;
 		var _paddingTop = PaddingTop ?? Padding;
@@ -124,31 +128,37 @@ function GUI_Canvas(_props={}, _children=[])
 			return self;
 		}
 
+		var _surfaceOld = Surface;
 		Surface = GUI_CheckSurface(Surface, RealWidth, RealHeight);
 
-		gpu_push_state();
-		gpu_set_colorwriteenable(true, true, true, false);
-
-		surface_set_target(Surface);
-		draw_clear(BackgroundColor);
-	
-		var _matrixWorld = matrix_get(matrix_world);
-		if (BackgroundSprite != undefined)
+		//if (Redraw || Surface != _surfaceOld) // TODO
 		{
-			matrix_set(matrix_world, matrix_build(0, 0, 0, 0, 0, 0, 1, 1, 1));
-			draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
-				0, 0, RealWidth, RealHeight);
+			Redraw = false;
+
+			gpu_push_state();
+			gpu_set_colorwriteenable(true, true, true, false);
+
+			surface_set_target(Surface);
+			draw_clear(BackgroundColor);
+	
+			var _matrixWorld = matrix_get(matrix_world);
+			if (BackgroundSprite != undefined)
+			{
+				matrix_set(matrix_world, matrix_build(0, 0, 0, 0, 0, 0, 1, 1, 1));
+				draw_sprite_stretched(BackgroundSprite, BackgroundSubimage,
+					0, 0, RealWidth, RealHeight);
+			}
+
+			matrix_set(matrix_world, matrix_build(-RealX, -RealY, 0, 0, 0, 0, 1, 1, 1));
+			GUI_ClipAreaPush(RealX, RealY, RealWidth, RealHeight);
+			DrawChildren();
+			GUI_ClipAreaPop();
+			matrix_set(matrix_world, _matrixWorld);
+
+			surface_reset_target();
+
+			gpu_pop_state();
 		}
-
-		matrix_set(matrix_world, matrix_build(-RealX, -RealY, 0, 0, 0, 0, 1, 1, 1));
-		GUI_ClipAreaPush(RealX, RealY, RealWidth, RealHeight);
-		DrawChildren();
-		GUI_ClipAreaPop();
-		matrix_set(matrix_world, _matrixWorld);
-
-		surface_reset_target();
-
-		gpu_pop_state();
 
 		draw_surface(Surface, RealX, RealY);
 
