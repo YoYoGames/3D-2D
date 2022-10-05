@@ -220,22 +220,15 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 		}),
 	}));
 
-	Add(new GUI_HBox({}, [
-		new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
-			Font: ST_FntIcons11,
+	Add(new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
+		Font: ST_FntIcons11,
+		OnClick: method(self, function (_glyphButton) {
+			ExtraOptions.SetProps({
+				Visible: !ExtraOptions.Visible,
+			});
 		}),
-		new GUI_GlyphButton(ST_EIcon.ArrowDown, {
-			Tooltip: "Tool Options",
-			Font: ST_FntIcons5,
-			Width: 11,
-			OnClick: method(self, function (_glyphButton) {
-				ExtraOptions.SetProps({
-					Visible: !ExtraOptions.Visible,
-				});
-			}),
-		}, [
-			ExtraOptions,
-		]),
+	}, [
+		ExtraOptions,
 	]));
 
 	Add(new GUI_HBox({}, [
