@@ -117,16 +117,10 @@ function GUI_VSplitter(_props={}, _children=[])
 		return self;
 	};
 
-	static Splitter_Draw = Draw;
-
 	static Draw = function () {
-		if (!Visible)
-		{
-			return self;
-		}
 		GUI_DrawRectangle(RealX, RealY, RealWidth, RealHeight, BackgroundColor, BackgroundAlpha);
 		GUI_DrawRectangle(RealX, GetSplitterY(), RealWidth, Size, Color);
-		Splitter_Draw();
+		DrawChildren();
 		return self;
 	};
 }
