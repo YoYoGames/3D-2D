@@ -238,17 +238,17 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 				switch (ST_OMain.Gizmo.EditType)
 				{
 				case BBMOD_EEditType.Position:
-					_glyphButton.Tooltip = "Move Tool";
+					_glyphButton.Tooltip = "Move Tool (TAB)";
 					_glyphButton.Glyph = ST_EIcon.Move;
 					break;
 
 				case BBMOD_EEditType.Rotation:
-					_glyphButton.Tooltip = "Rotate Tool";
+					_glyphButton.Tooltip = "Rotate Tool (TAB)";
 					_glyphButton.Glyph = ST_EIcon.RotateBrush;
 					break;
 
 				case BBMOD_EEditType.Scale:
-					_glyphButton.Tooltip = "Scale Tool";
+					_glyphButton.Tooltip = "Scale Tool (TAB)";
 					_glyphButton.Glyph = ST_EIcon.ScaleCursor;
 					break;
 				}
