@@ -33,7 +33,7 @@ function ST_GUI(_store, _props={})
 	HSplitterRight = new GUI_HSplitter({
 		Width: "100%",
 		Height: "100%",
-		Split: 0.7,
+		Split: 0.65,
 	});
 	HSplitterRight.Right.SetProps({ Visible: false });
 	HSplitterLeft.Right.Add(HSplitterRight);
