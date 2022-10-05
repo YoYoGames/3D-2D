@@ -298,6 +298,7 @@ Debug = false;
 
 Gizmo = new ST_Gizmo(15);
 Gizmo.KeyNextEditSpace = undefined;
+Gizmo.KeyNextEditType = undefined;
 GridVisible = true;
 
 Renderer = new ST_Renderer();

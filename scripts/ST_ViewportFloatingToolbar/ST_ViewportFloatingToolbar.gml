@@ -253,6 +253,9 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 					break;
 				}
 			},
+			OnPress: method(self, function () {
+				DropdownEditType.SelectNext();
+			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ArrowDown, {
 			Tooltip: "Select Tool",

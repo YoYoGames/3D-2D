@@ -4,6 +4,12 @@ if (keyboard_check_pressed(vk_f1))
 }
 show_debug_overlay(Debug);
 
+if (GUI.WidgetFocused == undefined
+	&& keyboard_check_pressed(vk_tab))
+{
+	GUI.Viewport.FloatingToolbar.DropdownEditType.SelectNext();
+}
+
 var _viewport = GUI.Viewport;
 
 GUI.Update();
