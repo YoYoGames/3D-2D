@@ -18,7 +18,7 @@ function ST_AttachmentsWidget(_store, _props={})
 		PaddingRight: 19,
 		PaddingTop: 12,
 		PaddingBottom: 12,
-		Spacing: 12,
+		Gap: 12,
 	});
 
 	ButtonAddAttachment = new GUI_Button("Add Attachment", {

@@ -21,7 +21,7 @@ function ST_FramesPane(_store, _props={})
 
 	framesHBox = new GUI_HBox({
 		Y: 9,
-		Spacing: 2,
+		Gap: 2,
 	});
 	Canvas.Add(framesHBox);
 

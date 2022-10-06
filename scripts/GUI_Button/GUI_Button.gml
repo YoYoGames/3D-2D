@@ -39,8 +39,9 @@ function GUI_Button(_text, _props={})
 
 	static Update = function () {
 		Widget_Update();
-		BackgroundSubimage = ((Root.WidgetPressed == self) ? 2
-			: (IsMouseOver() ? 1 : 0));
+		SetProps({
+			BackgroundSubimage: (IsPressed() ? 2 : (IsMouseOver() ? 1 : 0)),
+		});
 		return self;
 	};
 

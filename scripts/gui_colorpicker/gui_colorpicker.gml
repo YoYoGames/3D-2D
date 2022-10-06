@@ -103,7 +103,7 @@ function GUI_ColorPicker(_color, _props={})
 		X: 96,
 		Y: 382,
 		Visible: false,
-		Spacing: 5,
+		Gap: 5,
 	};
 
 	InputHex = new GUI_Input(GUI_ByteArrayToHex([Color.Red, Color.Green, Color.Blue]), GUI_StructExtend({}, _styleInputContainer, {
@@ -256,7 +256,7 @@ function GUI_ColorPicker(_color, _props={})
 	ContainerColors = new GUI_HBox({
 		X: 45,
 		Y: 438,
-		Spacing: 4,
+		Gap: 4,
 	});
 	Add(ContainerColors);
 

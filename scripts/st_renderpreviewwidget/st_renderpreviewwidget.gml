@@ -21,7 +21,7 @@ function ST_RenderPreviewWidget(_store, _props={})
 	Add(Header);
 
 	Toolbar = new GUI_HBox({
-		Spacing: 4,
+		Gap: 4,
 		X: 280,
 	}, [
 		new GUI_GlyphButton(ST_EIcon.ArrowLeft, {

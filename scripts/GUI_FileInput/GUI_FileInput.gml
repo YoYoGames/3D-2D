@@ -9,6 +9,8 @@
 function GUI_FileInput(_path, _props={})
 	: GUI_Input(_path, _props) constructor
 {
+	static Input_Layout = Layout;
+
 	MaxChildCount = 1;
 
 	IsReal = false;
@@ -52,10 +54,11 @@ function GUI_FileInput(_path, _props={})
 	SelectButton.Disabled = Disabled;
 	Add(SelectButton);
 
-	static Input_Layout = Layout;
-
 	static Layout = function (_force=false) {
 		RealWidth -= SelectButton.RealWidth;
+		//SetProps({
+		//	RealWidth: RealWidth - SelectButton.RealWidth,
+		//});
 		Input_Layout(_force);
 		return self;
 	};

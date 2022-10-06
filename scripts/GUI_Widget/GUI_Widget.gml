@@ -370,7 +370,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 			var _valueNew = self[$ _name];
 			if (_valueNew != _valueOld)
 			{
-				//show_debug_message([current_time, _name, _valueNew, _valueOld]);
+				//show_debug_message([current_time, Id, _name, _valueNew, _valueOld]);
 				Changed = true;
 				_changed = true;
 				break;
@@ -797,6 +797,16 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return (Root ? (Root.WidgetHovered == self) : false);
 	};
 
+	/// @func IsPressed()
+	///
+	/// @desc
+	///
+	/// @return {Bool}
+	static IsPressed = function () {
+		gml_pragma("forceinline");
+		return (Root ? (Root.WidgetPressed == self) : false);
+	};
+
 	/// @func Focus()
 	///
 	/// @desc
@@ -925,7 +935,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		}
 	};
 
-	/// @func Add(_widget)
+	/// @func Add(_widget...)
 	///
 	/// @desc
 	///
@@ -934,23 +944,28 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	///
 	/// @throws {String}
-	static Add = function (_widget) {
+	static Add = function () {
 		gml_pragma("forceinline");
-		if (_widget == self)
+		var i = 0;
+		repeat (argument_count)
 		{
-			throw "Cannot add self as a child!";
+			var _widget = argument[i++];
+			if (_widget == self)
+			{
+				throw "Cannot add self as a child!";
+			}
+			if (_widget.Parent)
+			{
+				throw "Already a child of a widget!";
+			}
+			if (array_length(Children) >= MaxChildCount)
+			{
+				throw "Cannot add more child widgets!";
+			}
+			array_push(Children, _widget);
+			_widget.Parent = self;
+			PassRoot(_widget, Root);
 		}
-		if (_widget.Parent)
-		{
-			throw "Already a child of a widget!";
-		}
-		if (array_length(Children) >= MaxChildCount)
-		{
-			throw "Cannot add more child widgets!";
-		}
-		array_push(Children, _widget);
-		_widget.Parent = self;
-		PassRoot(_widget, Root);
 		MarkChangedUp();
 		return self;
 	};

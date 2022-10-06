@@ -70,6 +70,9 @@ function GUI_Grid(_columns, _rows=undefined, _props={}, _children=[])
 				}
 			}
 		}
+
+		ApplyAutoSize(_xEnd, _y - RealY);
+
 		return self;
 	};
 }

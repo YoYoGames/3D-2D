@@ -10,5 +10,5 @@ function GUI_Box(_props={}, _children=[])
 	: GUI_Widget(_props, _children) constructor
 {
 	/// @var {Real}
-	Spacing = _props[$ "Spacing"] ?? 0;
+	Gap = _props[$ "Gap"] ?? 0;
 }

@@ -26,12 +26,12 @@ function ST_MainPane(_store, _props={})
 
 	var _vboxModel = new GUI_VBox({
 		Width: "100%",
-		Spacing: 4,
+		Gap: 4,
 	});
 
 	var _vboxAttachments = new GUI_VBox({
 		Width: "100%",
-		Spacing: 4,
+		Gap: 4,
 	});
 
 	var _tabGroup = new GUI_TabGroup({ Height: 46 });

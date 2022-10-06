@@ -50,7 +50,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 
 	var _vboxExportOptions = new GUI_VBox({
 		Width: "100%",
-		Spacing: 12,
+		Gap: 12,
 		PaddingLeft: 10,
 		PaddingRight: 10,
 		PaddingTop: 12,

@@ -44,6 +44,19 @@ function ST_FrameThumbnailWidget(_store, _animationIndex, _frame, _props={})
 	});
 	Add(Checkbox);
 
+	/// @func IsCurrentFrame()
+	///
+	/// @desc
+	///
+	/// @return {Bool}
+	static IsCurrentFrame = function () {
+		gml_pragma("forceinline");
+		var _asset = Store.Asset;
+		return (_asset
+			&& _asset.IsAnimated
+			&& _asset.AnimationPlayer.Animation.get_animation_time(_asset.AnimationPlayer.Time) == Frame);
+	};
+
 	static Draw = function () {
 		var _enabled = Store.Asset.FrameFilters[AnimationIndex][Frame];
 
@@ -68,11 +81,7 @@ function ST_FrameThumbnailWidget(_store, _animationIndex, _frame, _props={})
 					RealY + floor((RealHeight - (_surfaceHeight * _scale)) * 0.5),
 					_scale, _scale, 0.0, _enabled ? c_white : c_gray, 1.0);
 
-				var _asset = Store.Asset;
-
-				if (_asset
-					&& _asset.IsAnimated
-					&& _asset.AnimationPlayer.Animation.get_animation_time(_asset.AnimationPlayer.Time) == Frame)
+				if (IsCurrentFrame())
 				{
 					GUI_DrawRectangle(RealX + 1, RealY + RealHeight, RealWidth - 2, 5, #1C899A);
 				}

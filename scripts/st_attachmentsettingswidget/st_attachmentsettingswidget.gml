@@ -27,7 +27,7 @@ function ST_AttachmentSettingsWidget(
 	/// @var {Struct.ST_Asset}
 	Asset = _props[$ "Asset"];
 
-	Spacing = _props[$ "Spacing"] ?? 12;
+	Gap = _props[$ "Gap"] ?? 12;
 
 	SetWidth(_props[$ "Width"] ?? "100%");
 
@@ -63,7 +63,7 @@ function ST_AttachmentSettingsWidget(
 		}),
 	}));
 
-	SettingsContainer = new GUI_VBox({ Width: "100%", Spacing: Spacing });
+	SettingsContainer = new GUI_VBox({ Width: "100%", Gap: Gap });
 	Add(SettingsContainer);
 
 	//MaxChildCount = array_length(Children);
@@ -154,6 +154,7 @@ function ST_AttachmentSettingsWidget(
 			//FlexGrow: 1,
 			//MinWidth: _columnRightWidth,
 			Width: _columnRightWidth,
+			Height: "auto",
 		});
 
 		for (var i = 0; i < array_length(Asset.Materials); ++i)

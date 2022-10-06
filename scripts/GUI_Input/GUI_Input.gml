@@ -10,6 +10,9 @@
 function GUI_Input(_value, _props={}, _children=[])
 	: GUI_Widget(_props, _children) constructor
 {
+	static Widget_Layout = Layout;
+	static Widget_Update = Update;
+
 	/// @var {String/Real}
 	Value = _value;
 
@@ -164,6 +167,56 @@ function GUI_Input(_value, _props={}, _children=[])
 		}
 	};
 
+	/// @var {Struct.GUI_InputArrowUp, Undefined}
+	/// @readonly
+	ArrowUp = undefined;
+
+	/// @var {Struct.GUI_InputArrowUp, Undefined}
+	/// @readonly
+	ArrowDown = undefined;
+
+	if (IsReal)
+	{
+		// TODO: Increase value on click
+		ArrowUp = new GUI_InputArrowUp({
+			PivotLeft: 1.0,
+			AnchorLeft: 1.0,
+			OnPress: method(self, function () {
+				var _scale = Step;
+				if (keyboard_check(vk_shift))
+				{
+					_scale *= 10.0;
+				}
+				else if (keyboard_check(vk_control))
+				{
+					_scale /= 10.0;
+				}
+				Change(Value + _scale);
+			}),
+		});
+
+		// TODO: Decrease value on click
+		ArrowDown = new GUI_InputArrowDown({
+			PivotLeft: 1.0,
+			AnchorLeft: 1.0,
+			AnchorTop: 1.0,
+			OnPress: method(self, function () {
+				var _scale = Step;
+				if (keyboard_check(vk_shift))
+				{
+					_scale *= 10.0;
+				}
+				else if (keyboard_check(vk_control))
+				{
+					_scale /= 10.0;
+				}
+				Change(Value - _scale);
+			}),
+		});
+
+		Add(ArrowUp, ArrowDown);
+	}
+
 	/// @func SetValue(_value)
 	///
 	/// @desc
@@ -299,7 +352,17 @@ function GUI_Input(_value, _props={}, _children=[])
 		return self;
 	};
 
-	static Widget_Update = Update;
+	static Layout = function (_force=false) {
+		if (IsReal)
+		{
+			RealWidth -= max(ArrowUp.RealWidth, ArrowDown.RealWidth);
+			//SetProps({
+			//	RealWidth: RealWidth - max(ArrowUp.RealWidth, ArrowDown.RealWidth),
+			//});
+		}
+		Widget_Layout(_force);
+		return self;
+	};
 
 	static Update = function () {
 		Widget_Update();

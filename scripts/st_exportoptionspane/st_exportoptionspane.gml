@@ -23,7 +23,7 @@ function ST_ExportOptionsPane(_store, _props={})
 
 	Canvas.Add(new GUI_VBox({
 		Width: "100%",
-		Spacing: 2,
+		Gap: 2,
 	}, [
 		new GUI_Tab("Export Options", {
 			Height: 46,

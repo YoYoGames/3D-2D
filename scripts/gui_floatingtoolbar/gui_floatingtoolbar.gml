@@ -34,7 +34,7 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 	Container = new GUI_HBox({
 		X: Draggable ? 17 : 5,
 		Y: 7,
-		Spacing: _props[$ "Spacing"] ?? 8,
+		Gap: _props[$ "Gap"] ?? 8,
 	});
 	Widget_Add(Container);
 

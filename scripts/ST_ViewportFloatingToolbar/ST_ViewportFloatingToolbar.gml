@@ -34,7 +34,7 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 			}
 		},
 	}, [
-		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
+		new GUI_VBox({ Width: "100%", Padding: 8, Gap: 4 }, [
 			new GUI_Text("Grid:"),
 			new ST_VectorInput(ST_OMain.Gizmo.GridSize, {
 				Width: "100%",
@@ -78,7 +78,7 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 			}
 		},
 	}, [
-		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
+		new GUI_VBox({ Width: "100%", Padding: 8, Gap: 4 }, [
 			new GUI_Text("Angle snap:"),
 			new GUI_Input(ST_OMain.Gizmo.AngleSnap, {
 				Width: "50%",

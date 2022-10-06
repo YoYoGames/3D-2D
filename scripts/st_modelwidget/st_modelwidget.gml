@@ -20,7 +20,7 @@ function ST_ModelWidget(_store, _props={})
 	};
 
 	var _styleSectionVBox = {
-		Spacing: 12,
+		Gap: 12,
 		Width: "100%",
 		PaddingLeft: 19,
 		PaddingRight: 19,

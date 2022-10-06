@@ -51,8 +51,8 @@ function GUI_Canvas(_props={}, _children=[])
 		var _parentY = RealY + _paddingTop;
 		var _parentWidth = RealWidth - _paddingLeft - (PaddingRight ?? Padding);
 		var _parentHeight = RealHeight - _paddingTop - (PaddingBottom ?? Padding);
-		var _scrollX = ScrollX;
-		var _scrollY = ScrollY;
+		var _scrollX = clamp(ScrollX, -ContentWidth, 0);
+		var _scrollY = clamp(ScrollY, -ContentHeight, 0);
 
 		var _xStart = 0;
 		var _yStart = 0;
