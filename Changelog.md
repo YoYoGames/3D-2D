@@ -4,6 +4,7 @@
 * Dragging numeric inputs now changes the value slower.
 * Selecting main model with the "..." button now automatically also imports it, without having to click the "Import" button.
 * Added arrows next to numeric input fields.
+* Animation timeline now automatically scrolls to the current frame when playing animations.
 * Fixed a bug where the app would get stuck in an infinite loop if a model's color was changed to black.
 * Fixed selecting `*.glb` files with the model import dialog.
 * Fixed selecting `*.jpg` and `*.jpeg` files with the texture select dialog.
