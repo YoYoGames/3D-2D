@@ -53,9 +53,6 @@ function GUI_AccordionHeader(_text, _props={}, _children=[])
 	/// @var {Constant.Color}
 	Color = _props[$ "Color"] ?? #BEBEBE;
 
-	/// @var {Constant.Color}
-	ColorSelected = _props[$ "Color"] ?? c_white;
-
 	/// @var {Asset.GMSprite}
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? GUI_SprAccordionHeader;
 

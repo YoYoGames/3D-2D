@@ -25,12 +25,6 @@ function GUI_AccordionBody(_props={}, _children=[])
 	/// @var {Constant.Color}
 	BackgroundColorSelected = _props[$ "BackgroundColor"] ?? #43474D;
 
-	OnClick = function () {
-		Parent.SetProps({
-			IsSelected: true,
-		});
-	};
-
 	static Draw = function () {
 		if (Parent.IsSelected)
 		{

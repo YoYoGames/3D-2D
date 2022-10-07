@@ -826,9 +826,14 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		{
 			OnFocus();
 		}
-		if (_widgetFocused && _widgetFocused.OnBlur)
+		TriggerEvent(new GUI_Event("Focus"));
+		if (_widgetFocused)
 		{
-			_widgetFocused.OnBlur();
+			if (_widgetFocused.OnBlur)
+			{
+				_widgetFocused.OnBlur();
+			}
+			_widgetFocused.TriggerEvent(new GUI_Event("Blur"));
 		}
 		return self;
 	};

@@ -204,6 +204,7 @@ function GUI_Root(_props={}, _children=[])
 				{
 					WidgetHovered.OnPress(WidgetHovered);
 				}
+				WidgetHovered.TriggerEvent(new GUI_Event("Press"));
 				WidgetPressed = WidgetHovered;
 				MousePressX = _mouseX;
 				MousePressY = _mouseY;
@@ -233,6 +234,7 @@ function GUI_Root(_props={}, _children=[])
 					&& point_distance(_mouseX, _mouseY, MousePressX, MousePressY) >= DragThreshold)
 				{
 					WidgetPressed.DragStart(WidgetPressed);
+					WidgetPressed.TriggerEvent(new GUI_Event("DragStart"));
 				}
 			}
 			else
@@ -251,10 +253,13 @@ function GUI_Root(_props={}, _children=[])
 						DoubleClickTime = undefined;
 					}
 
-					if (!_doubleClicked
-						&& WidgetPressed.OnClick)
+					if (!_doubleClicked)
 					{
-						WidgetPressed.OnClick(WidgetPressed);
+						if (WidgetPressed.OnClick)
+						{
+							WidgetPressed.OnClick(WidgetPressed);
+						}
+						WidgetPressed.TriggerEvent(new GUI_Event("Click"));
 					}
 				}
 
