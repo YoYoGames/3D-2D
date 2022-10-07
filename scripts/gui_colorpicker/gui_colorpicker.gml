@@ -70,6 +70,7 @@ function GUI_ColorPicker(_color, _props={})
 		Max: 100,
 		WholeNumbers: true,
 		OnChange: method(self, function (_value) {
+			SliderAlpha.OnChange(_value / 100.0, Alpha);
 			Alpha = _value / 100.0;
 		}),
 		X: 248,
