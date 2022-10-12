@@ -13,7 +13,7 @@
   "option_windows_icon": "icons/icon.ico",
   "option_windows_save_location": 0,
   "option_windows_splash_screen": "splash/splash.png",
-  "option_windows_use_splash": false,
+  "option_windows_use_splash": true,
   "option_windows_start_fullscreen": false,
   "option_windows_allow_fullscreen_switching": true,
   "option_windows_interpolate_pixels": false,
