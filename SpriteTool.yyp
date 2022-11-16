@@ -42,7 +42,10 @@
     {"id":{"name":"ST_Renderer","path":"scripts/ST_Renderer/ST_Renderer.yy",},"order":9,},
     {"id":{"name":"GUI_SprInput","path":"sprites/GUI_SprInput/GUI_SprInput.yy",},"order":1,},
     {"id":{"name":"GUI_Dropdown","path":"scripts/GUI_Dropdown/GUI_Dropdown.yy",},"order":2,},
-    {"id":{"name":"libfilesystem","path":"extensions/libfilesystem/libfilesystem.yy",},"order":0,},=======
+{"id":{"name":"BBMOD_Renderer","path":"scripts/BBMOD_Renderer/BBMOD_Renderer.yy",},"order":1,},
+    {"id":{"name":"bbmod_get_calling_function_name","path":"scripts/bbmod_get_calling_function_name/bbmod_get_calling_function_name.yy",},"order":2,},
+    {"id":{"name":"BBMOD_Vec4","path":"scripts/BBMOD_Vec4/BBMOD_Vec4.yy",},"order":6,},
+    {"id":{"name":"libfilesystem","path":"extensions/libfilesystem/libfilesystem.yy",},"order":0,},
     {"id":{"name":"BBMOD_Exception","path":"scripts/BBMOD_Exception/BBMOD_Exception.yy",},"order":0,},
     {"id":{"name":"BBMOD_SprColorGradingLUT","path":"sprites/BBMOD_SprColorGradingLUT/BBMOD_SprColorGradingLUT.yy",},"order":1,},
     {"id":{"name":"BBMOD_PBRShader","path":"scripts/BBMOD_PBRShader/BBMOD_PBRShader.yy",},"order":2,},
