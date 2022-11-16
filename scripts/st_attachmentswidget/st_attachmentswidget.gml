@@ -18,7 +18,7 @@ function ST_AttachmentsWidget(_store, _props={})
 		PaddingRight: 19,
 		PaddingTop: 12,
 		PaddingBottom: 12,
-		Spacing: 12,
+		Gap: 12,
 	});
 
 	ButtonAddAttachment = new GUI_Button("Add Attachment", {
@@ -85,7 +85,7 @@ function ST_AttachmentsWidget(_store, _props={})
 		{
 			_items1[i].IsSelected = false;
 			_items2[i].SetProps({
-				"Visible": false,
+				Visible: false,
 			});
 			++i;
 		}
@@ -104,14 +104,14 @@ function ST_AttachmentsWidget(_store, _props={})
 				{
 					_items1[i].IsSelected = false;
 					_items2[i].SetProps({
-						"Visible": false,
+						Visible: false,
 					});
 					++i;
 				}
 
 				_listItem.IsSelected = true;
 				_listItem.Target.SetProps({
-					"Visible": true,
+					Visible: true,
 				});
 			}),
 		});
@@ -145,10 +145,10 @@ function ST_AttachmentsWidget(_store, _props={})
 	static Update = function () {
 		VBox_Update();
 		//TextSettings.SetProps({
-		//	"Visible": (AttachmentCounter > 0),
+		//	Visible: (AttachmentCounter > 0),
 		//});
 		SectionSettings.SetProps({
-			"Visible": (!TextSettings.Collapsed && AttachmentCounter > 0),
+			Visible: (!TextSettings.Collapsed && AttachmentCounter > 0),
 		});
 		return self;
 	};

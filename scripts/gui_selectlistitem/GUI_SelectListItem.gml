@@ -34,7 +34,7 @@ function GUI_SelectListItem(_text, _props={})
 	BackgroundColorDark = _props[$ "BackgroundColorDark"] ?? #1E1E1E;
 
 	/// @var {Constant.Color}
-	BackgroundColorSelected = _props[$ "BackgroundColorSelected"] ?? #1B1B1B;
+	BackgroundColorSelected = _props[$ "BackgroundColorSelected"] ?? #4B525C;
 
 	SetSize(
 		_props[$ "Width"] ?? "100%",

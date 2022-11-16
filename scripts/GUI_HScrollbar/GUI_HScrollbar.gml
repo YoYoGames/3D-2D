@@ -23,9 +23,12 @@ function GUI_HScrollbar(_props={})
 		{
 			var _scroll = _mouseX - RealX;
 			_scroll = clamp(_scroll, 0, RealWidth - ThumbSize);
-			SetProps({
-				"Scroll": _scroll,
-			});
+			SetProps({ Scroll: _scroll });
+			if (Target)
+			{
+				CalcJumpAndThumbSize(RealWidth, Target.ContentWidth);
+				Target.SetProps({ ScrollX: -GetScroll() });
+			}
 		}
 	};
 
@@ -46,9 +49,12 @@ function GUI_HScrollbar(_props={})
 			}
 		}
 		_scroll = max(min(_scroll, RealWidth - ThumbSize), 0);
-		SetProps({
-			"Scroll": _scroll,
-		});
+		SetProps({ Scroll: _scroll });
+		if (Target)
+		{
+			CalcJumpAndThumbSize(RealWidth, Target.ContentWidth);
+			Target.SetProps({ ScrollX: -GetScroll() });
+		}
 		return self;
 	};
 

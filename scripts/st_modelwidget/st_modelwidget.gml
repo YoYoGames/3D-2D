@@ -14,12 +14,13 @@ function ST_ModelWidget(_store, _props={})
 
 	SetWidth(_props[$ "Width"] ?? "100%");
 
-	styleColumnRight = {
-		X: 129,
+	var _styleColumnLeft = {
+		Width: 129,
+		MaxWidth: "25%",
 	};
 
 	var _styleSectionVBox = {
-		Spacing: 12,
+		Gap: 12,
 		Width: "100%",
 		PaddingLeft: 19,
 		PaddingRight: 19,
@@ -36,9 +37,26 @@ function ST_ModelWidget(_store, _props={})
 		? Store.Save.Asset.Path
 		: "";
 
+	DoImport = function () {
+		var _path = inputImportPath.Value;
+		if (_path != "")
+		{
+			Store.ImportAsset(_path);
+			if (Store.Asset)
+			{
+				vboxAsset
+					.RemoveChildWidgets()
+					.Add(new ST_AssetWidget(Store.Asset));
+				Root.FramesPane.AddFrames();
+				Root.MainPane.Attachments.Reset();
+			}
+		}
+	};
+
 	inputImportPath = new GUI_FileInput(_assetPath, {
 		Filter: ST_FILTER_MODEL,
 		Width: "100%",
+		OnSelect: method(self, DoImport),
 	});
 	vboxImport.Add(inputImportPath);
 
@@ -47,21 +65,7 @@ function ST_ModelWidget(_store, _props={})
 		Disabled: method(self, function () {
 			return (inputImportPath.Value == "");
 		}),
-		OnClick: method(self, function () {
-			var _path = inputImportPath.Value;
-			if (_path != "")
-			{
-				Store.ImportAsset(_path);
-				if (Store.Asset)
-				{
-					vboxAsset
-						.RemoveChildWidgets()
-						.Add(new ST_AssetWidget(Store.Asset));
-					Root.FramesPane.AddFrames();
-					Root.MainPane.Attachments.Reset();
-				}
-			}
-		}),
+		OnClick: method(self, DoImport),
 	});
 	vboxImport.Add(buttonImport);
 
@@ -82,53 +86,41 @@ function ST_ModelWidget(_store, _props={})
 	Add(textAmbientLight);
 	Add(vboxAmbientLight);
 
-	var _textAmbientEnabled = new GUI_Text("Enabled");
-	vboxAmbientLight.Add(_textAmbientEnabled);
+	vboxAmbientLight.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Enabled", _styleColumnLeft),
+			new GUI_Checkbox(Store.AmbientLightEnabled, {
+				OnChange: method(self, function (_value) {
+					Store.AmbientLightEnabled = _value;
+					bbmod_light_ambient_set_up(_value ? Store.AmbientLightUp : BBMOD_C_BLACK);
+					bbmod_light_ambient_set_down(_value ? Store.AmbientLightDown : BBMOD_C_BLACK);
+				}),
+			}),
+		])
+	);
 
-	var _checkboxAmbientEnabled = new GUI_Checkbox(Store.AmbientLightEnabled, GUI_StructExtend({}, styleColumnRight, {
-		OnChange: method(self, function (_value) {
-			Store.AmbientLightEnabled = _value;
-			bbmod_light_ambient_set_up(_value ? Store.AmbientLightUp : BBMOD_C_BLACK);
-			bbmod_light_ambient_set_down(_value ? Store.AmbientLightDown : BBMOD_C_BLACK);
-		}),
-	}));
-	_textAmbientEnabled.Add(_checkboxAmbientEnabled);
+	vboxAmbientLight.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Colour Up", _styleColumnLeft),
+			new GUI_ColorInput(Store.AmbientLightUp, { FlexGrow: 1 }),
+		])
+	);
 
-	var _textAmbientUpColor = new GUI_Text("Colour Up");
-	vboxAmbientLight.Add(_textAmbientUpColor);
-
-	_textAmbientUpColor.Add(new GUI_ColorInput(Store.AmbientLightUp, GUI_StructExtend({}, styleColumnRight, {
-		Width: 282,
-	})));
-
-	var _textAmbientDownColor = new GUI_Text("Colour Down");
-	vboxAmbientLight.Add(_textAmbientDownColor);
-
-	_textAmbientDownColor.Add(new GUI_ColorInput(Store.AmbientLightDown, GUI_StructExtend({}, styleColumnRight, {
-		Width: 282,
-	})));
-
-	//checkboxAmbientLock = new GUI_Checkbox(true, {
-	//	Tooltip: "Use same as Colour Up",
-	//	OnChange: method(self, function (_value) {
-	//		if (_value)
-	//		{
-	//			AmbientLightDown.Red = AmbientLightUp.Red;
-	//			AmbientLightDown.Green = AmbientLightUp.Green;
-	//			AmbientLightDown.Blue = AmbientLightUp.Blue;
-
-	//			inputAmbientDownR.SetValue(AmbientLightDown.Red);
-	//			inputAmbientDownG.SetValue(AmbientLightDown.Green);
-	//			inputAmbientDownB.SetValue(AmbientLightDown.Blue);
-	//		}
-
-	//		inputAmbientDownR.Disabled = _value;
-	//		inputAmbientDownG.Disabled = _value;
-	//		inputAmbientDownB.Disabled = _value;
-	//	}),
-	//});
-
-	//_hboxAmbientDownColor.Add(checkboxAmbientLock);
+	vboxAmbientLight.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Colour Down", _styleColumnLeft),
+			new GUI_ColorInput(Store.AmbientLightDown, { FlexGrow: 1 }),
+		])
+	);
 
 	////////////////////////////////////////////////////////////////////////////////
 	// Directional light
@@ -137,15 +129,19 @@ function ST_ModelWidget(_store, _props={})
 	Add(textDirectionalLights);
 	Add(sectionDirectionalLights);
 
-	var _textDirectionalEnabled = new GUI_Text("Enabled");
-	sectionDirectionalLights.Add(_textDirectionalEnabled);
-
-	var _checkboxDirectionalEnabled = new GUI_Checkbox(global.stDirectionalLightsEnabled, GUI_StructExtend({}, styleColumnRight, {
-		OnChange: function (_value) {
-			global.stDirectionalLightsEnabled = _value;
-		},
-	}));
-	_textDirectionalEnabled.Add(_checkboxDirectionalEnabled);
+	sectionDirectionalLights.Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Enabled", _styleColumnLeft),
+			new GUI_Checkbox(global.stDirectionalLightsEnabled, {
+				OnChange: function (_value) {
+					global.stDirectionalLightsEnabled = _value;
+				},
+			}),
+		])
+	);
 
 	buttonAddDirectionalLight = new GUI_Button("Add", {
 		Width: "100%",
@@ -183,8 +179,13 @@ function ST_ModelWidget(_store, _props={})
 			array_push(global.stDirectionalLights, _directionalLight);
 		}
 
-		var _vbox = new GUI_VBox({ Spacing: 12, Padding: 10 });
-		var _body = new GUI_AccordionBody({}, [_vbox]);
+		var _body = new GUI_AccordionBody({
+			Gap: 12,
+			Padding: 10,
+			Width: "100%",
+			Height: "auto",
+		});
+
 		var _header = new GUI_AccordionHeader(
 			"Directional light " + string(++DirectionalLightCounter), { Target: _body });
 
@@ -193,55 +194,61 @@ function ST_ModelWidget(_store, _props={})
 			_body,
 		]);
 
-		var _hbox = new GUI_HBox({
-			AnchorLeft: 1.0,
-			X: -48,
-		}, [
-			new GUI_GlyphButton(ST_EIcon.Visible, {
-				Font: ST_FntIcons11,
-				Minimal: true,
-				OnClick: method(_directionalLight, function (_iconButton) {
-					Enabled = !Enabled;
-					_iconButton.Glyph = Enabled ? ST_EIcon.Visible : ST_EIcon.Invisible;
-				}),
+		_header.Add(new GUI_GlyphButton(ST_EIcon.Visible, {
+			Font: ST_FntIcons11,
+			Minimal: true,
+			OnClick: method(_directionalLight, function (_iconButton) {
+				Enabled = !Enabled;
+				_iconButton.Glyph = Enabled ? ST_EIcon.Visible : ST_EIcon.Invisible;
 			}),
-			new GUI_GlyphButton(ST_EIcon.Delete, {
-				Font: ST_FntIcons11,
-				Minimal: true,
-				OnClick: method({ Item: _item, Light: _directionalLight }, function () {
-					Item.Destroy();
-					for (var i = array_length(global.stDirectionalLights) - 1; i >= 0; --i)
+		}));
+
+		_header.Add(new GUI_GlyphButton(ST_EIcon.Delete, {
+			Font: ST_FntIcons11,
+			Minimal: true,
+			OnClick: method({ Item: _item, Light: _directionalLight }, function () {
+				Item.Destroy();
+				for (var i = array_length(global.stDirectionalLights) - 1; i >= 0; --i)
+				{
+					if (global.stDirectionalLights[i] == Light)
 					{
-						if (global.stDirectionalLights[i] == Light)
-						{
-							array_delete(global.stDirectionalLights, i, 1);
-							break;
-						}
+						array_delete(global.stDirectionalLights, i, 1);
+						break;
 					}
-				}),
+				}
 			}),
-		]);
-		_header.Add(_hbox);
-
-		var _textDirectionalDir = new GUI_Text("Direction");
-		_vbox.Add(_textDirectionalDir);
-
-		var _hboxDirectionalDir = new GUI_HBox({ X: 129, Spacing: 4 });
-		_textDirectionalDir.Add(_hboxDirectionalDir);
-
-		_hboxDirectionalDir.Add(new ST_VectorInput(_directionalLight.Direction, {
-			Min: -1.0,
-			Max: 1.0,
-			Step: 0.01,
 		}));
 
-		var _textDirectionalColor = new GUI_Text("Colour");
-		_vbox.Add(_textDirectionalColor);
+		// Light direction controls
+		_body.Add(
+			new GUI_FlexLayout({
+				Width: "100%",
+				Height: "auto",
+			}, [
+				new GUI_Text("Direction", { Width: 120, MaxWidth: "25%" }),
+				new ST_VectorInput(_directionalLight.Direction, {
+					FlexGrow: 1,
+					Min: -1.0,
+					Max: 1.0,
+					Step: 0.01,
+				}),
+			])
+		);
 
-		_textDirectionalColor.Add(new GUI_ColorInput(_directionalLight.Color, {
-			X: 129,
-			Width: 282,
-		}));
+		// Light color controls
+		_body.Add(
+			new GUI_FlexLayout({
+				Width: "100%",
+				Height: "auto",
+			}, [
+				new GUI_Text("Colour", { Width: 120, MaxWidth: "25%" }),
+				new GUI_ColorInput(_directionalLight.Color, {
+					FlexGrow: 1,
+					X: 129,
+					Width: 282,
+				}),
+			])
+		);
 
 		accordionDirectionalLights.Add(_item);
 

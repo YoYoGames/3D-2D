@@ -24,8 +24,8 @@ function GUI_HueBox(_props={})
 		if (IsDragged())
 		{
 			Parent.SetProps({
-				"Sat": clamp(((window_mouse_get_x() - RealX) / RealWidth) * 255, 0, 255),
-				"Val": clamp((1.0 - ((window_mouse_get_y() - RealY) / RealHeight)) * 255, 0, 255),
+				Sat: clamp(((window_mouse_get_x() - RealX) / RealWidth) * 255, 0, 255),
+				Val: clamp((1.0 - ((window_mouse_get_y() - RealY) / RealHeight)) * 255, 0, 255),
 			});
 			if (!mouse_check_button(mb_left))
 			{

@@ -26,18 +26,12 @@ function ST_MainPane(_store, _props={})
 
 	var _vboxModel = new GUI_VBox({
 		Width: "100%",
-		Spacing: 4,
-		// Note: If we don't set the minimum width here, then the directional
-		// lights accordion overflows the pane in a weird way. Multiple passes
-		// through all widgets would be required during the layout phase to fix
-		// this issue!
-		MinWidth: 470,
+		Gap: 4,
 	});
 
 	var _vboxAttachments = new GUI_VBox({
 		Width: "100%",
-		Spacing: 4,
-		MinWidth: 470,
+		Gap: 4,
 	});
 
 	var _tabGroup = new GUI_TabGroup({ Height: 46 });

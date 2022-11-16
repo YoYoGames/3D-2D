@@ -139,7 +139,7 @@ __LoadAssetFromSave = function (_assetSave, _isAttachment) {
 	AssetImporter.Dll.set_flip_uv_vertically(_assetSave.FlipUVVertically);
 	AssetImporter.Dll.set_sampling_rate(_samplingRate);
 
-	var _assetPath = ST_PathGetAbsolute(_assetSave.Path, global.stSavePath);
+	var _assetPath = bbmod_path_get_absolute(_assetSave.Path, global.stSavePath);
 	_assetSave.Path = _assetPath;
 
 	if (!file_exists(_assetPath))
@@ -174,7 +174,7 @@ __LoadAssetFromSave = function (_assetSave, _isAttachment) {
 		if (_texturePath != undefined
 			&& _texturePath != pointer_null)
 		{
-			_texturePath = ST_PathGetAbsolute(_texturePath, global.stSavePath);
+			_texturePath = bbmod_path_get_absolute(_texturePath, global.stSavePath);
 			_materialSaved.Texture = _texturePath;
 
 			if (!file_exists(_texturePath))
@@ -298,6 +298,7 @@ Debug = false;
 
 Gizmo = new ST_Gizmo(15);
 Gizmo.KeyNextEditSpace = undefined;
+Gizmo.KeyNextEditType = undefined;
 GridVisible = true;
 
 Renderer = new ST_Renderer();
@@ -318,6 +319,8 @@ Camera.Direction = 135.0;
 Camera.DirectionUp = -45.0;
 Camera.Zoom = 10.0;
 Camera.MouseSensitivity = 0.5;
+
+PanningCamera = false;
 
 Gizmo.Renderer = Renderer;
 Gizmo.Camera = Camera;

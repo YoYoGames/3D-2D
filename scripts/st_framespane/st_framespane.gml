@@ -21,7 +21,7 @@ function ST_FramesPane(_store, _props={})
 
 	framesHBox = new GUI_HBox({
 		Y: 9,
-		Spacing: 2,
+		Gap: 2,
 	});
 	Canvas.Add(framesHBox);
 
@@ -29,6 +29,32 @@ function ST_FramesPane(_store, _props={})
 	{
 		AddFrames();
 	}
+
+	ScrollbarH.OnUpdate = method(self, function (_scrollbar) {
+		// Automatically scroll to the current frame when the animation player
+		// isn't paused
+		if (Store.Asset
+			&& Store.Asset.AnimationPlayer
+			&& Store.Asset.AnimationPlayer.Paused)
+		{
+			return;
+		}
+
+		var _baseX = RealX + Canvas.ScrollX;
+		var _frames = framesHBox.Children;
+		var _frameCount = array_length(_frames);
+
+		for (var i = 0; i < _frameCount; ++i)
+		{
+			with (_frames[i])
+			{
+				if (IsCurrentFrame())
+				{
+					_scrollbar.SetScroll(RealX - _baseX);
+				}
+			}
+		}
+	});
 
 	/// @func AddFrames()
 	///

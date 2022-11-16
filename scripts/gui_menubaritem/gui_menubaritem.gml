@@ -54,7 +54,7 @@ function GUI_MenuBarItem(_text, _props={})
 			if (MenuBar.Selected == self && Menu.Root)
 			{
 				MenuBar.SetProps({
-					"Selected": undefined,
+					Selected: undefined,
 				});
 				Menu.RemoveSelf();
 			}
@@ -62,7 +62,7 @@ function GUI_MenuBarItem(_text, _props={})
 			{
 				var _self = self;
 				MenuBar.SetProps({
-					"Selected": _self,
+					Selected: _self,
 				});
 				Menu.X = RealX;
 				Menu.Y = RealY + RealHeight;
@@ -83,7 +83,7 @@ function GUI_MenuBarItem(_text, _props={})
 			}
 			var _self = self;
 			MenuBar.SetProps({
-				"Selected": _self,
+				Selected: _self,
 			});
 			Menu.X = RealX;
 			Menu.Y = RealY + RealHeight;

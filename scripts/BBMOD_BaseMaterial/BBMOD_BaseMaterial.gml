@@ -17,6 +17,8 @@ function BBMOD_BaseMaterial(_shader=undefined)
 
 	static Super_Material = {
 		copy: copy,
+		to_json: to_json,
+		from_json: from_json,
 	};
 
 	/// @var {Struct.BBMOD_Color} Multiplier for {@link BBMOD_Material.BaseOpacity}.
@@ -39,13 +41,6 @@ function BBMOD_BaseMaterial(_shader=undefined)
 	/// smooth transition.
 	ShadowmapBias = 0.0;
 
-	/// @func copy(_dest)
-	///
-	/// @desc Copies properties of this material into another material.
-	///
-	/// @param {Struct.BBMOD_BaseMaterial} _dest The destination material.
-	///
-	/// @return {Struct.BBMOD_BaseMaterial} Returns `self`.
 	static copy = function (_dest) {
 		method(self, Super_Material.copy)(_dest);
 		BaseOpacityMultiplier.Copy(_dest.BaseOpacityMultiplier);
@@ -55,14 +50,74 @@ function BBMOD_BaseMaterial(_shader=undefined)
 		return self;
 	};
 
-	/// @func clone()
-	///
-	/// @desc Creates a clone of the material.
-	///
-	/// @return {Struct.BBMOD_BaseMaterial} The created clone.
 	static clone = function () {
 		var _clone = new BBMOD_BaseMaterial();
 		copy(_clone);
 		return _clone;
+	};
+
+	static to_json = function (_json) {
+		method(self, Super_Material.to_json)(_json);
+
+		_json.BaseOpacityMultiplier = {
+			Red: BaseOpacityMultiplier.Red,
+			Green: BaseOpacityMultiplier.Green,
+			Blue: BaseOpacityMultiplier.Blue,
+			Alpha: BaseOpacityMultiplier.Alpha,
+		};
+
+		_json.TextureOffset = {
+			X: TextureOffset.X,
+			Y: TextureOffset.Y,
+		};
+
+		_json.TextureScale = {
+			X: TextureScale.X,
+			Y: TextureScale.Y,
+		};
+
+		_json.ShadowmapBias = ShadowmapBias;
+
+		return self;
+	};
+
+	static from_json = function (_json) {
+		method(self, Super_Material.from_json)(_json);
+
+		var _baseOpacityMultiplier = _json[$ "BaseOpacityMultiplier"];
+		if (_baseOpacityMultiplier != undefined)
+		{
+			BaseOpacityMultiplier = new BBMOD_Color(
+				_baseOpacityMultiplier.Red,
+				_baseOpacityMultiplier.Green,
+				_baseOpacityMultiplier.Blue,
+				_baseOpacityMultiplier.Alpha
+			);
+		}
+
+		var _textureOffset = _json[$ "TextureOffset"];
+		if (_textureOffset != undefined)
+		{
+			TextureOffset = new BBMOD_Vec2(
+				_textureOffset.X,
+				_textureOffset.Y
+			);
+		}
+
+		var _textureScale = _json[$ "TextureScale"];
+		if (_textureScale != undefined)
+		{
+			TextureScale = new BBMOD_Vec2(
+				_textureScale.X,
+				_textureScale.Y
+			);
+		}
+
+		if (variable_struct_exists(_json, "ShadowmapBias"))
+		{
+			ShadowmapBias = _json.ShadowmapBias;
+		}
+
+		return self;
 	};
 }

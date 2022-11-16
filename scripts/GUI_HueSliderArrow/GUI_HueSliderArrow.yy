@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__ST_Path",
+  "name": "GUI_HueSliderArrow",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Scripts",
-    "path": "folders/SpriteTool/Scripts.yy",
+    "name": "ColorPicker",
+    "path": "folders/GUI/ColorPicker.yy",
   },
 }

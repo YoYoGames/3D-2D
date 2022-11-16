@@ -37,7 +37,7 @@ function ST_ViewportWidget(_store, _props={})
 	Add(new GUI_FloatingToolbar({
 		X: 4,
 		Y: 4,
-		Spacing: 32,
+		Gap: 32,
 	}, [
 		new GUI_Text("Camera", { Color: #ABABAB }),
 		CameraDropdown,

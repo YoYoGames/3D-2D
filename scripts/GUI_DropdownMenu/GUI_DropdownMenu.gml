@@ -22,9 +22,8 @@ function GUI_DropdownMenu(_props={})
 	static ScrollPane_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		SetProps({
-			"RealHeight": min(OptionsContainer.GetBoundingBox()[3] - RealY, window_get_height() - RealY),
+			RealHeight: min(OptionsContainer.GetBoundingBox()[3] - RealY, window_get_height() - RealY),
 		});
 		ScrollPane_Layout(_force);
 		return self;

@@ -50,7 +50,7 @@ function GUI_SelectList(_props={}, _items=[])
 		var i = 0;
 		repeat (array_length(_items))
 		{
-			_items[i].SetProps({ "IsLight": (i & 1) });
+			_items[i].SetProps({ IsLight: (i & 1) });
 			++i;
 		}
 		return self;

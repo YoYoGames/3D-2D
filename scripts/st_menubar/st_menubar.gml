@@ -16,7 +16,7 @@ function ST_MenuBar(_props)
 				ShortcutText: "CTRL+N",
 				Action: function () {
 					GUI_ShowQuestionAsync(
-						"Are you sure you want to create a new empty project? Any unsaved progress will be lost!",
+						"Are you sure you want to create a new empty project?\nAny unsaved progress will be lost!",
 						method(ST_OMain, ST_OMain.NewProject));
 				},
 			}),
@@ -40,7 +40,7 @@ function ST_MenuBar(_props)
 						else
 						{
 							GUI_ShowQuestionAsync(
-								"Are you sure you want to open a different project? Any unsaved progress will be lost!",
+								"Are you sure you want to open a different project?\nAny unsaved progress will be lost!",
 								_callback);
 						}
 					}

@@ -44,7 +44,7 @@ function GUI_TabGroup(_props={}, _children=[])
 	};
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 		var _tabCount = array_length(Children);
 		if (_tabCount > 0)
 		{
@@ -57,10 +57,10 @@ function GUI_TabGroup(_props={}, _children=[])
 				with (Children[i])
 				{
 					SetProps({
-						"RealWidth": _tabWidth,
-						"RealHeight": _parentHeight - 1,
-						"RealX": _x,
-						"RealY": _y,
+						RealWidth: _tabWidth,
+						RealHeight: _parentHeight - 1,
+						RealX: _x,
+						RealY: _y,
 					});
 					_x += _tabWidth;
 				}

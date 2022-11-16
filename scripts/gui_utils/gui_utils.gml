@@ -134,7 +134,7 @@ function GUI_ParseSize(_value, _dest, _allowAuto=true)
 			throw "'auto' not allowed!";
 		}
 		_dest[@ 0] = "auto";
-		_dest[@ 1] = "";
+		_dest[@ 1] = "px";
 		return;
 	}
 

@@ -29,7 +29,7 @@ function GUI_Grid(_columns, _rows=undefined, _props={}, _children=[])
 	AlignTop = _props[$ "AlignTop"] ?? 0.5;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _x = RealX;
 		var _y = RealY;
@@ -55,8 +55,8 @@ function GUI_Grid(_columns, _rows=undefined, _props={}, _children=[])
 				{
 					ComputeRealSize(_parentWidth, _parentHeight);
 					SetProps({
-						"RealX": round(_x + ((_cellWidth - RealWidth) * _alignLeft) + (RealWidth * PivotLeft)),
-						"RealY": (_rows != undefined)
+						RealX: round(_x + ((_cellWidth - RealWidth) * _alignLeft) + (RealWidth * PivotLeft)),
+						RealY: (_rows != undefined)
 							? round(_y + ((_cellHeight - RealHeight) * _alignTop) + (RealHeight * PivotTop))
 							: round(_y + (RealHeight * PivotTop)),
 					});
@@ -70,6 +70,9 @@ function GUI_Grid(_columns, _rows=undefined, _props={}, _children=[])
 				}
 			}
 		}
+
+		ApplyAutoSize(_xEnd, _y - RealY);
+
 		return self;
 	};
 }

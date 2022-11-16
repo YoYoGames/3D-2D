@@ -16,7 +16,7 @@ function ST_AssetWidget(_asset, _props={})
 	////////////////////////////////////////////////////////////////////////////
 	// Transform
 	SectionTransform = new GUI_VBox({
-		Spacing: 12,
+		Width: "100%",
 		PaddingLeft: 19,
 		PaddingRight: 19,
 		PaddingTop: 12,

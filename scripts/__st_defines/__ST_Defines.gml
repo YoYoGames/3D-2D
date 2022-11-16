@@ -15,10 +15,10 @@
 	string(ST_VERSION_PATCH))
 
 /// @macro {String}
-#macro ST_FILTER_MODEL "Model Files|*.fbx;*.dae;*.gltf;*.glbin;*.obj|" \
+#macro ST_FILTER_MODEL "Model Files|*.fbx;*.dae;*.gltf;*.glb;*.obj|" \
 	+ "FBX|*.fbx|" \
 	+ "COLLADA|*.dae|" \
-	+ "glTF|*.gltf;*.glbin|" \
+	+ "glTF|*.gltf;*.glb|" \
 	+ "OBJ|*.obj"
 
 /// @macro {String}

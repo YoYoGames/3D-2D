@@ -39,8 +39,8 @@ function GUI_ColorPicker(_color, _props={})
 
 	OnDrag = function (_self, _diffX, _diffY) {
 		SetProps({
-			"X": X + _diffX,
-			"Y": Y + _diffY,
+			X: X + _diffX,
+			Y: Y + _diffY,
 		});
 	};
 
@@ -70,6 +70,7 @@ function GUI_ColorPicker(_color, _props={})
 		Max: 100,
 		WholeNumbers: true,
 		OnChange: method(self, function (_value) {
+			SliderAlpha.OnChange(_value / 100.0, Alpha);
 			Alpha = _value / 100.0;
 		}),
 		X: 248,
@@ -85,13 +86,13 @@ function GUI_ColorPicker(_color, _props={})
 		Width: 70,
 		OnChange: method(self, function (_value) {
 			InputHex.SetProps({
-				"Visible": (_value == "Hex"),
+				Visible: (_value == "Hex"),
 			});
 			ContainerInputsHSV.SetProps({
-				"Visible": (_value == "HSV"),
+				Visible: (_value == "HSV"),
 			});
 			ContainerInputsRGB.SetProps({
-				"Visible": (_value == "RGB"),
+				Visible: (_value == "RGB"),
 			});
 		}),
 	}).AddOption(new GUI_DropdownOption("Hex", { IsDefault: true, }))
@@ -103,7 +104,7 @@ function GUI_ColorPicker(_color, _props={})
 		X: 96,
 		Y: 382,
 		Visible: false,
-		Spacing: 5,
+		Gap: 5,
 	};
 
 	InputHex = new GUI_Input(GUI_ByteArrayToHex([Color.Red, Color.Green, Color.Blue]), GUI_StructExtend({}, _styleInputContainer, {
@@ -173,9 +174,9 @@ function GUI_ColorPicker(_color, _props={})
 			var _colorHSV = make_color_hsv(Hue, Sat, Val);
 			var _colorNewRGB = make_color_rgb(_value, color_get_green(_colorHSV), color_get_blue(_colorHSV));
 			SetProps({
-				"Hue": color_get_hue(_colorNewRGB),
-				"Sat": color_get_saturation(_colorNewRGB),
-				"Val": color_get_value(_colorNewRGB),
+				Hue: color_get_hue(_colorNewRGB),
+				Sat: color_get_saturation(_colorNewRGB),
+				Val: color_get_value(_colorNewRGB),
 			});
 		}),
 	}));
@@ -188,9 +189,9 @@ function GUI_ColorPicker(_color, _props={})
 			var _colorHSV = make_color_hsv(Hue, Sat, Val);
 			var _colorNewRGB = make_color_rgb(color_get_red(_colorHSV), _value, color_get_blue(_colorHSV));
 			SetProps({
-				"Hue": color_get_hue(_colorNewRGB),
-				"Sat": color_get_saturation(_colorNewRGB),
-				"Val": color_get_value(_colorNewRGB),
+				Hue: color_get_hue(_colorNewRGB),
+				Sat: color_get_saturation(_colorNewRGB),
+				Val: color_get_value(_colorNewRGB),
 			});
 		}),
 	}));
@@ -203,9 +204,9 @@ function GUI_ColorPicker(_color, _props={})
 			var _colorHSV = make_color_hsv(Hue, Sat, Val);
 			var _colorNewRGB = make_color_rgb(color_get_red(_colorHSV), color_get_green(_colorHSV), _value);
 			SetProps({
-				"Hue": color_get_hue(_colorNewRGB),
-				"Sat": color_get_saturation(_colorNewRGB),
-				"Val": color_get_value(_colorNewRGB),
+				Hue: color_get_hue(_colorNewRGB),
+				Sat: color_get_saturation(_colorNewRGB),
+				Val: color_get_value(_colorNewRGB),
 			});
 		}),
 	}));
@@ -256,7 +257,7 @@ function GUI_ColorPicker(_color, _props={})
 	ContainerColors = new GUI_HBox({
 		X: 45,
 		Y: 438,
-		Spacing: 4,
+		Gap: 4,
 	});
 	Add(ContainerColors);
 
@@ -270,10 +271,10 @@ function GUI_ColorPicker(_color, _props={})
 			{
 				var _colorStored = make_color_rgb(_savedColor.Red, _savedColor.Green, _savedColor.Blue);
 				ColorPicker.SetProps({
-					"Hue": color_get_hue(_colorStored),
-					"Sat": color_get_saturation(_colorStored),
-					"Val": color_get_value(_colorStored),
-					"Alpha": _savedColor.Alpha,
+					Hue: color_get_hue(_colorStored),
+					Sat: color_get_saturation(_colorStored),
+					Val: color_get_value(_colorStored),
+					Alpha: _savedColor.Alpha,
 				});
 			}
 		});
@@ -297,20 +298,20 @@ function GUI_ColorPicker(_color, _props={})
 		Color.Alpha = Alpha;
 
 		SliderAlpha.SetProps({
-			"Color": _colorNew,
+			Color: _colorNew,
 		});
 
 		// FIXME: I really have that I have to do this. This GUI system needs
 		// to automatically update input values when they are edited from outside!
-		if (!InputAlpha.IsFocused())  { InputAlpha.SetProps({  "Value": floor(Alpha * 100) }); }
-		if (!SliderAlpha.IsFocused()) { SliderAlpha.SetProps({ "Value": Alpha }); }
-		if (!InputHex.IsFocused())    { InputHex.SetProps({    "Value": GUI_ByteArrayToHex([Color.Red, Color.Green, Color.Blue]) }); }
-		if (!InputHue.IsFocused())    { InputHue.SetProps({    "Value": floor(Hue) }); }
-		if (!InputSat.IsFocused())    { InputSat.SetProps({    "Value": floor(Sat) }); }
-		if (!InputVal.IsFocused())    { InputVal.SetProps({    "Value": floor(Val) }); }
-		if (!InputRed.IsFocused())    { InputRed.SetProps({    "Value": floor(Color.Red) }); }
-		if (!InputGreen.IsFocused())  { InputGreen.SetProps({  "Value": floor(Color.Green) }); }
-		if (!InputBlue.IsFocused())   { InputBlue.SetProps({   "Value": floor(Color.Blue) }); }
+		if (!InputAlpha.IsFocused())  { InputAlpha.SetProps({  Value: floor(Alpha * 100) }); }
+		if (!SliderAlpha.IsFocused()) { SliderAlpha.SetProps({ Value: Alpha }); }
+		if (!InputHex.IsFocused())    { InputHex.SetProps({    Value: GUI_ByteArrayToHex([Color.Red, Color.Green, Color.Blue]) }); }
+		if (!InputHue.IsFocused())    { InputHue.SetProps({    Value: floor(Hue) }); }
+		if (!InputSat.IsFocused())    { InputSat.SetProps({    Value: floor(Sat) }); }
+		if (!InputVal.IsFocused())    { InputVal.SetProps({    Value: floor(Val) }); }
+		if (!InputRed.IsFocused())    { InputRed.SetProps({    Value: floor(Color.Red) }); }
+		if (!InputGreen.IsFocused())  { InputGreen.SetProps({  Value: floor(Color.Green) }); }
+		if (!InputBlue.IsFocused())   { InputBlue.SetProps({   Value: floor(Color.Blue) }); }
 
 		if (keyboard_check_pressed(vk_escape)
 			|| (mouse_check_button_pressed(mb_left)

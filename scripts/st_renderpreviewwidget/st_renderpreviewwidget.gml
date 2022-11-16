@@ -21,7 +21,7 @@ function ST_RenderPreviewWidget(_store, _props={})
 	Add(Header);
 
 	Toolbar = new GUI_HBox({
-		Spacing: 4,
+		Gap: 4,
 		X: 280,
 	}, [
 		new GUI_GlyphButton(ST_EIcon.ArrowLeft, {
@@ -61,7 +61,7 @@ function ST_RenderPreviewWidget(_store, _props={})
 		Widget_Update();
 		SetHeight(Header.Collapsed ? Header.Height : 244);
 		Toolbar.SetProps({
-			"Visible": !Header.Collapsed,
+			Visible: !Header.Collapsed,
 		});
 		return self;
 	};

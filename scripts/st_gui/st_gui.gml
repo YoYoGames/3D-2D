@@ -12,13 +12,19 @@ function ST_GUI(_store, _props={})
 	/// @var {Id.Instance, Struct}
 	Store = _store;
 
-	FlexLayout = new GUI_FlexLayout({ FlexDirection: "column" });
+	FlexLayout = new GUI_FlexLayout({
+		FlexDirection: "column",
+		Width: "100%",
+		Height: "100%",
+	});
 	Add(FlexLayout);
 
 	Menu = new ST_MenuBar();
 	FlexLayout.Add(Menu);
 
 	HSplitterLeft = new GUI_HSplitter({
+		Width: "100%",
+		Height: "100%",
 		FlexGrow: 1,
 		Split: 0.25,
 	});
@@ -27,17 +33,21 @@ function ST_GUI(_store, _props={})
 	HSplitterRight = new GUI_HSplitter({
 		Width: "100%",
 		Height: "100%",
-		Split: 0.7,
+		Split: 0.65,
 	});
-	HSplitterRight.Right.SetProps({ "Visible": false });
+	HSplitterRight.Right.SetProps({ Visible: false });
 	HSplitterLeft.Right.Add(HSplitterRight);
 
 	FlexLayout = new GUI_FlexLayout({
+		Width: "100%",
+		Height: "100%",
 		FlexDirection: "column",
 	});
 	HSplitterRight.Left.Add(FlexLayout);
 
 	Viewport = new ST_ViewportWidget(Store, {
+		Width: "100%",
+		Height: "100%",
 		FlexGrow: 1,
 	});
 	FlexLayout.Add(Viewport);
@@ -82,21 +92,21 @@ function ST_GUI(_store, _props={})
 		Root_Update();
 		var _taskQueue = Store.TaskQueue;
 		Blocker.SetProps({
-			"Visible": (_taskQueue.BlockingTaskCount > 0),
+			Visible: (_taskQueue.BlockingTaskCount > 0),
 		});
 		ProgressBar.SetProps({
-			"Visible": (_taskQueue.GetTaskCount() > 0),
-			"Progress": _taskQueue.Progress,
-			"ProgressMax": _taskQueue.ProgressMax,
+			Visible: (_taskQueue.GetTaskCount() > 0),
+			Progress: _taskQueue.Progress,
+			ProgressMax: _taskQueue.ProgressMax,
 		});
 		var _animationPlayerVisible = (Store.Asset
 			&& Store.Asset.IsAnimated
 			&& Store.Asset.AnimationIndex != undefined);
 		AnimationPlayer.SetProps({
-			"Visible": _animationPlayerVisible,
+			Visible: _animationPlayerVisible,
 		});
 		FramesPane.SetProps({
-			"Visible": _animationPlayerVisible,
+			Visible: _animationPlayerVisible,
 		});
 		return self;
 	};

@@ -9,6 +9,8 @@
 function GUI_FileInput(_path, _props={})
 	: GUI_Input(_path, _props) constructor
 {
+	static Input_Layout = Layout;
+
 	MaxChildCount = 1;
 
 	IsReal = false;
@@ -23,6 +25,9 @@ function GUI_FileInput(_path, _props={})
 	/// @var {String}
 	Filename = _props[$ "Filename"] ?? "";
 
+	/// @var {Function}
+	OnSelect = _props[$ "OnSelect"];
+
 	BackgroundSprite = _props[$ "Sprite"] ?? GUI_SprButton;
 
 	/// @var {Struct.GUI_Button}
@@ -33,19 +38,27 @@ function GUI_FileInput(_path, _props={})
 		PivotLeft: 1.0,
 		X: -1,
 		OnClick: method(self, function () {
-			Change(Save
-				? GetSaveFileName(Filter, Filename, ST_ENVVAR_HOME, "Save As")
+      var _path = Save
+        ? GetSaveFileName(Filter, Filename, ST_ENVVAR_HOME, "Save As")
 				: GetOpenFileName(Filter, Filename, ST_ENVVAR_HOME, "Open"));
+			if (_path != "")
+			{
+				Change(_path);
+				if (OnSelect)
+				{
+					OnSelect(_path);
+				}
+			}
 		}),
 	});
 	SelectButton.Disabled = Disabled;
 	Add(SelectButton);
 
-	static Input_Layout = Layout;
-
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		RealWidth -= SelectButton.RealWidth;
+		//SetProps({
+		//	RealWidth: RealWidth - SelectButton.RealWidth,
+		//});
 		Input_Layout(_force);
 		return self;
 	};

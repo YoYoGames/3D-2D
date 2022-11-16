@@ -27,14 +27,14 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 
 	OnDrag = function (_self, _diffX, _diffY) {
 		SetProps({
-			"X": X + _diffX,
+			X: X + _diffX,
 		});
 	};
 
 	Container = new GUI_HBox({
 		X: Draggable ? 17 : 5,
 		Y: 7,
-		Spacing: _props[$ "Spacing"] ?? 8,
+		Gap: _props[$ "Gap"] ?? 8,
 	});
 	Widget_Add(Container);
 
@@ -47,10 +47,9 @@ function GUI_FloatingToolbar(_props={}, _children=[])
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
 		Widget_Layout(_force);
 		SetProps({
-			"RealWidth": GetInnerBoundingBox()[2] - RealX + 5,
+			RealWidth: GetInnerBoundingBox()[2] - RealX + 5,
 		});
 		return self;
 	};

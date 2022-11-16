@@ -70,6 +70,14 @@ function BBMOD_Animation(_file=undefined, _sha1=undefined)
 	/// @readonly
 	TicsPerSecond = 0;
 
+	/// @var {Real}
+	/// @private
+	ModelNodeCount = 0;
+
+	/// @var {Real}
+	/// @private
+	ModelBoneCount = 0;
+
 	/// @var {Array<Array<Real>>}
 	/// @private
 	FramesParent = [];
@@ -218,10 +226,10 @@ function BBMOD_Animation(_file=undefined, _sha1=undefined)
 		Duration = buffer_read(_buffer, buffer_f64);
 		TicsPerSecond = buffer_read(_buffer, buffer_f64);
 
-		var _modelNodeCount = buffer_read(_buffer, buffer_u32);
-		var _modelNodeSize = _modelNodeCount * 8;
-		var _modelBoneCount = buffer_read(_buffer, buffer_u32);
-		var _modelBoneSize = _modelBoneCount * 8;
+		ModelNodeCount = buffer_read(_buffer, buffer_u32);
+		var _modelNodeSize = ModelNodeCount * 8;
+		ModelBoneCount = buffer_read(_buffer, buffer_u32);
+		var _modelBoneSize = ModelBoneCount * 8;
 
 		FramesParent = (Spaces & BBMOD_BONE_SPACE_PARENT) ? [] : undefined;
 		FramesWorld = (Spaces & BBMOD_BONE_SPACE_WORLD) ? [] : undefined;
@@ -248,7 +256,68 @@ function BBMOD_Animation(_file=undefined, _sha1=undefined)
 			}
 		}
 
+		if (VersionMinor >= 4)
+		{
+			var _eventCount = buffer_read(_buffer, buffer_u32);
+			repeat (_eventCount)
+			{
+				array_push(Events, buffer_read(_buffer, buffer_f64)); // Frame
+				array_push(Events, buffer_read(_buffer, buffer_string)); // Event name
+			}
+		}
+
 		IsLoaded = true;
+
+		return self;
+	};
+
+	/// @func to_buffer(_buffer)
+	///
+	/// @desc Writes animation data to a buffer.
+	///
+	/// @param {Id.Buffer} _buffer The buffer to write the data to.
+	///
+	/// @return {Struct.BBMOD_Animation} Returns `self`.
+	static to_buffer = function (_buffer) {
+		buffer_write(_buffer, buffer_string, "BBANIM");
+		buffer_write(_buffer, buffer_u8, VersionMajor);
+		buffer_write(_buffer, buffer_u8, VersionMinor);
+
+		buffer_write(_buffer, buffer_u8, Spaces);
+		buffer_write(_buffer, buffer_f64, Duration);
+		buffer_write(_buffer, buffer_f64, TicsPerSecond);
+
+		buffer_write(_buffer, buffer_u32, ModelNodeCount);
+		buffer_write(_buffer, buffer_u32, ModelBoneCount);
+
+		repeat (Duration)
+		{
+			if (Spaces & BBMOD_BONE_SPACE_PARENT)
+			{
+				bbmod_array_to_buffer(FramesParent, _buffer, buffer_f32);
+			}
+
+			if (Spaces & BBMOD_BONE_SPACE_WORLD)
+			{
+				bbmod_array_to_buffer(FramesWorld, _buffer, buffer_f32);
+			}
+
+			if (Spaces & BBMOD_BONE_SPACE_BONE)
+			{
+				bbmod_array_to_buffer(FramesBone, _buffer, buffer_f32);
+			}
+		}
+
+		var _eventCount = array_length(Events) / 2;
+		buffer_write(_buffer, buffer_u32, _eventCount);
+
+		var i = 0;
+		repeat (_eventCount)
+		{
+			buffer_write(_buffer, buffer_f64, Events[i]);
+			buffer_write(_buffer, buffer_string, Events[i + 1]);
+			i += 2;
+		}
 
 		return self;
 	};

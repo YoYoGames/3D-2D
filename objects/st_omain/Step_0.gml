@@ -4,6 +4,12 @@ if (keyboard_check_pressed(vk_f1))
 }
 show_debug_overlay(Debug);
 
+if (GUI.WidgetFocused == undefined
+	&& keyboard_check_pressed(vk_tab))
+{
+	GUI.Viewport.FloatingToolbar.DropdownEditType.SelectNext();
+}
+
 var _viewport = GUI.Viewport;
 
 GUI.Update();
@@ -22,41 +28,48 @@ if (_viewport.IsMouseOver()
 	&& GUI.WidgetFocused == undefined)
 {
 	Camera.Zoom = max(Camera.Zoom + (mouse_wheel_down() - mouse_wheel_up()) * 1, 1);
+
 	if (mouse_check_button_pressed(mb_right))
 	{
-		Camera.set_mouselook(true);
+		if (!keyboard_check(vk_shift))
+		{
+			Camera.set_mouselook(true);
+		}
+		else
+		{
+			CameraPosition = Camera.Position.Clone();
+			PanningCamera = true;
+		}
 	}
 
-	var _speed = 0.5 * (keyboard_check(vk_shift) ? 2.0 : 1.0);
+	if (!PanningCamera)
+	{
+		var _speed = 0.5 * (keyboard_check(vk_shift) ? 2.0 : 1.0);
 
-	if (keyboard_check(ord("W")))
-	{
-		x += lengthdir_x(_speed, Camera.Direction);
-		y += lengthdir_y(_speed, Camera.Direction);
-	}
-	if (!keyboard_check(vk_control) && keyboard_check(ord("S")))
-	{
-		x -= lengthdir_x(_speed, Camera.Direction);
-		y -= lengthdir_y(_speed, Camera.Direction);
-	}
-	if (keyboard_check(ord("A")))
-	{
-		x += lengthdir_x(_speed, Camera.Direction + 90);
-		y += lengthdir_y(_speed, Camera.Direction + 90);
-	}
-	if (keyboard_check(ord("D")))
-	{
-		x += lengthdir_x(_speed, Camera.Direction - 90);
-		y += lengthdir_y(_speed, Camera.Direction - 90);
-	}
-	z += (keyboard_check(ord("E")) - keyboard_check(ord("Q"))) * _speed;
-
-	if (mouse_check_button_pressed(mb_middle))
-	{
-		CameraPosition = Camera.Position.Clone();
+		if (keyboard_check(ord("W")))
+		{
+			x += lengthdir_x(_speed, Camera.Direction);
+			y += lengthdir_y(_speed, Camera.Direction);
+		}
+		if (!keyboard_check(vk_control) && keyboard_check(ord("S")))
+		{
+			x -= lengthdir_x(_speed, Camera.Direction);
+			y -= lengthdir_y(_speed, Camera.Direction);
+		}
+		if (keyboard_check(ord("A")))
+		{
+			x += lengthdir_x(_speed, Camera.Direction + 90);
+			y += lengthdir_y(_speed, Camera.Direction + 90);
+		}
+		if (keyboard_check(ord("D")))
+		{
+			x += lengthdir_x(_speed, Camera.Direction - 90);
+			y += lengthdir_y(_speed, Camera.Direction - 90);
+		}
+		z += (keyboard_check(ord("E")) - keyboard_check(ord("Q"))) * _speed;
 	}
 
-	if (mouse_check_button(mb_middle))
+	if (PanningCamera)
 	{
 		var _point = new BBMOD_Vec2(window_mouse_get_x(), window_mouse_get_y());
 		var _dir = Camera.screen_point_to_vec3(_point, Renderer);
@@ -73,11 +86,14 @@ if (_viewport.IsMouseOver()
 		}
 
 		MouseOffset = _mouseWorld;
-	}
-	else
-	{
-		MouseOffset = undefined;
-		CameraPosition = undefined;
+
+		if (!mouse_check_button(mb_right)
+			|| !keyboard_check(vk_shift))
+		{
+			MouseOffset = undefined;
+			CameraPosition = undefined;
+			PanningCamera = false;
+		}
 	}
 }
 
@@ -124,7 +140,7 @@ if (keyboard_check(vk_control))
 	if (keyboard_check_pressed(ord("N")))
 	{
 		GUI_ShowQuestionAsync(
-			"Are you sure you want to create a new empty project? Any unsaved progress will be lost!",
+			"Are you sure you want to create a new empty project?\nAny unsaved progress will be lost!",
 			method(self, NewProject));
 	}
 	else if (keyboard_check_pressed(ord("S")))
@@ -154,7 +170,7 @@ if (keyboard_check(vk_control))
 		else
 		{
 			GUI_ShowQuestionAsync(
-				"Are you sure you want to open a different project? Any unsaved progress will be lost!",
+				"Are you sure you want to open a different project?\nAny unsaved progress will be lost!",
 				_callback);
 		}
 	}

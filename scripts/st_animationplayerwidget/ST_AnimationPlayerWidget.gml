@@ -20,7 +20,7 @@ function ST_AnimationPlayerWidget(_store, _props={})
 	BackgroundSprite = _props[$ "BackgroundSprite"] ?? ST_SprAnimationPlayerBackground;
 
 	HBoxLeft = new GUI_HBox({
-		Spacing: 7,
+		Gap: 7,
 		X: 10,
 		Y: 10,
 	}, [
@@ -76,9 +76,9 @@ function ST_AnimationPlayerWidget(_store, _props={})
 
 	HBoxRight = new GUI_HBox({
 		AnchorLeft: 1.0,
-		X: -140,
+		X: -10,
 		Y: 10,
-		Spacing: 6,
+		Gap: 6,
 	}, [
 		new GUI_Text("Frame"),
 		new GUI_Input(0, {

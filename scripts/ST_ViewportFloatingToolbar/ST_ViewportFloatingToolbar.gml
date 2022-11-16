@@ -34,7 +34,7 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 			}
 		},
 	}, [
-		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
+		new GUI_VBox({ Width: "100%", Padding: 8, Gap: 4 }, [
 			new GUI_Text("Grid:"),
 			new ST_VectorInput(ST_OMain.Gizmo.GridSize, {
 				Width: "100%",
@@ -78,7 +78,7 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 			}
 		},
 	}, [
-		new GUI_VBox({ Width: "100%", Padding: 8, Spacing: 4 }, [
+		new GUI_VBox({ Width: "100%", Padding: 8, Gap: 4 }, [
 			new GUI_Text("Angle snap:"),
 			new GUI_Input(ST_OMain.Gizmo.AngleSnap, {
 				Width: "50%",
@@ -220,22 +220,15 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 		}),
 	}));
 
-	Add(new GUI_HBox({}, [
-		new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
-			Font: ST_FntIcons11,
+	Add(new GUI_GlyphButton(ST_EIcon.WrenchWhite, {
+		Font: ST_FntIcons11,
+		OnClick: method(self, function (_glyphButton) {
+			ExtraOptions.SetProps({
+				Visible: !ExtraOptions.Visible,
+			});
 		}),
-		new GUI_GlyphButton(ST_EIcon.ArrowDown, {
-			Tooltip: "Tool Options",
-			Font: ST_FntIcons5,
-			Width: 11,
-			OnClick: method(self, function (_glyphButton) {
-				ExtraOptions.SetProps({
-					Visible: !ExtraOptions.Visible,
-				});
-			}),
-		}, [
-			ExtraOptions,
-		]),
+	}, [
+		ExtraOptions,
 	]));
 
 	Add(new GUI_HBox({}, [
@@ -245,21 +238,24 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 				switch (ST_OMain.Gizmo.EditType)
 				{
 				case BBMOD_EEditType.Position:
-					_glyphButton.Tooltip = "Move Tool";
+					_glyphButton.Tooltip = "Move Tool (TAB)";
 					_glyphButton.Glyph = ST_EIcon.Move;
 					break;
 
 				case BBMOD_EEditType.Rotation:
-					_glyphButton.Tooltip = "Rotate Tool";
+					_glyphButton.Tooltip = "Rotate Tool (TAB)";
 					_glyphButton.Glyph = ST_EIcon.RotateBrush;
 					break;
 
 				case BBMOD_EEditType.Scale:
-					_glyphButton.Tooltip = "Scale Tool";
+					_glyphButton.Tooltip = "Scale Tool (TAB)";
 					_glyphButton.Glyph = ST_EIcon.ScaleCursor;
 					break;
 				}
 			},
+			OnPress: method(self, function () {
+				DropdownEditType.SelectNext();
+			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ArrowDown, {
 			Tooltip: "Select Tool",

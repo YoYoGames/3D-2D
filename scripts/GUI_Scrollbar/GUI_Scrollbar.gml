@@ -10,6 +10,9 @@ function GUI_Scrollbar(_props={})
 {
 	MaxChildCount = 0;
 
+	/// @var {Struct.GUI_Canvas}
+	Target = _props[$ "Target"];
+
 	/// @var {Real}
 	/// @ignore
 	Scroll = 0;
@@ -77,7 +80,7 @@ function GUI_Scrollbar(_props={})
 	static SetScroll = function (_scroll) {
 		gml_pragma("forceinline");
 		SetProps({
-			"Scroll": _scroll / ScrollJump,
+			Scroll: _scroll / ScrollJump,
 		});
 		return self;
 	};

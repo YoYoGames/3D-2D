@@ -1,10 +1,68 @@
-#macro CHECK_LAYOUT_CHANGED \
-	if (!_force && !Changed) \
+#macro GUI_CHECK_LAYOUT_CHANGED \
+	if (Changed) \
+	{ \
+		_force = true; \ // The widget has changed, we have to recompute layout for all child widgets!
+		Changed = false; \
+	} \
+	if (!BranchChanged && !_force) \
 	{ \
 		return self; \
 	} \
-	_force = true; \
-	Changed = false
+	BranchChanged = false
+
+/// @var {Id.DsStack}
+/// @private
+global.__guiClipStack = ds_stack_create();
+
+/// @var {Array<Real>, Undefined}
+/// @private
+global.__guiClipArea = undefined;
+
+/// @func GUI_ClipAreaPush(_x, _y, _width, _height)
+///
+/// @desc
+///
+/// @param {Real} _x
+/// @param {Real} _y
+/// @param {Real} _width
+/// @param {Real} _height
+function GUI_ClipAreaPush(_x, _y, _width, _height)
+{
+	ds_stack_push(global.__guiClipStack, global.__guiClipArea);
+	if (global.__guiClipArea == undefined)
+	{
+		global.__guiClipArea = [_x, _y, _x + _width, _y + _height];
+	}
+	else
+	{
+		global.__guiClipArea = [
+			max(global.__guiClipArea[0], _x),
+			max(global.__guiClipArea[1], _y),
+			min(global.__guiClipArea[2], _x + _width),
+			min(global.__guiClipArea[3], _y + _height)
+		];
+	}
+}
+
+/// @func GUI_ClipAreaPop()
+///
+/// @desc
+function GUI_ClipAreaPop()
+{
+	global.__guiClipArea = ds_stack_top(global.__guiClipStack);
+	ds_stack_pop(global.__guiClipStack);
+}
+
+/// @func GUI_ClipAreaGet()
+///
+/// @desc
+///
+/// @return {Array<Real>, Undefined}
+function GUI_ClipAreaGet()
+{
+	gml_pragma("forceinline");
+	return global.__guiClipArea;
+}
 
 /// @func GUI_Widget([_props[, _children]])
 ///
@@ -14,9 +72,14 @@
 /// @param {Array<Struct.GUI_Widget>} [_children]
 function GUI_Widget(_props={}, _children=[]) constructor
 {
-	/// @var {Bool}
+	/// @var {Bool} If `true` then widget's properties have changed.
 	/// @private
 	Changed = true;
+
+	/// @var {Bool} If `true` then properties in the widget's subtree
+	/// have changed.
+	/// @private
+	BranchChanged = true;
 
 	/// @var {Struct}
 	/// @private
@@ -37,6 +100,24 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @var {Array<Struct.GUI_Widget>}
 	/// @readonly
 	Children = [];
+
+	/// @var {Constant.Color}
+	BackgroundColor = GUI_StructGet(_props, "BackgroundColor");
+
+	/// @var {Real}
+	BackgroundAlpha = _props[$ "BackgroundAlpha"] ?? 1.0;
+
+	/// @var {Asset.GMSprite}
+	BackgroundSprite = GUI_StructGet(_props, "BackgroundSprite");
+
+	/// @var {Real}
+	BackgroundSubimage = _props[$ "BackgroundSubimage"] ?? 0;
+
+	/// @var {Constant.Color}
+	BackgroundSpriteColor = _props[$ "BackgroundSpriteColor"] ?? c_white;
+
+	/// @var {Real}
+	BackgroundSpriteAlpha = _props[$ "BackgroundSpriteAlpha"] ?? 1.0;
 
 	var i = 0
 	repeat (array_length(_children))
@@ -76,8 +157,11 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		SetWidth(_props[$ "Width"]);
 	}
 
-	/// @var {Real}
+	/// @var {Real, String}
 	MinWidth = GUI_StructGet(_props, "MinWidth");
+
+	/// @var {Real, String}
+	MaxWidth = GUI_StructGet(_props, "MaxWidth");
 
 	/// @var {Real}
 	/// @readonly
@@ -96,8 +180,11 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		SetHeight(_props[$ "Height"]);
 	}
 
-	/// @var {Real}
+	/// @var {Real, String}
 	MinHeight = GUI_StructGet(_props, "MinHeight");
+
+	/// @var {Real, String}
+	MaxHeight = GUI_StructGet(_props, "MaxHeight");
 
 	/// @var {Real}
 	/// @readonly
@@ -188,21 +275,48 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @readonly
 	EventListeners = undefined;
 
-	/// @func MarkChanged()
+	/// @func FindFromId(_id)
+	///
+	/// @desc
+	///
+	/// @param {String} _id
+	///
+	/// @return {Struct.GUI_Widget} The found widget or `undefined`.
+	static FindFromId = function (_id) {
+		if (Id == _id)
+		{
+			return self;
+		}
+		var i = 0;
+		repeat (array_length(Children))
+		{
+			with (Children[i++])
+			{
+				var _widget = FindFromId(_id);
+				if (_widget != undefined)
+				{
+					return _widget;
+				}
+			}
+		}
+		return undefined;
+	};
+
+	/// @func MarkChangedUp()
 	///
 	/// @desc
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
-	static MarkChanged = function () {
-		var _current = self;
+	static MarkChangedUp = function () {
+		Changed = true;
+		var _current = Parent;
 		while (_current != undefined)
 		{
-			// FIXME: Does not work on all cases?!?!
-			//if (_current.Changed)
-			//{
-			//	break;
-			//}
-			_current.Changed = true;
+			if (_current.BranchChanged)
+			{
+				break;
+			}
+			_current.BranchChanged = true;
 			_current = _current.Parent;
 		}
 		return self;
@@ -240,10 +354,12 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @desc
 	///
-	/// @return {Struct.GUI_Widget} Returns `self`.
+	/// @return {Bool}
 	///
 	/// @private
 	static CheckPropChanges = function () {
+		var _changed = false;
+
 		var _props = PropsChanged;
 		var _names = variable_struct_get_names(_props);
 		var i = 0;
@@ -254,12 +370,28 @@ function GUI_Widget(_props={}, _children=[]) constructor
 			var _valueNew = self[$ _name];
 			if (_valueNew != _valueOld)
 			{
-				MarkChanged();
+				//show_debug_message([current_time, Id, _name, _valueNew, _valueOld]);
+				Changed = true;
+				_changed = true;
 				break;
 			}
 		}
 		PropsChanged = {};
-		return self;
+
+		if (!BranchChanged)
+		{
+			var i = 0;
+			repeat (array_length(Children))
+			{
+				if (Children[i++].CheckPropChanges())
+				{
+					BranchChanged = true;
+					_changed = true;
+				}
+			}
+		}
+
+		return _changed;
 	};
 
 	/// @func AddEventListener(_event, _callback)
@@ -367,8 +499,8 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		static _dest = [];
 		GUI_ParseSize(_value, _dest);
 		SetProps({
-			"Width": _dest[0],
-			"WidthUnit": _dest[1],
+			Width: _dest[0],
+			WidthUnit: _dest[1],
 		});
 		return self;
 	};
@@ -387,8 +519,8 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		static _dest = [];
 		GUI_ParseSize(_value, _dest);
 		SetProps({
-			"Height": _dest[0],
-			"HeightUnit": _dest[1],
+			Height: _dest[0],
+			HeightUnit: _dest[1],
 		});
 		return self;
 	};
@@ -410,6 +542,31 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return self;
 	};
 
+	/// @func GetClampedRealWidth(_realWidth, _parentWidth)
+	///
+	/// @desc
+	///
+	/// @param {Real} _realWidth
+	/// @param {Real} _parentWidth
+	///
+	/// @return {Real}
+	static GetClampedRealWidth = function (_realWidth, _parentWidth) {
+		static _dest = array_create(2);
+		if (MinWidth != undefined)
+		{
+			GUI_ParseSize(MinWidth, _dest);
+			var _realMinWidth = (_dest[1] == "px") ? _dest[0] : (_parentWidth * (_dest[0] / 100.0));
+			_realWidth = max(_realWidth, _realMinWidth);
+		}
+		if (MaxWidth != undefined)
+		{
+			GUI_ParseSize(MaxWidth, _dest);
+			var _realMaxWidth = (_dest[1] == "px") ? _dest[0] : (_parentWidth * (_dest[0] / 100.0));
+			_realWidth = min(_realWidth, _realMaxWidth);
+		}
+		return _realWidth;
+	};
+
 	/// @func ComputeRealWidth(_parentWidth)
 	///
 	/// @desc
@@ -419,15 +576,38 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static ComputeRealWidth = function (_parentWidth) {
 		gml_pragma("forceinline");
-		var _realWidth = (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0));
-		if (MinWidth != undefined)
+		if (Width != "auto")
 		{
-			_realWidth = max(_realWidth, MinWidth);
+			var _realWidth = (WidthUnit == "px") ? Width : (_parentWidth * (Width / 100.0));
+			_realWidth = GetClampedRealWidth(_realWidth, _parentWidth);
+			SetProps({ RealWidth: round(_realWidth) });
 		}
-		SetProps({
-			"RealWidth": _realWidth,
-		});
 		return self;
+	};
+
+	/// @func GetClampedRealHeight(_realHeight, _parentHeight)
+	///
+	/// @desc
+	///
+	/// @param {Real} _realHeight
+	/// @param {Real} _parentHeight
+	///
+	/// @return {Real}
+	static GetClampedRealHeight = function (_realHeight, _parentHeight) {
+		static _dest = array_create(2);
+		if (MinHeight != undefined)
+		{
+			GUI_ParseSize(MinHeight, _dest);
+			var _realMinHeight = (_dest[1] == "px") ? _dest[0] : (_parentHeight * (_dest[0] / 100.0));
+			_realHeight = max(_realHeight, _realMinHeight);
+		}
+		if (MaxHeight != undefined)
+		{
+			GUI_ParseSize(MaxHeight, _dest);
+			var _realMaxHeight = (_dest[1] == "px") ? _dest[0] : (_parentHeight * (_dest[0] / 100.0));
+			_realHeight = min(_realHeight, _realMaxHeight);
+		}
+		return _realHeight;
 	};
 
 	/// @func ComputeRealHeight(_parentHeight)
@@ -439,14 +619,12 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static ComputeRealHeight = function (_parentHeight) {
 		gml_pragma("forceinline");
-		var _realHeight = (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0));
-		if (MinHeight != undefined)
+		if (Height != "auto")
 		{
-			_realHeight = max(_realHeight, MinHeight);
+			var _realHeight = (HeightUnit == "px") ? Height : (_parentHeight * (Height / 100.0));
+			_realHeight = GetClampedRealHeight(_realHeight, _parentHeight);
+			SetProps({ RealHeight: round(_realHeight) });
 		}
-		SetProps({
-			"RealHeight": _realHeight,
-		});
 		return self;
 	};
 
@@ -462,6 +640,33 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		gml_pragma("forceinline");
 		ComputeRealWidth(_parentWidth);
 		ComputeRealHeight(_parentHeight);
+		return self;
+	};
+
+	/// @func ApplyAutoSize(_width, _height)
+	///
+	/// @desc
+	///
+	/// @param {Real} _width
+	/// @param {Real} _height
+	///
+	/// @return {Struct.GUI_Widget} Returns `self`.
+	static ApplyAutoSize = function (_width, _height) {
+		// Note: This should also affect the child widgets, but then the layout
+		// would have to be done in multiple passes, which could get very slow!
+
+		if (Width == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "row"))
+		{
+			_width = GetClampedRealWidth(_width, Parent.RealWidth);
+			SetProps({ RealWidth: round(_width) });
+		}
+
+		if (Height == "auto" && (FlexGrow == 0 || Parent[$ "FlexDirection"] != "column"))
+		{
+			_height = GetClampedRealHeight(_height, Parent.RealHeight);
+			SetProps({ RealHeight: round(_height) });
+		}
+
 		return self;
 	};
 
@@ -550,14 +755,16 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _parentX = RealX;
 		var _parentY = RealY;
 		var _parentWidth = RealWidth;
 		var _parentHeight = RealHeight;
 		var _paddingLeft = PaddingLeft ?? Padding;
+		var _paddingRight = PaddingRight ?? Padding;
 		var _paddingTop = PaddingTop ?? Padding;
+		var _paddingBottom = PaddingBottom ?? Padding;
 
 		var i = 0;
 		repeat (array_length(Children))
@@ -566,7 +773,10 @@ function GUI_Widget(_props={}, _children=[]) constructor
 			{
 				if (Visible)
 				{
-					ComputeRealSize(_parentWidth, _parentHeight);
+					ComputeRealSize(
+						_parentWidth - _paddingLeft - _paddingRight,
+						_parentHeight - _paddingTop - _paddingBottom
+					);
 					RealX = round(_parentX + _paddingLeft + ((_parentWidth - RealWidth) * AnchorLeft) + (RealWidth * PivotLeft) + X);
 					RealY = round(_parentY + _paddingTop + ((_parentHeight - RealHeight) * AnchorTop) + (RealHeight * PivotTop) + Y);
 					Layout(_force);
@@ -585,6 +795,16 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	static IsMouseOver = function () {
 		gml_pragma("forceinline");
 		return (Root ? (Root.WidgetHovered == self) : false);
+	};
+
+	/// @func IsPressed()
+	///
+	/// @desc
+	///
+	/// @return {Bool}
+	static IsPressed = function () {
+		gml_pragma("forceinline");
+		return (Root ? (Root.WidgetPressed == self) : false);
 	};
 
 	/// @func Focus()
@@ -606,9 +826,14 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		{
 			OnFocus();
 		}
-		if (_widgetFocused && _widgetFocused.OnBlur)
+		TriggerEvent(new GUI_Event("Focus"));
+		if (_widgetFocused)
 		{
-			_widgetFocused.OnBlur();
+			if (_widgetFocused.OnBlur)
+			{
+				_widgetFocused.OnBlur();
+			}
+			_widgetFocused.TriggerEvent(new GUI_Event("Blur"));
 		}
 		return self;
 	};
@@ -715,7 +940,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		}
 	};
 
-	/// @func Add(_widget)
+	/// @func Add(_widget...)
 	///
 	/// @desc
 	///
@@ -724,24 +949,29 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	///
 	/// @throws {String}
-	static Add = function (_widget) {
+	static Add = function () {
 		gml_pragma("forceinline");
-		if (_widget == self)
+		var i = 0;
+		repeat (argument_count)
 		{
-			throw "Cannot add self as a child!";
+			var _widget = argument[i++];
+			if (_widget == self)
+			{
+				throw "Cannot add self as a child!";
+			}
+			if (_widget.Parent)
+			{
+				throw "Already a child of a widget!";
+			}
+			if (array_length(Children) >= MaxChildCount)
+			{
+				throw "Cannot add more child widgets!";
+			}
+			array_push(Children, _widget);
+			_widget.Parent = self;
+			PassRoot(_widget, Root);
 		}
-		if (_widget.Parent)
-		{
-			throw "Already a child of a widget!";
-		}
-		if (array_length(Children) >= MaxChildCount)
-		{
-			throw "Cannot add more child widgets!";
-		}
-		array_push(Children, _widget);
-		_widget.Parent = self;
-		PassRoot(_widget, Root);
-		MarkChanged();
+		MarkChangedUp();
 		return self;
 	};
 
@@ -751,7 +981,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static RemoveSelf = function () {
-		MarkChanged();
+		MarkChangedUp();
 		if (Parent)
 		{
 			for (var i = array_length(Parent.Children) - 1; i >= 0; --i)
@@ -774,7 +1004,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static RemoveChildWidgets = function () {
-		MarkChanged();
+		MarkChangedUp();
 		for (var i = array_length(Children) - 1; i >= 0; --i)
 		{
 			Children[i].Destroy();
@@ -851,23 +1081,65 @@ function GUI_Widget(_props={}, _children=[]) constructor
 		return self;
 	};
 
+	/// @func DrawBackground()
+	///
+	/// @desc
+	///
+	/// @return {Struct.GUI_Widget} Returns `self`.
+	static DrawBackground = function () {
+		gml_pragma("forceinline");
+		if (BackgroundColor != undefined)
+		{
+			GUI_DrawRectangle(RealX, RealY, RealWidth, RealHeight, BackgroundColor, BackgroundAlpha);
+		}
+		if (BackgroundSprite != undefined)
+		{
+			draw_sprite_stretched_ext(BackgroundSprite, BackgroundSubimage, RealX, RealY, RealWidth, RealHeight,
+				BackgroundSpriteColor, BackgroundSpriteAlpha);
+		}
+		return self;
+	};
+
 	/// @func DrawChildren()
 	///
 	/// @desc Draws all *visible* child widgets.
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static DrawChildren = function () {
+		var _xMin, _yMin, _xMax, _yMax;
+
+		var _clipArea = GUI_ClipAreaGet();
+		if (_clipArea != undefined)
+		{
+			_xMin = _clipArea[0];
+			_yMin = _clipArea[1];
+			_xMax = _clipArea[2];
+			_yMax = _clipArea[3];
+		}
+		else
+		{
+			_xMin = Root.RealX;
+			_yMin = Root.RealY;
+			_xMax = Root.RealX + Root.RealWidth;
+			_yMax = Root.RealY + Root.RealHeight;
+		}
+
 		var i = 0;
 		repeat (array_length(Children))
 		{
 			with (Children[i++])
 			{
-				if (Visible)
+				if (Visible
+					&& !(RealX + RealWidth < _xMin
+					|| RealY + RealHeight < _yMin
+					|| RealX > _xMax
+					|| RealY > _yMax))
 				{
 					Draw();
 				}
 			}
 		}
+
 		return self;
 	};
 
@@ -877,6 +1149,7 @@ function GUI_Widget(_props={}, _children=[]) constructor
 	///
 	/// @return {Struct.GUI_Widget} Returns `self`.
 	static Draw = function () {
+		DrawBackground();
 		DrawChildren();
 		return self;
 	};

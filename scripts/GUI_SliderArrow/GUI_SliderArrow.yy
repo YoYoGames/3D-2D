@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "bbmod_array_from_buffer",
+  "name": "GUI_SliderArrow",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Utils",
-    "path": "folders/BBMOD/Core/Utils.yy",
+    "name": "ColorPicker",
+    "path": "folders/GUI/ColorPicker.yy",
   },
 }

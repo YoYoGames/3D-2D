@@ -10,6 +10,9 @@
 function GUI_Input(_value, _props={}, _children=[])
 	: GUI_Widget(_props, _children) constructor
 {
+	static Widget_Layout = Layout;
+	static Widget_Update = Update;
+
 	/// @var {String/Real}
 	Value = _value;
 
@@ -24,6 +27,14 @@ function GUI_Input(_value, _props={}, _children=[])
 	After = _props[$ "After"] ?? "";
 
 	Draggable = _props[$ "Draggable"] ?? IsReal;
+
+	/// @var {Real}
+	/// @private
+	DragValue = 0.0;
+
+	/// @var {Real}
+	/// @private
+	DragDist = 0.0;
 
 	SetSize(
 		_props[$ "Width"] ?? 200,
@@ -118,22 +129,34 @@ function GUI_Input(_value, _props={}, _children=[])
 		if (Root && IsReal)
 		{
 			Root.LockCursor();
+			DragValue = Value;
+			DragDist = 0.0;
 		}
 	};
 
 	OnDrag = function (_self, _diffX, _diffY) {
 		if (IsReal)
 		{
-			var _step = Step;
+			var _scale = Step;
 			if (keyboard_check(vk_shift))
 			{
-				_step += 10.0;
+				_scale *= 10.0;
 			}
 			else if (keyboard_check(vk_control))
 			{
-				_step /= 10.0;
+				_scale /= 10.0;
 			}
-			Change(Value + (_diffX * _step));
+			DragDist += _diffX * _scale;
+			var _step = 24.0;
+			if (Min != undefined)
+			{
+				DragDist = max(DragDist, (Min - DragValue) * _step);
+			}
+			if (Max != undefined)
+			{
+				DragDist = min(DragDist, (Max - DragValue) * _step);
+			}
+			Change(DragValue + (DragDist / _step));
 		}
 	};
 
@@ -143,6 +166,56 @@ function GUI_Input(_value, _props={}, _children=[])
 			Root.UnlockCursor();
 		}
 	};
+
+	/// @var {Struct.GUI_InputArrowUp, Undefined}
+	/// @readonly
+	ArrowUp = undefined;
+
+	/// @var {Struct.GUI_InputArrowUp, Undefined}
+	/// @readonly
+	ArrowDown = undefined;
+
+	if (IsReal)
+	{
+		// TODO: Increase value on click
+		ArrowUp = new GUI_InputArrowUp({
+			PivotLeft: 1.0,
+			AnchorLeft: 1.0,
+			OnPress: method(self, function () {
+				var _scale = Step;
+				if (keyboard_check(vk_shift))
+				{
+					_scale *= 10.0;
+				}
+				else if (keyboard_check(vk_control))
+				{
+					_scale /= 10.0;
+				}
+				Change(Value + _scale);
+			}),
+		});
+
+		// TODO: Decrease value on click
+		ArrowDown = new GUI_InputArrowDown({
+			PivotLeft: 1.0,
+			AnchorLeft: 1.0,
+			AnchorTop: 1.0,
+			OnPress: method(self, function () {
+				var _scale = Step;
+				if (keyboard_check(vk_shift))
+				{
+					_scale *= 10.0;
+				}
+				else if (keyboard_check(vk_control))
+				{
+					_scale /= 10.0;
+				}
+				Change(Value - _scale);
+			}),
+		});
+
+		Add(ArrowUp, ArrowDown);
+	}
 
 	/// @func SetValue(_value)
 	///
@@ -176,7 +249,7 @@ function GUI_Input(_value, _props={}, _children=[])
 			}
 		}
 		SetProps({
-			"Value": _value,
+			Value: _value,
 		});
 		return self;
 	};
@@ -279,7 +352,17 @@ function GUI_Input(_value, _props={}, _children=[])
 		return self;
 	};
 
-	static Widget_Update = Update;
+	static Layout = function (_force=false) {
+		if (IsReal)
+		{
+			RealWidth -= max(ArrowUp.RealWidth, ArrowDown.RealWidth);
+			//SetProps({
+			//	RealWidth: RealWidth - max(ArrowUp.RealWidth, ArrowDown.RealWidth),
+			//});
+		}
+		Widget_Layout(_force);
+		return self;
+	};
 
 	static Update = function () {
 		Widget_Update();
@@ -306,9 +389,11 @@ function GUI_Input(_value, _props={}, _children=[])
 			}
 
 			// Type
-			var _keyboardStringLength = string_length(keyboard_string);
+			// Note: 127 is ASCII for delete. This fixes issues on Mac.
+			var _stringToInsert = string_replace_all(keyboard_string, chr(127), "");
+			var _insertLength = string_length(_stringToInsert);
 
-			if (_keyboardStringLength > 0)
+			if (_insertLength > 0)
 			{
 				// Delete selected part
 				if (EditFrom != EditTo)
@@ -317,8 +402,8 @@ function GUI_Input(_value, _props={}, _children=[])
 				}
 
 				// Insert string
-				InputString = string_insert(keyboard_string, InputString, EditFrom);
-				EditFrom += _keyboardStringLength;
+				InputString = string_insert(_stringToInsert, InputString, EditFrom);
+				EditFrom += _insertLength;
 				EditTo = EditFrom;
 				keyboard_string = "";
 			}

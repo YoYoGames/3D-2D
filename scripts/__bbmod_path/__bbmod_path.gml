@@ -1,56 +1,56 @@
-/// @macro {String}
-#macro __ST_PATH_SEPARATOR ((os_type == os_windows) ? "\\" : "/")
+/// @macro {String} Directory separator.
+#macro __BBMOD_PATH_SEPARATOR ((os_type == os_windows) ? "\\" : "/")
 
-/// @macro {String}
-#macro __ST_PATH_CURRENT "."
+/// @macro {String} The current directory in relative paths.
+#macro __BBMOD_PATH_CURRENT "."
 
-/// @macro {String}
-#macro __ST_PATH_PARENT ".."
+/// @macro {String} The parent directory in relative paths.
+#macro __BBMOD_PATH_PARENT ".."
 
-/// @func ST_PathNormalize(_path)
+/// @func bbmod_path_normalize(_path)
 ///
-/// @desc
+/// @desc Normalizes path for the current platform.
 ///
-/// @param {String} _path
+/// @param {String} _path The path to normalize.
 ///
-/// @return {String}
-function ST_PathNormalize(_path)
+/// @return {String} The normalized path.
+function bbmod_path_normalize(_path)
 {
 	gml_pragma("forceinline");
 	return string_replace_all(_path,
-		(os_type == os_windows) ? "/" : "\\", __ST_PATH_SEPARATOR);
+		(os_type == os_windows) ? "/" : "\\", __BBMOD_PATH_SEPARATOR);
 }
 
-/// @func ST_PathIsRelative(_path)
+/// @func bbmod_path_is_relative(_path)
 ///
 /// @desc Checks if a path is relative.
 ///
 /// @param {String} _path The path to check.
 ///
 /// @return {Bool} Returns `true` if the path is relative.
-function ST_PathIsRelative(_path)
+function bbmod_path_is_relative(_path)
 {
 	gml_pragma("forceinline");
-	_path = ST_PathNormalize(_path);
-	return (ST_StringStartsWith(_path, __ST_PATH_CURRENT + __ST_PATH_SEPARATOR)
-		|| ST_StringStartsWith(_path, __ST_PATH_PARENT + __ST_PATH_SEPARATOR));
+	_path = bbmod_path_normalize(_path);
+	return (bbmod_string_starts_with(_path, __BBMOD_PATH_CURRENT + __BBMOD_PATH_SEPARATOR)
+		|| bbmod_string_starts_with(_path, __BBMOD_PATH_PARENT + __BBMOD_PATH_SEPARATOR));
 }
 
 
-/// @func ST_PathIsAbsolute(_path)
+/// @func bbmod_path_is_absolute(_path)
 ///
 /// @desc Checks if a path is absolute.
 ///
 /// @param {String} _path The path to check.
 ///
 /// @return {Bool} Returns `true` if the path is absolute.
-function ST_PathIsAbsolute(_path)
+function bbmod_path_is_absolute(_path)
 {
 	gml_pragma("forceinline");
-	return !ST_PathIsRelative(_path);
+	return !bbmod_path_is_relative(_path);
 }
 
-/// @func ST_PathGetRelative(_path[, _start])
+/// @func bbmod_path_get_relative(_path[, _start])
 ///
 /// @desc Retrieves a relative version of a path.
 ///
@@ -63,15 +63,15 @@ function ST_PathIsAbsolute(_path)
 ///
 /// @note If given paths are not on the same drive then an unmodified path is
 /// returned!
-function ST_PathGetRelative(_path, _start=working_directory)
+function bbmod_path_get_relative(_path, _start=working_directory)
 {
-	_path = ST_PathNormalize(_path);
+	_path = bbmod_path_normalize(_path);
 
 	var _pathExploded = [];
-	var _pathExplodedSize = ST_StringExplode(_path, __ST_PATH_SEPARATOR, _pathExploded);
+	var _pathExplodedSize = bbmod_string_explode(_path, __BBMOD_PATH_SEPARATOR, _pathExploded);
 
 	var _startExploded = [];
-	var _startExplodedSize = ST_StringExplode(_start, __ST_PATH_SEPARATOR, _startExploded);
+	var _startExplodedSize = bbmod_string_explode(_start, __BBMOD_PATH_SEPARATOR, _startExploded);
 
 	if (os_type == os_windows
 		&& _pathExploded[0] != _startExploded[0])
@@ -97,13 +97,13 @@ function ST_PathGetRelative(_path, _start=working_directory)
 	{
 		while (_levelCurrent > _levelStart)
 		{
-			array_push(_pathRelative, __ST_PATH_PARENT);
+			array_push(_pathRelative, __BBMOD_PATH_PARENT);
 			--_levelCurrent;
 		}
 	}
 	else
 	{
-		array_push(_pathRelative, __ST_PATH_CURRENT);
+		array_push(_pathRelative, __BBMOD_PATH_CURRENT);
 	}
 
 	while (_levelCurrent < _levelEnd)
@@ -111,10 +111,10 @@ function ST_PathGetRelative(_path, _start=working_directory)
 		array_push(_pathRelative, _pathExploded[_levelCurrent++]);
 	}
 
-	return ST_StringJoinArray(__ST_PATH_SEPARATOR, _pathRelative);
+	return bbmod_string_join_array(__BBMOD_PATH_SEPARATOR, _pathRelative);
 }
 
-/// @func ST_PathGetAbsolute(_path[, _start])
+/// @func bbmod_path_get_absolute(_path[, _start])
 ///
 /// @desc Retrieves an absolute version of a path.
 ///
@@ -125,20 +125,20 @@ function ST_PathGetRelative(_path, _start=working_directory)
 /// @return {String} The absolute path.
 ///
 /// @note If the path is already absolute then an unmodified path is returned.
-function ST_PathGetAbsolute(_path, _start=working_directory)
+function bbmod_path_get_absolute(_path, _start=working_directory)
 {
-	_path = ST_PathNormalize(_path);
+	_path = bbmod_path_normalize(_path);
 
-	if (ST_PathIsAbsolute(_path))
+	if (bbmod_path_is_absolute(_path))
 	{
 		return _path;
 	}
 
 	var _pathExploded = [];
-	var _pathExplodedSize = ST_StringExplode(_path, __ST_PATH_SEPARATOR, _pathExploded);
+	var _pathExplodedSize = bbmod_string_explode(_path, __BBMOD_PATH_SEPARATOR, _pathExploded);
 
 	var _startExploded = [];
-	var _startExplodedSize = ST_StringExplode(_start, __ST_PATH_SEPARATOR, _startExploded);
+	var _startExplodedSize = bbmod_string_explode(_start, __BBMOD_PATH_SEPARATOR, _startExploded);
 
 	var _pathRelative = [];
 	array_copy(_pathRelative, 0, _startExploded, 0, _startExplodedSize);
@@ -152,10 +152,10 @@ function ST_PathGetAbsolute(_path, _start=working_directory)
 
 		switch (_str)
 		{
-		case __ST_PATH_CURRENT:
+		case __BBMOD_PATH_CURRENT:
 			break;
 
-		case __ST_PATH_PARENT:
+		case __BBMOD_PATH_PARENT:
 			array_delete(_pathRelative, i--, 1);
 			break;
 
@@ -165,5 +165,5 @@ function ST_PathGetAbsolute(_path, _start=working_directory)
 		}
 	}
 
-	return ST_StringJoinArray(__ST_PATH_SEPARATOR, _pathRelative);
+	return bbmod_string_join_array(__BBMOD_PATH_SEPARATOR, _pathRelative);
 }

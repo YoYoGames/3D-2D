@@ -7,42 +7,40 @@
 /// @param {Struct.ST_Asset} _asset
 /// @param {Struct} [_props]
 function ST_TransformWidget(_asset, _props={})
-	: GUI_VBox(_props) constructor
+	: GUI_FlexLayout(_props) constructor
 {
 	/// @var {Struct.ST_Asset}
 	Asset = _asset;
 
-	Spacing = _props[$ "Spacing"] ?? 12;
+	FlexDirection = _props[$ "FlexDirection"] ?? "column";
 
-	SetWidth(_props[$ "Width"] ?? "100%");
+	Gap = _props[$ "Gap"] ?? 12;
 
-	var _columnRightX = 109;
+	SetSize(
+		_props[$ "Width"] ?? "100%",
+		_props[$ "Height"] ?? "auto"
+	);
 
-	var _textPosition = new GUI_Text("Position");
-	Add(_textPosition);
+	var _columnWidth = 129;
+	var _styleLabel = {
+		Width: _columnWidth,
+		MaxWidth: "25%",
+	};
 
-	PositionInput = new ST_VectorInput(Asset.Position, { X: _columnRightX, Step: 0.1 });
-	_textPosition.Add(PositionInput);
+	PositionInput = new ST_VectorInput(Asset.Position, {
+		Step: 0.1,
+		FlexGrow: 1,
+	});
 
-	var _textRotation = new GUI_Text("Rotation");
-	Add(_textRotation);
+	RotationInput = new ST_VectorInput(Asset.Rotation, {
+		FlexGrow: 1,
+	});
 
-	RotationInput = new ST_VectorInput(Asset.Rotation, { X: _columnRightX });
-	_textRotation.Add(RotationInput);
+	ScaleInput = new ST_VectorInput(Asset.Scale, {
+		Step: 0.01,
+		FlexGrow: 1,
+	});
 
-	var _textScale = new GUI_Text("Scale");
-	Add(_textScale);
-
-	ScaleInput = new ST_VectorInput(Asset.Scale, { X: _columnRightX, Step: 0.01 });
-	_textScale.Add(ScaleInput);
-
-	var _textFlipUV = new GUI_Text("Flip UV");
-	Add(_textFlipUV);
-
-	var _hboxFlipUV = new GUI_HBox({ X: _columnRightX, Spacing: 4 });
-	_textFlipUV.Add(_hboxFlipUV);
-
-	// TODO: Implement reloading assets with new settings
 	ButtonMirrorUV = new GUI_GlyphButton(ST_EIcon.FlipBrushHorizontal, {
 		Tooltip: "Flip UVs Horizontally",
 		Font: ST_FntIcons11,
@@ -52,7 +50,6 @@ function ST_TransformWidget(_asset, _props={})
 			ST_OMain.AssetImporter.Reload(Asset);
 		}),
 	});
-	_hboxFlipUV.Add(ButtonMirrorUV);
 
 	ButtonFlipUV = new GUI_GlyphButton(ST_EIcon.FlipBrushVertical, {
 		Tooltip: "Flip UVs Vertically",
@@ -63,5 +60,45 @@ function ST_TransformWidget(_asset, _props={})
 			ST_OMain.AssetImporter.Reload(Asset);
 		}),
 	});
-	_hboxFlipUV.Add(ButtonFlipUV);
+
+	Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Position", _styleLabel),
+			PositionInput,
+		])
+	);
+
+	Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Rotation", _styleLabel),
+			RotationInput,
+		])
+	);
+
+	Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Scale", _styleLabel),
+			ScaleInput,
+		])
+	);
+
+	Add(
+		new GUI_FlexLayout({
+			Width: "100%",
+			Height: "auto",
+		}, [
+			new GUI_Text("Flip UV", _styleLabel),
+			ButtonMirrorUV,
+			ButtonFlipUV,
+		])
+	);
 }

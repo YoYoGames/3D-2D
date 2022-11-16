@@ -7,7 +7,7 @@
 /// @param {Struct} [_props]
 /// @param {Array<Struct.GUI_MenuBarItem>} [_items]
 function GUI_MenuBar(_props={}, _items=[])
-	: GUI_Canvas(_props) constructor
+	: GUI_Widget(_props) constructor
 {
 	MaxChildCount = 1;
 
@@ -45,6 +45,12 @@ function GUI_MenuBar(_props={}, _items=[])
 		gml_pragma("forceinline");
 		Container.Add(_item);
 		_item.MenuBar = self;
+		return self;
+	};
+
+	static Draw = function () {
+		draw_sprite_stretched(BackgroundSprite, 0, RealX, RealY, RealWidth, RealHeight);
+		DrawChildren();
 		return self;
 	};
 }

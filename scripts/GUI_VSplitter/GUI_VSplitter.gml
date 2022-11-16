@@ -56,23 +56,24 @@ function GUI_VSplitter(_props={}, _children=[])
 	};
 
 	static Layout = function (_force=false) {
-		CHECK_LAYOUT_CHANGED;
+		GUI_CHECK_LAYOUT_CHANGED;
 
 		var _splitterY = GetSplitterY();
 
 		Top.SetProps({
-			"RealX": RealX,
-			"RealY": RealY,
-			"RealWidth": RealWidth,
-			"RealHeight": Bottom.Visible ? max(_splitterY - RealY, 0) : RealHeight,
+			RealX: RealX,
+			RealY: RealY,
+			RealWidth: RealWidth,
+			RealHeight: Bottom.Visible ? max(_splitterY - RealY, 0) : RealHeight,
 		});
 		Top.Layout(_force);
 
+		var _bottomRealY = Top.Visible ? (_splitterY + Size) : RealY;
 		Bottom.SetProps({
-			"RealX": RealX,
-			"RealY": Top.Visible ? (_splitterY + Size) : RealY,
-			"RealWidth": RealWidth,
-			"RealHeight": Top.Visible ? max(RealY + RealHeight - Bottom.RealY, 0) : RealHeight,
+			RealX: RealX,
+			RealY: _bottomRealY,
+			RealWidth: RealWidth,
+			RealHeight: Top.Visible ? max(RealY + RealHeight - _bottomRealY, 0) : RealHeight,
 		});
 		Bottom.Layout(_force);
 
@@ -93,7 +94,7 @@ function GUI_VSplitter(_props={}, _children=[])
 				var _split = (_mouseY - RealY + MouseOffset) / RealHeight;
 				_split = clamp(_split, 0.1, 0.9);
 				SetProps({
-					"Split": _split,
+					Split: _split,
 				});
 			}
 			else
@@ -116,16 +117,10 @@ function GUI_VSplitter(_props={}, _children=[])
 		return self;
 	};
 
-	static Splitter_Draw = Draw;
-
 	static Draw = function () {
-		if (!Visible)
-		{
-			return self;
-		}
 		GUI_DrawRectangle(RealX, RealY, RealWidth, RealHeight, BackgroundColor, BackgroundAlpha);
 		GUI_DrawRectangle(RealX, GetSplitterY(), RealWidth, Size, Color);
-		Splitter_Draw();
+		DrawChildren();
 		return self;
 	};
 }

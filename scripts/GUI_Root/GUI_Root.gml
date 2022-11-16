@@ -115,12 +115,11 @@ function GUI_Root(_props={}, _children=[])
 	static Widget_Layout = Layout;
 
 	static Layout = function (_force=false) {
-		//CHECK_LAYOUT_CHANGED;
 		SetProps({
-			"RealX": X,
-			"RealY": Y,
-			"RealWidth": (WidthUnit == "px") ? Width : (window_get_width() * (Width / 100.0)),
-			"RealHeight": (HeightUnit == "px") ? Height : (window_get_height() * (Height / 100.0)),
+			RealX: X,
+			RealY: Y,
+			RealWidth: (WidthUnit == "px") ? Width : (window_get_width() * (Width / 100.0)),
+			RealHeight: (HeightUnit == "px") ? Height : (window_get_height() * (Height / 100.0)),
 		});
 		Widget_Layout(_force);
 		return self;
@@ -141,7 +140,6 @@ function GUI_Root(_props={}, _children=[])
 		{
 			with (ds_stack_pop(_updateStack))
 			{
-				CheckPropChanges();
 				var _children = Children;
 				var i = 0;
 				repeat (array_length(_children))
@@ -170,7 +168,6 @@ function GUI_Root(_props={}, _children=[])
 				{
 					DragEnd();
 				}
-				CheckPropChanges();
 			}
 		}
 
@@ -207,6 +204,7 @@ function GUI_Root(_props={}, _children=[])
 				{
 					WidgetHovered.OnPress(WidgetHovered);
 				}
+				WidgetHovered.TriggerEvent(new GUI_Event("Press"));
 				WidgetPressed = WidgetHovered;
 				MousePressX = _mouseX;
 				MousePressY = _mouseY;
@@ -236,6 +234,7 @@ function GUI_Root(_props={}, _children=[])
 					&& point_distance(_mouseX, _mouseY, MousePressX, MousePressY) >= DragThreshold)
 				{
 					WidgetPressed.DragStart(WidgetPressed);
+					WidgetPressed.TriggerEvent(new GUI_Event("DragStart"));
 				}
 			}
 			else
@@ -254,10 +253,13 @@ function GUI_Root(_props={}, _children=[])
 						DoubleClickTime = undefined;
 					}
 
-					if (!_doubleClicked
-						&& WidgetPressed.OnClick)
+					if (!_doubleClicked)
 					{
-						WidgetPressed.OnClick(WidgetPressed);
+						if (WidgetPressed.OnClick)
+						{
+							WidgetPressed.OnClick(WidgetPressed);
+						}
+						WidgetPressed.TriggerEvent(new GUI_Event("Click"));
 					}
 				}
 
@@ -282,6 +284,7 @@ function GUI_Root(_props={}, _children=[])
 			MouseLastY = _mouseY;
 		}
 
+		CheckPropChanges();
 		Layout();
 
 		if (window_get_cursor() != Cursor)
@@ -295,6 +298,7 @@ function GUI_Root(_props={}, _children=[])
 	static Draw = function () {
 		if (Visible)
 		{
+			DrawBackground();
 			DrawChildren();
 			//DrawDebug();
 			if (WidgetHovered && !WidgetDragged)
