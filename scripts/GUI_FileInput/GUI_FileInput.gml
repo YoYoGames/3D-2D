@@ -39,8 +39,8 @@ function GUI_FileInput(_path, _props={})
 		X: -1,
 		OnClick: method(self, function () {
       var _path = Save
-        ? GetSaveFileName(Filter, Filename, ST_ENVVAR_HOME, "Save As")
-				: GetOpenFileName(Filter, Filename, ST_ENVVAR_HOME, "Open"));
+				? GetSaveFileName(Filter, Filename, ST_ENVVAR_HOME, "Save As")
+				: GetOpenFileName(Filter, Filename, ST_ENVVAR_HOME, "Open");
 			if (_path != "")
 			{
 				Change(_path);

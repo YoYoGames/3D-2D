@@ -42,9 +42,8 @@
     {"id":{"name":"ST_Renderer","path":"scripts/ST_Renderer/ST_Renderer.yy",},"order":9,},
     {"id":{"name":"GUI_SprInput","path":"sprites/GUI_SprInput/GUI_SprInput.yy",},"order":1,},
     {"id":{"name":"GUI_Dropdown","path":"scripts/GUI_Dropdown/GUI_Dropdown.yy",},"order":2,},
-{"id":{"name":"BBMOD_Renderer","path":"scripts/BBMOD_Renderer/BBMOD_Renderer.yy",},"order":1,},
-    {"id":{"name":"bbmod_get_calling_function_name","path":"scripts/bbmod_get_calling_function_name/bbmod_get_calling_function_name.yy",},"order":2,},
-    {"id":{"name":"BBMOD_Vec4","path":"scripts/BBMOD_Vec4/BBMOD_Vec4.yy",},"order":6,},
+    {"id":{"name":"BBMOD_Renderer","path":"scripts/BBMOD_Renderer/BBMOD_Renderer.yy",},"order":1,},
+    {"id":{"name":"bbmod_get_calling_function_name","path":"scripts/bbmod_get_calling_function_name/bbmod_get_calling_function_name.yy",},"order":4,},
     {"id":{"name":"libfilesystem","path":"extensions/libfilesystem/libfilesystem.yy",},"order":0,},
     {"id":{"name":"BBMOD_Exception","path":"scripts/BBMOD_Exception/BBMOD_Exception.yy",},"order":0,},
     {"id":{"name":"BBMOD_SprColorGradingLUT","path":"sprites/BBMOD_SprColorGradingLUT/BBMOD_SprColorGradingLUT.yy",},"order":1,},
@@ -142,7 +141,6 @@
     {"id":{"name":"GUI_Canvas","path":"scripts/GUI_Canvas/GUI_Canvas.yy",},"order":2,},
     {"id":{"name":"GUI_SprAlphaSlider","path":"sprites/GUI_SprAlphaSlider/GUI_SprAlphaSlider.yy",},"order":7,},
     {"id":{"name":"GUI_SprHueSlider","path":"sprites/GUI_SprHueSlider/GUI_SprHueSlider.yy",},"order":3,},
-    {"id":{"name":"bbmod_get_calling_function_name","path":"scripts/bbmod_get_calling_function_name/bbmod_get_calling_function_name.yy",},"order":4,},
     {"id":{"name":"BBMOD_Quaternion","path":"scripts/BBMOD_Quaternion/BBMOD_Quaternion.yy",},"order":3,},
     {"id":{"name":"GUI_SprMenuItem","path":"sprites/GUI_SprMenuItem/GUI_SprMenuItem.yy",},"order":5,},
     {"id":{"name":"BBMOD_BaseMaterial","path":"scripts/BBMOD_BaseMaterial/BBMOD_BaseMaterial.yy",},"order":1,},
@@ -221,7 +219,6 @@
     {"id":{"name":"__bbmod_string","path":"scripts/__bbmod_string/__bbmod_string.yy",},"order":3,},
     {"id":{"name":"GUI_SprRectangle","path":"sprites/GUI_SprRectangle/GUI_SprRectangle.yy",},"order":16,},
     {"id":{"name":"ST_ExportOptionsPane","path":"scripts/ST_ExportOptionsPane/ST_ExportOptionsPane.yy",},"order":7,},
-    {"id":{"name":"BBMOD_Renderer","path":"scripts/BBMOD_Renderer/BBMOD_Renderer.yy",},"order":1,},
     {"id":{"name":"GUI_ColorButton","path":"scripts/GUI_ColorButton/GUI_ColorButton.yy",},"order":0,},
     {"id":{"name":"BBMOD_DefaultShader","path":"scripts/BBMOD_DefaultShader/BBMOD_DefaultShader.yy",},"order":2,},
     {"id":{"name":"__bbmod_defines","path":"scripts/__bbmod_defines/__bbmod_defines.yy",},"order":12,},
@@ -354,7 +351,7 @@
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
   ],
   "TextureGroups": [
-    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","isScaled":true,"compressFormat":"bz2","loadType":"default","directory":"","autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,},
+    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","isScaled":true,"compressFormat":"bz2","autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,},
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"BBMOD.dll","CopyToMask":64,"filePath":"datafiles/Data/BBMOD",},
@@ -698,6 +695,6 @@
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"029-NotoSansCuneiform-Regular.ttf","CopyToMask":-1,"filePath":"datafiles/Data/fonts",},
   ],
   "MetaData": {
-    "IDEVersion": "2022.900.0.218",
+    "IDEVersion": "2022.8.0.34",
   },
 }
