@@ -17,7 +17,7 @@ function ST_VectorInput(_vector, _props={})
 
 	Colors = _props[$ "Colors"] ?? [ #FF767B, #7DAF37, #0395CD ];
 
-	SetWidth(_props[$ "Width"] ?? "100%");
+	SetSize(_props[$ "Width"] ?? "100%", "auto");
 
 	Gap = _props[$ "Gap"] ?? 4;
 
