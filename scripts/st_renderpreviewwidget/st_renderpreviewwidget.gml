@@ -32,9 +32,9 @@ function ST_RenderPreviewWidget(_store, _props={})
 			}),
 		}),
 		new GUI_Text("", {
-			Width: 72,
+			Width: 75,
 			OnUpdate: method(self, function (_text) {
-				_text.Text = Root.ExportOptionsPane.ExportOptions.DropdownCamera.Selected.Text;
+				_text.SetProps({ Text: Root.ExportOptionsPane.ExportOptions.DropdownCamera.Selected.Text });
 			}),
 		}),
 		new GUI_GlyphButton(ST_EIcon.ExpandClosed, {

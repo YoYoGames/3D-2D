@@ -151,7 +151,7 @@ function GUI_Dropdown(_props={}, _options=[])
 				if (_options[i++] == _option)
 				{
 					var _selectedOld = Selected;
-					Selected = _option;
+					SetProps({ Selected: _option });
 					if (OnChange)
 					{
 						OnChange(_option.Value, _selectedOld ? _selectedOld.Value : undefined);
