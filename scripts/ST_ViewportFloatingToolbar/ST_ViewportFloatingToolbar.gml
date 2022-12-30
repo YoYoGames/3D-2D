@@ -80,29 +80,26 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 	}, [
 		new GUI_VBox({ Width: "100%", Padding: 8, Gap: 4 }, [
 			new GUI_Text("Angle snap:"),
-			new GUI_Input(ST_OMain.Gizmo.AngleSnap, {
-				Width: "50%",
-				Min: 0.0,
-				Max: 360.0,
-				Step: 1.0,
-				OnChange: function (_value) {
-					ST_OMain.Gizmo.AngleSnap = _value;
-				},
+			new GUI_FlexLayout({
+				Width: "100%",
+				Height: "auto",
+				Gap: 8,
 			}, [
+				new GUI_Input(ST_OMain.Gizmo.AngleSnap, {
+					Width: "50%",
+					Min: 0.0,
+					Max: 360.0,
+					Step: 1.0,
+					OnChange: function (_value) {
+						ST_OMain.Gizmo.AngleSnap = _value;
+					},
+				}),
 				new GUI_Checkbox(ST_OMain.Gizmo.EnableAngleSnap, {
-					AnchorLeft: 1.0,
-					PivotLeft: 1.0,
-					X: 8,
 					OnChange: function (_value) {
 						ST_OMain.Gizmo.EnableAngleSnap = _value;
 					},
-				}, [
-					new GUI_Text("Enabled", {
-						AnchorLeft: 1.0,
-						PivotLeft: 1.0,
-						X: 8,
-					}),
-				])
+				}),
+				new GUI_Text("Enabled"),
 			]),
 			new GUI_Text("Edit space:"),
 			// FIXME: Selecting value here closes the extra options widget!
