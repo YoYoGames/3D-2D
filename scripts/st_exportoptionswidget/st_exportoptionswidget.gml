@@ -66,7 +66,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 				if (checkboxSpriteKeepAspectRation.Value)
 				{
 					var _aspect = Store.AssetRenderer.Width / Store.AssetRenderer.Height;
-					Store.AssetRenderer.Height = max(_value / _aspect, 1.0);
+					Store.AssetRenderer.Height = max(floor(_value / _aspect), 1.0);
 					inputSpriteHeight.Value = Store.AssetRenderer.Height;
 				}
 				Store.AssetRenderer.Width = _value;
@@ -80,7 +80,7 @@ function ST_ExportOptionsWidget(_store, _props={})
 				if (checkboxSpriteKeepAspectRation.Value)
 				{
 					var _aspect = Store.AssetRenderer.Width / Store.AssetRenderer.Height;
-					Store.AssetRenderer.Width = max(_value * _aspect, 1.0);
+					Store.AssetRenderer.Width = max(floor(_value * _aspect), 1.0);
 					inputSpriteWidth.Value = Store.AssetRenderer.Width;
 				}
 				Store.AssetRenderer.Height = _value;
