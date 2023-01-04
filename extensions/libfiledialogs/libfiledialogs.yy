@@ -89,8 +89,8 @@
   "iosCocoaPodDependencies": "",
   "tvosCocoaPodDependencies": "",
   "parent": {
-    "name": "Extensions",
-    "path": "folders/Extensions.yy",
+    "name": "FileDialogs",
+    "path": "folders/FileDialogs.yy",
   },
   "resourceVersion": "1.2",
   "name": "libfiledialogs",
