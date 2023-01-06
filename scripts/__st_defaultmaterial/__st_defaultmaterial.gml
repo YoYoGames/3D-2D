@@ -12,6 +12,7 @@ function ST_GetDefaultMaterial()
 		_material = new BBMOD_DefaultMaterial(_shader);
 		_material.set_shader(BBMOD_ERenderPass.Id, BBMOD_SHADER_INSTANCE_ID);
 		_material.Culling = cull_noculling;
+		_material.Repeat = true;
 	}
 	return _material;
 }

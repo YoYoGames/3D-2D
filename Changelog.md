@@ -11,4 +11,5 @@
 * Fixed gizmo not working from certain camera directions (e.g. couldn't move objects on the Z axis when Left camera perspective was used).
 * Fixed responsive size of widgets.
 * Improved GUI layouting and rendering optimizations.
+* Enabled texture repeat.
 * Updated BBMOD to 3.12.0.
