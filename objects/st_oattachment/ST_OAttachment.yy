@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "ST_OAttachment",
   "spriteId": null,
   "solid": false,
   "visible": true,
@@ -28,7 +31,4 @@
     "name": "Objects",
     "path": "folders/SpriteTool/Objects.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "ST_OAttachment",
-  "resourceType": "GMObject",
 }

@@ -44,15 +44,15 @@
     "autoRecord": true,
     "volume": 1.0,
     "length": 4.0,
-    "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
-    "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
+    "events": {"resourceType":"KeyframeStore<MessageEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
+    "moments": {"resourceType":"KeyframeStore<MomentsEventKeyframe>","resourceVersion":"1.0","Keyframes":[],},
     "tracks": [
-      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"def2ac51-b52e-426e-a92b-9d22eb37a002","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"e7acf680-e25a-4e0c-ab13-36beab40dc5b","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-            {"id":"f6441c8f-959d-4798-937e-274309f81c2b","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"2d0677eb-7f76-4f1e-b18b-c9be19e00fde","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-            {"id":"80baaf91-8142-4c52-820d-13e17494d8dc","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"5eb829e3-f288-49ac-a551-d0d938abfa9c","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-            {"id":"cffa5c5c-feb2-48f2-88ff-e3e8256df0c1","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"de8edcee-11e9-4dd2-b5c5-21e7b42a9e8f","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"resourceType":"KeyframeStore<SpriteFrameKeyframe>","resourceVersion":"1.0","Keyframes":[
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","id":"def2ac51-b52e-426e-a92b-9d22eb37a002","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"e7acf680-e25a-4e0c-ab13-36beab40dc5b","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},},},},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","id":"f6441c8f-959d-4798-937e-274309f81c2b","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"2d0677eb-7f76-4f1e-b18b-c9be19e00fde","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},},},},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","id":"80baaf91-8142-4c52-820d-13e17494d8dc","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"5eb829e3-f288-49ac-a551-d0d938abfa9c","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},},},},
+            {"resourceType":"Keyframe<SpriteFrameKeyframe>","resourceVersion":"1.0","id":"cffa5c5c-feb2-48f2-88ff-e3e8256df0c1","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"resourceType":"SpriteFrameKeyframe","resourceVersion":"1.0","Id":{"name":"de8edcee-11e9-4dd2-b5c5-21e7b42a9e8f","path":"sprites/GUI_SprCheckbox/GUI_SprCheckbox.yy",},},},},
+          ],},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"modifiers":[],"isCreationTrack":false,},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -73,6 +73,8 @@
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"37bdc6cc-d9fc-41f3-828f-a79b10ff3f70","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": {
+    "resourceType": "GMNineSliceData",
+    "resourceVersion": "1.0",
     "left": 0,
     "top": 0,
     "right": 0,
@@ -93,9 +95,6 @@
       0,
       0,
     ],
-    "resourceVersion": "1.0",
-    "loadedVersion": null,
-    "resourceType": "GMNineSliceData",
   },
   "parent": {
     "name": "Checkbox",

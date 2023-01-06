@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMFont",
+  "resourceVersion": "1.0",
+  "name": "ST_FntOpenSans10Bold",
   "hinting": 0,
   "glyphOperations": 0,
   "interpreter": 0,
@@ -181,7 +184,4 @@
     "name": "Fonts",
     "path": "folders/SpriteTool/Fonts.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "ST_FntOpenSans10Bold",
-  "resourceType": "GMFont",
 }

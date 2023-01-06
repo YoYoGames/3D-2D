@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMHtml5Options",
+  "resourceVersion": "1.0",
+  "name": "HTML5",
   "option_html5_browser_title": "Created with GameMaker",
   "option_html5_version": "1.0.0.0",
   "option_html5_foldername": "html5game",
@@ -27,7 +30,4 @@
   "option_html5_flurry_id": "",
   "option_html5_google_analytics_enable": false,
   "option_html5_google_tracking_id": "",
-  "resourceVersion": "1.0",
-  "name": "HTML5",
-  "resourceType": "GMHtml5Options",
 }
