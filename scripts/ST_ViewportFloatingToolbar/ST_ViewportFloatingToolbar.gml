@@ -11,6 +11,17 @@ function ST_ViewportFloatingToolbar(_store, _props={})
 {
 	Store = _store;
 
+	OnDragEnd = function () {
+		if (RealX < Parent.RealX)
+		{
+			SetProps({ X: X + Parent.RealX - RealX });
+		}
+		else if (RealX + RealWidth > Parent.RealX + Parent.RealWidth)
+		{
+			SetProps({ X: X + (Parent.RealX + Parent.RealWidth) - (RealX + RealWidth) });
+		}
+	};
+
 	GridOptions = new GUI_Canvas({
 		Width: 200,
 		Height: 90, // TODO: "auto" sizing
