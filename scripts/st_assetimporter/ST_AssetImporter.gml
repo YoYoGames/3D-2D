@@ -10,10 +10,14 @@ function ST_AssetImporter(_tempDir=game_save_id + "Temp") constructor
 	/// @readonly
 	Dll = new BBMOD_DLL();
 
-	Dll.set_optimize_animations(2);
-	Dll.set_optimize_nodes(true);
-	Dll.set_optimize_meshes(true);
-	Dll.set_optimize_materials(false);
+	//FIXME: get these working on macOS
+	if (os_type == os_windows) 
+	{
+		Dll.set_optimize_animations(2);
+		Dll.set_optimize_nodes(true);
+		Dll.set_optimize_meshes(true);
+		Dll.set_optimize_materials(false);
+	}
 
 	/// @var {String}
 	/// @readonly

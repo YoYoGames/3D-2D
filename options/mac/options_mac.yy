@@ -4,7 +4,7 @@
   "name": "macOS",
   "option_mac_display_name": "SpriteTool",
   "option_mac_app_id": "com.yoyogames.spritetool",
-  "option_mac_version": "0.1.4",
+  "option_mac_version": "0.1.5",
   "option_mac_output_dir": "~/gamemakerstudio2",
   "option_mac_team_id": "",
   "option_mac_signing_identity": "kraifpatrik@gmail.com",

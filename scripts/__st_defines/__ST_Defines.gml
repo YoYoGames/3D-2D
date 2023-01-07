@@ -5,7 +5,7 @@
 #macro ST_VERSION_MINOR 1
 
 /// @macro {Real}
-#macro ST_VERSION_PATCH 4
+#macro ST_VERSION_PATCH 5
 
 /// @macro {String}
 #macro ST_VERSION_STRING \
@@ -26,3 +26,6 @@
 
 /// @macro {String}
 #macro ST_FILTER_SAVE "Save Files|*.json"
+
+/// @macro {String}
+#macro ST_ENVVAR_HOME environment_get_variable((os_type == os_windows) ? "USERPROFILE" : "HOME")

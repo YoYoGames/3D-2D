@@ -145,7 +145,7 @@ __LoadAssetFromSave = function (_assetSave, _isAttachment) {
 	if (!file_exists(_assetPath))
 	{
 		show_message("Could not find file \"" + _assetPath + "\"! Please select it again.");
-		_assetPath = get_open_filename(ST_FILTER_MODEL, filename_name(_assetPath));
+		_assetPath = GetOpenFileName(ST_FILTER_MODEL, filename_name(_assetPath), ST_ENVVAR_HOME, "Open");
 	}
 
 	var _asset = _isAttachment
@@ -180,7 +180,7 @@ __LoadAssetFromSave = function (_assetSave, _isAttachment) {
 			if (!file_exists(_texturePath))
 			{
 				show_message("Could not find file \"" + _texturePath + "\"! Please select it again.");
-				_texturePath = get_open_filename(ST_FILTER_TEXTURE, filename_name(_texturePath));
+				_texturePath = GetOpenFileName(ST_FILTER_TEXTURE, filename_name(_texturePath), ST_ENVVAR_HOME, "Open");
 			}
 
 			var _sprite = _asset.LoadSprite(_texturePath);
