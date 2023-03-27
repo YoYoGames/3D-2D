@@ -69,7 +69,9 @@ function GUI_Scrollbar(_props={})
 	/// @return {Real}
 	static GetScroll = function () {
 		gml_pragma("forceinline");
-		return round(Scroll * ScrollJump);
+		var _scroll = round(Scroll * ScrollJump);
+		// FIXME: We're somehow getting NaN here in YYC.
+		return is_nan(_scroll) ? 0 : _scroll;
 	};
 
 	/// @func SetScroll()
